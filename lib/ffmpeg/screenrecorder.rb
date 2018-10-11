@@ -1,6 +1,7 @@
-require "ffmpeg/screenrecorder/version"
+require 'streamio-ffmpeg'
+require 'pry-byebug'
 
-module Ffmpeg
+module FFMPEG
   module Screenrecorder
     # Your code goes here...
   end
