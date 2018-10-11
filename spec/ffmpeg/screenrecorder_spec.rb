@@ -1,9 +1,9 @@
-RSpec.describe Ffmpeg::Screenrecorder do
-  it "has a version number" do
-    expect(Ffmpeg::Screenrecorder::VERSION).not_to be nil
+RSpec.describe FFMPEG::Screenrecorder do
+  it 'has a version number' do
+    expect(FFMPEG::Screenrecorder::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it 'it can find the FFMPEG binary' do
+    expect(`#{FFMPEG.ffmpeg_binary} -version`).to include('ffmpeg version')
   end
 end
