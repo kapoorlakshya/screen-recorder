@@ -7,7 +7,7 @@ Ruby gem to record your computer screen using [FFMPEG](https://www.ffmpeg.org/).
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'ruby-ffmpeg_screenrecorder'
+gem 'ffmpeg-screenrecorder'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install ruby-ffmpeg_screenrecorder
+    $ gem install ffmpeg-screenrecorder
 
 ## Usage
 
@@ -30,7 +30,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/kapoorlakshya/ruby-ffmpeg_screenrecorder.
+Bug reports and pull requests are welcome on GitHub at https://github.com/kapoorlakshya/ffmpeg-screenrecorder.
 
 ## License
 
