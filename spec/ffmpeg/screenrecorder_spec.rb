@@ -27,7 +27,7 @@ RSpec.describe FFMPEG::Recorder do
     end
 
     it 'returns a SUCCESS message on #stop ' do
-      sleep(15.0)
+      sleep(10.0)
       expect(@recorder.stop).to include('SUCCESS')
     end
 
