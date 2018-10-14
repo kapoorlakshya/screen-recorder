@@ -14,7 +14,7 @@ end
 
 RSpec.describe FFMPEG::Recorder do
   context 'given the recorder has been initialized' do
-    before do
+    before(:all) do
       @opts     = { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
                     input:     'desktop',
                     framerate: 15 }
@@ -37,6 +37,15 @@ RSpec.describe FFMPEG::Recorder do
 
     it 'creates a valid video file when #stop is invoked' do
       expect(FFMPEG::Movie.new(@opts[:output]).valid?).to be(true)
+    end
+
+    #
+    # Clean up
+    #
+    after(:all) do
+      `rm #{@opts[:output]}`
+      sleep(0.5)
+      `rm log.txt`
     end
   end
 end
