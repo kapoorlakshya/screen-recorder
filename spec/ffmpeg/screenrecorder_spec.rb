@@ -15,10 +15,14 @@ end
 RSpec.describe FFMPEG::Recorder do
   context 'given the recorder has been initialized' do
     before(:all) do
-      @opts     = { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
+      opts      = { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
                     input:     'desktop',
                     framerate: 15 }
-      @recorder = FFMPEG::Recorder.new(@opts)
+      @recorder = FFMPEG::Recorder.new(opts)
+    end
+
+    it 'returns a Hash for #opts' do
+      expect(@recorder.opts).to be_a(Hash)
     end
 
     it 'returns pid on #start' do
@@ -32,20 +36,20 @@ RSpec.describe FFMPEG::Recorder do
     end
 
     it 'creates a output file when #stop is invoked' do
-      expect(File).to exist(@opts[:output])
+      expect(File).to exist(@recorder.opts[:output])
     end
 
     it 'creates a valid video file when #stop is invoked' do
-      expect(FFMPEG::Movie.new(@opts[:output]).valid?).to be(true)
+      expect(FFMPEG::Movie.new(@recorder.opts[:output]).valid?).to be(true)
     end
 
     #
     # Clean up
     #
     after(:all) do
-      `rm #{@opts[:output]}`
+      `rm #{@recorder.opts[:output]}`
       sleep(0.5)
-      `rm log.txt`
+      `rm #{@recorder.opts[:log]}`
     end
   end
 end
