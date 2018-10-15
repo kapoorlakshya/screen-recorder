@@ -24,7 +24,7 @@ module FFMPEG
     end
 
     def inputs
-      %w(desktop)
+      %w[desktop]
     end
 
     private
