@@ -30,6 +30,10 @@ RSpec.describe FFMPEG::Recorder do
       expect(pid).to be_a_kind_of(Integer)
     end
 
+    it 'creates a log file on #start' do
+      expect(File).to exist(@recorder.opts[:log])
+    end
+
     it 'returns a SUCCESS message on #stop ' do
       sleep(10.0)
       expect(@recorder.stop).to include('SUCCESS')
