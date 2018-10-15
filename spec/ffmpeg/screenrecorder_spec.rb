@@ -41,18 +41,18 @@ RSpec.describe FFMPEG::Recorder do
     end
 
     it 'creates a output file when #stop is invoked' do
-      expect(File).to exist(@recorder.opts[:output])
+      expect(File).to exist(@recorder.output)
     end
 
     it 'creates a valid video file when #stop is invoked' do
-      expect(FFMPEG::Movie.new(@recorder.opts[:output]).valid?).to be(true)
+      expect(FFMPEG::Movie.new(@recorder.output).valid?).to be(true)
     end
 
     #
     # Clean up
     #
     after(:all) do
-      `rm #{@recorder.opts[:output]}`
+      `rm #{@recorder.output}`
       sleep(0.5)
       `rm #{@recorder.opts[:log]}`
     end
