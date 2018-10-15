@@ -37,14 +37,6 @@ module FFMPEG
     end
 
     def command
-      <<-EOS
-      #{ffmpeg} -y
-      -f #{opts[:device]}
-      -framerate #{opts[:framerate]}
-       -i #{opts[:input]}
-       #{opts[:output]}
-       2> #{@opts[:log]}"
-      EOS
       # "ffmpeg -f gdigrab -framerate 15 -i desktop output.mkv 2> log.txt"
       "#{ffmpeg} -y -f #{opts[:device]} -framerate #{opts[:framerate]} -i #{opts[:input]} #{opts[:output]} 2> #{@opts[:log]}"
     end
