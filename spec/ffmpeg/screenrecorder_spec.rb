@@ -31,6 +31,7 @@ RSpec.describe FFMPEG::Recorder do
     end
 
     it 'creates a log file on #start' do
+      sleep(1.0) # Wait for file generation
       expect(File).to exist(@recorder.opts[:log])
     end
 
