@@ -3,17 +3,17 @@ require 'os'
 
 module FFMPEG
   class Recorder
-    attr_reader :opts, :ffmpeg, :output
-    attr_accessor :process_id
+    attr_reader :opts, :output, :process_id
 
     def initialize(opts = {})
       @opts       = default_config.merge opts
-      @ffmpeg     = FFMPEG.ffmpeg_binary
       @output     = @opts[:output]
+      @video_file = nil
       @process_id = nil
     end
 
     def start
+      @video_file = nil # New file
       @process_id = spawn(command)
     end
 
@@ -25,6 +25,10 @@ module FFMPEG
 
     def inputs
       %w[desktop]
+    end
+
+    def video_file
+      @video_file ||= Movie.new(output)
     end
 
     private
