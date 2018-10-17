@@ -42,8 +42,20 @@ module FFMPEG
 
     def command
       # "ffmpeg -f gdigrab -framerate 15 -i desktop output.mkv 2> log.txt"
-      "#{ffmpeg} -y -f #{opts[:device]} -framerate #{opts[:framerate]} -i #{opts[:input]} #{opts[:output]} 2> #{@opts[:log]}"
+      "#{FFMPEG.ffmpeg_binary} -y#{extra_opts}-f #{opts[:device]} -framerate #{opts[:framerate]} " + \
+        "-i #{opts[:input]} #{opts[:output]} 2> #{@opts[:log]}"
     end
 
-  end
-end
+    def extra_opts
+      return ' ' unless opts[:extra_opts]
+      return ' ' if opts[:extra_opts].empty?
+
+      arr = []
+      opts[:extra_opts].each { |k, v|
+        arr.push "-#{k} #{v}"
+      }
+      ' ' + arr.join(' ') + ' '
+    end
+
+  end # class Recorder
+end # module FFMPEG

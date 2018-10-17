@@ -15,9 +15,10 @@ end
 RSpec.describe FFMPEG::Recorder do
   context 'given the recorder has been initialized' do
     before(:all) do
-      opts      = { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
-                    input:     'desktop',
-                    framerate: 15 }
+      opts      = { output:     'ffmpeg-screenrecorder-rspec-output.mkv',
+                    input:      'desktop',
+                    framerate:  30.0,
+                    extra_opts: { video_size: '1024x768' } }
       @recorder = FFMPEG::Recorder.new(opts)
     end
 
@@ -45,8 +46,37 @@ RSpec.describe FFMPEG::Recorder do
     end
 
     it 'creates a valid video file when #stop is invoked' do
-      expect(FFMPEG::Movie.new(@recorder.output).valid?).to be(true)
+      expect(@recorder.video_file.valid?).to be(true)
     end
+
+    it 'can record at a user given FPS' do
+      expect(@recorder.video_file.frame_rate).to equal(@recorder.opts[:framerate])
+    end
+
+    it 'uses recording resolution from extra_opts' do
+      expect(@recorder.video_file.resolution).to eq(@recorder.opts[:extra_opts][:video_size])
+    end
+
+    # it 'can return a list of available inputs (recording regions)' do
+    #   expect(@recorder.inputs).to be_a_kind_of(Array)
+    # end
+
+    # it 'can record a browser window' do
+    #   browser = Watir::Browser.new :firefox
+    #   browser.resize_to(800, 600)
+    #   browser.goto 'google.com'
+    #   inputs = FFMPEG::Recorder.inputs # Tab with title as Google
+    #
+    #   opts     = { output:    'C:\ffmpeg-screenrecorder-rspec-output.mkv',
+    #                input:     inputs.first,
+    #                framerate: 15 }
+    #   recorder = FFMPEG::Screenrecorder.new(opts)
+    #   recorder.start
+    #   3.times { browser.refresh }
+    #   recorder.stop
+    #
+    #   # @todo Can't think of a valid test for this...
+    # end
 
     #
     # Clean up
@@ -58,38 +88,3 @@ RSpec.describe FFMPEG::Recorder do
     end
   end
 end
-
-# context 'given the recorder accepts user defined options' do
-#   it 'can record the desktop as input' do
-#     @recorder.start
-#     sleep(5.0)
-#     @recorder.stop
-#     expect(File).to exist(@opts[:output])
-#   end
-#
-#   it 'can record at a user given FPS' do
-#     expect(@output.frame_rate).to equal(@opts[:framerate])
-#   end
-#
-#   it 'can return a list of available inputs (recording regions)' do
-#     expect(@recorder.inputs).to be_a_kind_of(Array)
-#   end
-#
-#   it 'can record a browser window' do
-#     browser = Watir::Browser.new :firefox
-#     browser.resize_to(800, 600)
-#     browser.goto 'google.com'
-#     inputs = FFMPEG::Recorder.inputs # Tab with title as Google
-#
-#     opts     = { output:    'C:\ffmpeg-screenrecorder-rspec-output.mkv',
-#                  input:     inputs.first,
-#                  framerate: 15 }
-#     recorder = FFMPEG::Screenrecorder.new(opts)
-#     recorder.start
-#     3.times { browser.refresh }
-#     recorder.stop
-#
-#     # @todo Can't think of a valid test for this...
-#   end
-# end
-# end
