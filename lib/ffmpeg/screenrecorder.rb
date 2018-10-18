@@ -7,23 +7,31 @@ module FFMPEG
 
     def initialize(opts = {})
       @opts       = default_config.merge opts
-      @output     = @opts[:output]
+      @output     = opts[:output]
       @video_file = nil
       @process_id = nil
+      init_logger(opts[:logging_level])
     end
 
     def start
+      FFMPEG.logger.debug "Starting: #{command}"
       @video_file = nil # New file
       @process_id = spawn(command)
+      FFMPEG.logger.debug 'Recording...'
+      @process_id
     end
 
     def stop
       # return Process.kill('EXIT', @process_id) if OS.linux?
-      `TASKKILL /f /pid ffmpeg.exe`
       # Process.detach(@process_id)
+      FFMPEG.logger.debug 'Stopping ffmpeg.exe...'
+      msg = `TASKKILL /f /pid ffmpeg.exe`
+      FFMPEG.logger.debug 'Stopped ffmpeg.exe'
+      msg
     end
 
     def inputs(application)
+      FFMPEG.logger.debug "Retrieving available windows from #{application}"
       `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
         .split("\n")
         .reject { |title| title == 'Window Title: N/A' }
@@ -39,11 +47,10 @@ module FFMPEG
       { input:     'desktop',
         framerate: 15,
         device:    'gdigrab',
-        log:       'ffmpeg_log.txt' }
+        log:       'ffmpeg_recorder_log.txt' }
     end
 
     def command
-      # "ffmpeg -f gdigrab -framerate 15 -i desktop output.mkv 2> log.txt"
       "#{FFMPEG.ffmpeg_binary} -y " \
       " #{extra_opts} " \
       "-f #{opts[:device]} " \
@@ -62,6 +69,15 @@ module FFMPEG
         arr.push "-#{k} #{v}"
       }
       arr.join(' ')
+    end
+
+    def init_logger(level)
+      FFMPEG.logger.progname  = 'FFMPEG::Recorder'
+      FFMPEG.logger.level     = level
+      FFMPEG.logger.formatter = proc do |severity, time, progname, msg|
+        "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
+      end
+      FFMPEG.logger.debug "Logger initialized."
     end
 
   end # class Recorder
