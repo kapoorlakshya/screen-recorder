@@ -2,6 +2,8 @@ require 'bundler/setup'
 require 'ffmpeg/screenrecorder'
 require 'watir'
 require 'webdrivers'
+require 'pry-byebug'
+require 'fileutils'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
