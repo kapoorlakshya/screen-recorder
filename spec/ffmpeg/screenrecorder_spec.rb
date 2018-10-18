@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 
 RSpec.describe FFMPEG::Screenrecorder do
   context 'given the gem is loaded' do
