@@ -35,7 +35,7 @@ RSpec.describe FFMPEG::Recorder do
         expect(pid).to be_a_kind_of(Integer)
       end
 
-      it 'creates a log file' do
+      it 'creates a log file based on name in #opts' do
         sleep(1.0) # Wait for file generation
         expect(File).to exist(@recorder.opts[:log])
       end
@@ -49,15 +49,17 @@ RSpec.describe FFMPEG::Recorder do
         expect(@recorder.stop).to include('SUCCESS')
       end
 
-      it 'creates a output file' do
+      it 'creates an output file' do
         expect(File).to exist(@recorder.output)
       end
 
-      it 'creates a valid video file' do
-        expect(@recorder.video_file.valid?).to be(true)
+      describe '#video_file' do
+        it 'returns a valid video file' do
+          expect(@recorder.video_file.valid?).to be(true)
+        end
       end
     end
-  end
+  end # context
 
   context 'given FFMPEG::Recorder accepts user defined parameters' do
     describe '#opts[:extra_opts]' do
@@ -69,7 +71,7 @@ RSpec.describe FFMPEG::Recorder do
         expect(@recorder.video_file.resolution).to eq(@recorder.opts[:extra_opts][:video_size])
       end
     end
-  end
+  end # context
 
   context 'given a firefox window is open' do
     before(:all) do
@@ -83,7 +85,7 @@ RSpec.describe FFMPEG::Recorder do
     end
 
     describe '#inputs' do
-      it 'return a list of available browser windows as inputs (recording regions)' do
+      it 'returns a list of available browser windows as inputs (recording regions)' do
         expect(@recorder.inputs('firefox')).to be_a_kind_of(Array)
       end
 
@@ -95,7 +97,7 @@ RSpec.describe FFMPEG::Recorder do
     after(:all) do
       @browser.quit
     end
-  end
+  end # context
 
 # it 'can record a browser window' do
 #   browser = Watir::Browser.new :firefox
