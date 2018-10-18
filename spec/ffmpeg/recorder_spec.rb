@@ -2,12 +2,26 @@ require_relative '../spec_helper'
 
 RSpec.describe FFMPEG::Recorder do
   before(:all) do
-    opts      = { output:     'ffmpeg-screenrecorder-rspec-output.mkv',
-                  input:      'desktop',
-                  framerate:  30.0,
-                  extra_opts: { video_size: '1024x768' } }
-    @recorder = FFMPEG::Recorder.new(opts)
-    @browser  = nil
+    @opts               = { output:        'ffmpeg-screenrecorder-rspec-output.mkv',
+                            input:         'desktop',
+                            framerate:     30.0,
+                            device:        'gdigrab',
+                            extra_opts:    { video_size: '1024x768' },
+                            logging_level: Logger::DEBUG,
+                            log:           'ffmpeg-recorder-log.txt' }
+    FFMPEG.logger.level = Logger::WARN # To test the switch to DEBUG
+    @recorder           = FFMPEG::Recorder.new(@opts)
+    @browser            = nil
+  end
+
+  describe '#new' do
+    it 'sets FFMPEG.logger.level to user defined level from opts[:logging_level]' do
+      expect(FFMPEG.logger.level).to eql(@recorder.opts[:logging_level])
+    end
+
+    it 'sets the opts' do
+      expect(@recorder.opts).to eql(@opts)
+    end
   end
 
   context 'given FFMPEG::Recorder has been initialized' do
@@ -30,7 +44,7 @@ RSpec.describe FFMPEG::Recorder do
 
       after(:all) do
         duration = 10.0
-        FFMPEG.logger.info "\tWaiting #{duration}s for recording to complete..."
+        puts "Waiting #{duration}s for recording to complete..."
         sleep(duration) # Takes 10s to create a valid recording
       end
     end
