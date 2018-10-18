@@ -42,8 +42,13 @@ module FFMPEG
 
     def command
       # "ffmpeg -f gdigrab -framerate 15 -i desktop output.mkv 2> log.txt"
-      "#{FFMPEG.ffmpeg_binary} -y#{extra_opts}-f #{opts[:device]} -framerate #{opts[:framerate]} " + \
-        "-i #{opts[:input]} #{opts[:output]} 2> #{@opts[:log]}"
+      "#{FFMPEG.ffmpeg_binary} -y " \
+      " #{extra_opts} " \
+      "-f #{opts[:device]} " \
+      "-framerate #{opts[:framerate]} " \
+      "-i #{opts[:input]} " \
+      "#{opts[:output]} " \
+      "2> #{@opts[:log]}"
     end
 
     def extra_opts
