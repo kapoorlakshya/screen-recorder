@@ -1,6 +1,5 @@
 require 'streamio-ffmpeg'
 require 'os'
-require 'pry-byebug'
 
 module FFMPEG
   class Recorder
