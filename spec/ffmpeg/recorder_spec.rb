@@ -28,10 +28,10 @@ RSpec.describe FFMPEG::Recorder do
         expect(File).to exist(@recorder.opts[:log])
       end
 
-      after do
+      after(:all) do
         duration = 10.0
+        FFMPEG.logger.info "\tWaiting #{duration}s for recording to complete..."
         sleep(duration) # Takes 10s to create a valid recording
-        puts "\tWaiting #{duration}s for recording to complete..."
       end
     end
 
