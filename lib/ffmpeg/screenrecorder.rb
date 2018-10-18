@@ -1,5 +1,6 @@
 require 'streamio-ffmpeg'
 require 'os'
+require 'pry-byebug'
 
 module FFMPEG
   class Recorder
@@ -23,8 +24,10 @@ module FFMPEG
       # Process.detach(@process_id)
     end
 
-    def inputs
-      %w[desktop]
+    def inputs(application)
+      `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
+        .split("\n")
+        .reject { |title| title == 'Window Title: N/A' }
     end
 
     def video_file

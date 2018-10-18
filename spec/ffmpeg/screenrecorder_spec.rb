@@ -59,9 +59,9 @@ RSpec.describe FFMPEG::Recorder do
       expect(@recorder.video_file.resolution).to eq(@recorder.opts[:extra_opts][:video_size])
     end
 
-    # it 'can return a list of available inputs (recording regions)' do
-    #   expect(@recorder.inputs).to be_a_kind_of(Array)
-    # end
+    it 'can return a list of available inputs (recording regions)' do
+      expect(@recorder.inputs('chrome')).to be_a_kind_of(Array)
+    end
 
     # it 'can record a browser window' do
     #   browser = Watir::Browser.new :firefox
