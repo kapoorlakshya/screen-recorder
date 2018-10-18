@@ -59,7 +59,7 @@ module FFMPEG
       opts[:extra_opts].each { |k, v|
         arr.push "-#{k} #{v}"
       }
-      ' ' + arr.join(' ') + ' '
+      arr.join(' ')
     end
 
   end # class Recorder
