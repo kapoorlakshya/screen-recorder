@@ -37,7 +37,9 @@ RSpec.describe FFMPEG::Recorder do
     end
 
     it 'returns a SUCCESS message on #stop ' do
-      sleep(10.0) # Takes 10s to create a valid recording
+      duration = 10.0
+      puts "\tWaiting #{duration}s for recording to complete..."
+      sleep(duration) # Takes 10s to create a valid recording
       expect(@recorder.stop).to include('SUCCESS')
     end
 
