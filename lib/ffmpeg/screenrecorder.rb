@@ -16,7 +16,7 @@ module FFMPEG
     def opts=(new_opts)
       @opts   = default_config.merge new_opts
       @output = opts[:output]
-      init_logger(opts[:logging_level])
+      init_logger(opts[:logging_level]) if FFMPEG.logger.level != opts[:logging_level]
     end
 
     def start
