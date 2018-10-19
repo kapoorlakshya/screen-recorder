@@ -22,11 +22,16 @@ module FFMPEG
     end
 
     def stop
-      # return Process.kill('EXIT', @process_id) if OS.linux?
-      # Process.detach(@process_id)
       FFMPEG.logger.debug 'Stopping ffmpeg.exe...'
-      msg = `TASKKILL /f /pid ffmpeg.exe`
+      # msg = Process.kill('INT', @process_id)
+      # Process.detach(@process_id)
+      msg = if opts[:input] == 'desktop'
+              `TASKKILL /f /pid #{@process_id}`
+            else # Specific application recording does not work with /f
+              `TASKKILL /pid #{@process_id}`
+            end
       FFMPEG.logger.debug 'Stopped ffmpeg.exe'
+      FFMPEG.logger.info 'Recording complete.'
       msg
     end
 
