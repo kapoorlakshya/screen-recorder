@@ -13,11 +13,17 @@ module FFMPEG
       init_logger(opts[:logging_level])
     end
 
+    def opts=(new_opts)
+      @opts   = default_config.merge new_opts
+      @output = opts[:output]
+      init_logger(opts[:logging_level])
+    end
+
     def start
       FFMPEG.logger.debug "Starting: #{command}"
       @video_file = nil # New file
-      @process_id = spawn(command)
-      FFMPEG.logger.debug 'Recording...'
+      @process_id = start_ffmpeg
+      FFMPEG.logger.info 'Recording...'
       @process_id
     end
 
@@ -57,23 +63,28 @@ module FFMPEG
 
     def command
       "#{FFMPEG.ffmpeg_binary} -y " \
-      " #{extra_opts} " \
+      "#{extra_opts}" \
       "-f #{opts[:device]} " \
       "-framerate #{opts[:framerate]} " \
-      "-i #{opts[:input]} " \
+      "-i #{input} " \
       "#{opts[:output]} " \
-      "2> #{@opts[:log]}"
+      "2> #{opts[:log]}"
     end
 
     def extra_opts
-      return ' ' unless opts[:extra_opts]
-      return ' ' if opts[:extra_opts].empty?
+      return nil unless opts[:extra_opts]
+      raise ':extra_opts cannot be empty.' if opts[:extra_opts].empty?
 
       arr = []
       opts[:extra_opts].each { |k, v|
         arr.push "-#{k} #{v}"
       }
-      arr.join(' ')
+      ' ' + arr.join(' ') + ' '
+    end
+
+    def input
+      return opts[:input] if opts[:input] == 'desktop'
+      %Q(title="#{opts[:input].gsub('Window Title: ', '')}")
     end
 
     def init_logger(level)
@@ -83,6 +94,13 @@ module FFMPEG
         "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
       end
       FFMPEG.logger.debug "Logger initialized."
+    end
+
+    def start_ffmpeg
+      spawn(command)
+      pid = `powershell (Get-Process ffmpeg).id`.to_i
+      raise 'ffmpeg failed to start.' if pid.zero?
+      pid
     end
 
   end # class Recorder
