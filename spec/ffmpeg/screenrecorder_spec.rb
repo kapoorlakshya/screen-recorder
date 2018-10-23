@@ -10,9 +10,7 @@ RSpec.describe FFMPEG::Screenrecorder do
       expect(`#{FFMPEG.ffmpeg_binary} -version`).to include('ffmpeg version')
     end
   end
-end
 
-RSpec.describe FFMPEG::Screenrecorder do
   before(:all) do
     @opts               = { output:        'ffmpeg-screenrecorder-rspec-output.mkv',
                             input:         'desktop',
@@ -27,12 +25,12 @@ RSpec.describe FFMPEG::Screenrecorder do
   end
 
   describe '#new' do
-    it 'sets FFMPEG.logger.level to user defined level from opts[:logging_level]' do
-      expect(FFMPEG.logger.level).to eql(@recorder.opts[:logging_level])
-    end
-
     it 'sets the opts' do
       expect(@recorder.opts).to eql(@opts)
+    end
+
+    it 'sets FFMPEG.logger.level to user defined level from opts[:logging_level]' do
+      expect(FFMPEG.logger.level).to eql(@recorder.opts[:logging_level])
     end
   end
 
@@ -42,7 +40,9 @@ RSpec.describe FFMPEG::Screenrecorder do
         expect(@recorder.opts).to be_a(Hash)
       end
     end
+  end # context
 
+  context 'given the user is ready to start recording' do
     describe '#start' do
       it 'returns pid' do
         pid = @recorder.start
@@ -55,25 +55,29 @@ RSpec.describe FFMPEG::Screenrecorder do
       end
 
       after(:all) do
-        duration = 10.0
+        duration = 7.0
         puts "Waiting #{duration}s for recording to complete..."
-        sleep(duration) # Takes 10s to create a valid recording
+        sleep(duration) # Takes at least 7s to create a valid recording
       end
     end
+  end # context
 
+  context 'the user is ready to stop the record' do
     describe '#stop' do
       it 'returns a SUCCESS message' do
         expect(@recorder.stop).to include('SUCCESS')
       end
 
-      it 'creates an output file' do
+      it 'outputs a file' do
         expect(File).to exist(@recorder.output)
       end
+    end
+  end # context
 
-      describe '#video_file' do
-        it 'returns a valid video file' do
-          expect(@recorder.video_file.valid?).to be(true)
-        end
+  context 'given the user wants to read the file' do
+    describe '#video_file' do
+      it 'returns a valid video file' do
+        expect(@recorder.video_file.valid?).to be(true)
       end
     end
   end # context
