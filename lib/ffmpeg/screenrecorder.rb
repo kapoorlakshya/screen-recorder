@@ -31,11 +31,7 @@ module FFMPEG
       FFMPEG.logger.debug 'Stopping ffmpeg.exe...'
       # msg = Process.kill('INT', @process_id)
       # Process.detach(@process_id)
-      msg = if opts[:input] == 'desktop'
-              `TASKKILL /f /pid #{@process_id}`
-            else # Specific application recording does not work with /f
-              `TASKKILL /pid #{@process_id}`
-            end
+      msg = kill_ffmpeg(opts[:input])
       FFMPEG.logger.debug 'Stopped ffmpeg.exe'
       FFMPEG.logger.info 'Recording complete.'
       msg
@@ -101,6 +97,16 @@ module FFMPEG
       pid = `powershell (Get-Process ffmpeg).id`.to_i
       raise 'ffmpeg failed to start.' if pid.zero?
       pid
+    end
+
+    def kill_ffmpeg(input)
+      if input == 'desktop'
+        `TASKKILL /f /pid #{@process_id}`
+      else
+        # /f creates invalid recordings for other inputs.
+        # No idea why...
+        `TASKKILL /pid #{@process_id}`
+      end
     end
 
   end # class Recorder
