@@ -38,10 +38,8 @@ module FFMPEG
     end
 
     def inputs(application)
-      FFMPEG.logger.debug "Retrieving available windows from #{application}"
-      `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
-        .split("\n")
-        .reject { |title| title == 'Window Title: N/A' }
+      FFMPEG.logger.debug "Retrieving available windows from: #{application}"
+      available_inputs_by application
     end
 
     def video_file
@@ -76,6 +74,12 @@ module FFMPEG
         arr.push "-#{k} #{v}"
       }
       ' ' + arr.join(' ') + ' '
+    end
+
+    def available_inputs_by(application)
+      `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
+        .split("\n")
+        .reject { |title| title == 'Window Title: N/A' }
     end
 
     def input
