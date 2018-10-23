@@ -2,7 +2,7 @@ require 'streamio-ffmpeg'
 require 'os'
 
 module FFMPEG
-  class Recorder
+  class Screenrecorder
     attr_reader :opts, :output, :process_id
 
     def initialize(opts = {})
