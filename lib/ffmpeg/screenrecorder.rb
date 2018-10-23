@@ -55,6 +55,32 @@ module FFMPEG
         log:       'ffmpeg_recorder_log.txt' }
     end
 
+    def start_ffmpeg
+      spawn(command)
+      pid = `powershell (Get-Process ffmpeg).id`.to_i
+      raise 'ffmpeg failed to start.' if pid.zero?
+      pid
+    end
+
+    def kill_ffmpeg(input)
+      if input == 'desktop'
+        `TASKKILL /f /pid #{@process_id}`
+      else
+        # /f creates invalid recordings for other inputs.
+        # No idea why...
+        `TASKKILL /pid #{@process_id}`
+      end
+    end
+
+    def init_logger(level)
+      FFMPEG.logger.progname  = 'FFMPEG::Recorder'
+      FFMPEG.logger.level     = level
+      FFMPEG.logger.formatter = proc do |severity, time, progname, msg|
+        "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
+      end
+      FFMPEG.logger.debug "Logger initialized."
+    end
+
     def command
       "#{FFMPEG.ffmpeg_binary} -y " \
       "#{extra_opts}" \
@@ -86,32 +112,5 @@ module FFMPEG
       return opts[:input] if opts[:input] == 'desktop'
       %Q(title="#{opts[:input].gsub('Window Title: ', '')}")
     end
-
-    def init_logger(level)
-      FFMPEG.logger.progname  = 'FFMPEG::Recorder'
-      FFMPEG.logger.level     = level
-      FFMPEG.logger.formatter = proc do |severity, time, progname, msg|
-        "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
-      end
-      FFMPEG.logger.debug "Logger initialized."
-    end
-
-    def start_ffmpeg
-      spawn(command)
-      pid = `powershell (Get-Process ffmpeg).id`.to_i
-      raise 'ffmpeg failed to start.' if pid.zero?
-      pid
-    end
-
-    def kill_ffmpeg(input)
-      if input == 'desktop'
-        `TASKKILL /f /pid #{@process_id}`
-      else
-        # /f creates invalid recordings for other inputs.
-        # No idea why...
-        `TASKKILL /pid #{@process_id}`
-      end
-    end
-
   end # class Recorder
 end # module FFMPEG
