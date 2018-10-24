@@ -31,7 +31,8 @@ module FFMPEG
       FFMPEG.logger.debug 'Stopping ffmpeg.exe...'
       # msg = Process.kill('INT', @process_id)
       # Process.detach(@process_id)
-      msg = kill_ffmpeg(opts[:input])
+      msg = kill_ffmpeg
+      FFMPEG.logger.debug msg
       FFMPEG.logger.debug 'Stopped ffmpeg.exe'
       FFMPEG.logger.info 'Recording complete.'
       msg
@@ -62,8 +63,8 @@ module FFMPEG
       pid
     end
 
-    def kill_ffmpeg(input)
-      if input == 'desktop'
+    def kill_ffmpeg
+      if opts[:input] == 'desktop'
         `TASKKILL /f /pid #{@process_id}`
       else
         # /f creates invalid recordings for other inputs.
