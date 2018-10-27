@@ -71,7 +71,7 @@ module FFMPEG
     end
 
     def init_logger(level)
-      FFMPEG.logger.progname  = 'FFMPEG::Recorder'
+      FFMPEG.logger.progname  = 'FFMPEG'
       FFMPEG.logger.level     = level
       FFMPEG.logger.formatter = proc do |severity, time, progname, msg|
         "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
