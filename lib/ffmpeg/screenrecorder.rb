@@ -1,5 +1,6 @@
 require 'streamio-ffmpeg'
 require 'os'
+require 'much-timeout'
 
 module FFMPEG
   class Screenrecorder
@@ -68,7 +69,7 @@ module FFMPEG
 
     def kill_ffmpeg
       @process.puts 'q' # Gracefully exit ffmpeg
-      sleep(1.0)
+      wait_for_io_eof(5)
       @process.close_write # Close IO
     end
 
@@ -100,6 +101,12 @@ module FFMPEG
         arr.push "-#{k} #{v}"
       }
       ' ' + arr.join(' ') + ' '
+    end
+
+    def wait_for_io_eof(timeout)
+      MuchTimeout.timeout(timeout) do
+        sleep(0.1) until @process.eof?
+      end
     end
 
     # def available_inputs_by(application)
