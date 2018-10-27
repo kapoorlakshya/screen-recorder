@@ -1,5 +1,5 @@
 Style/EndOfLine:
-  EnforcedStyle: lf
+  EnforcedStyle: crlf
 
 Metrics/LineLength:
   Max: 120
