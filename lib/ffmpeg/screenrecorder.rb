@@ -17,6 +17,7 @@ module FFMPEG
       @opts   = default_config.merge new_opts
       @output = opts[:output]
       init_logger(opts[:logging_level]) if FFMPEG.logger.level != opts[:logging_level]
+      @opts
     end
 
     def start
@@ -51,7 +52,7 @@ module FFMPEG
         framerate:     15,
         device:        'gdigrab',
         logging_level: Logger::INFO,
-        log : 'ffmpeg_recorder_log.txt' }
+        log:           'ffmpeg_recorder_log.txt' }
     end
 
     def start_ffmpeg
