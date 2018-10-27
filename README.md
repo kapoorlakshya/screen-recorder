@@ -20,7 +20,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+opts               = { output:        'ffmpeg-screenrecorder-output.mp4',
+                       input:         'desktop',
+                       framerate:     30.0,
+                       device:        'gdigrab',
+                       log:           'ffmpeg-screenrecorder-log.txt' }
+@recorder = FFMPEG::Screenrecorder.new(opts)
+
+# Start recording
+@recorder.start
+
+# ... Run tests or whatever you want to record
+
+# Stop recording
+@recorder.stop
+
+# Recording file will be available: ffmpeg-screenrecorder-output.mp4
+```
 
 ## Development
 
