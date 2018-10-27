@@ -1,10 +1,9 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'ffmpeg/version'
 
 Gem::Specification.new do |spec|
   spec.name    = 'ffmpeg-screenrecorder'
-  spec.version = FFMPEG::Screenrecorder::VERSION
+  spec.version = '1.0.0.beta'
   spec.authors = ['Lakshya Kapoor']
   spec.email   = ['kapoorlakshya@gmail.com']
 
