@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
 
   spec.summary     = 'Record your computer screen using ffmpeg via Ruby.'
   spec.description = 'A ruby gem based on streamio-ffmpeg gem to record your computer screen in various formats.'
-  spec.homepage    = 'https://github.com/kapoorlakshya/ruby-ffmpeg_screenrecorder'
+  spec.homepage    = 'https://github.com/kapoorlakshya/ffmpeg-screenrecorder'
   spec.license     = 'MIT'
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
