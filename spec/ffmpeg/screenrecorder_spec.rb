@@ -2,10 +2,6 @@ require_relative '../spec_helper'
 
 RSpec.describe FFMPEG::Screenrecorder do
   context 'given the gem is loaded' do
-    it 'has a version number' do
-      expect(FFMPEG::Screenrecorder::VERSION).not_to be nil
-    end
-
     it 'it can find the FFMPEG binary' do
       expect(`#{FFMPEG.ffmpeg_binary} -version`).to include('ffmpeg version')
     end
@@ -16,7 +12,6 @@ RSpec.describe FFMPEG::Screenrecorder do
                             input:         'desktop',
                             framerate:     30.0,
                             device:        'gdigrab',
-                            extra_opts:    { video_size: '1024x768' },
                             logging_level: Logger::DEBUG,
                             log:           'ffmpeg-recorder-log.txt' }
     FFMPEG.logger.level = Logger::WARN # To test the switch to DEBUG
@@ -44,13 +39,12 @@ RSpec.describe FFMPEG::Screenrecorder do
 
   context 'given the user is ready to start recording' do
     describe '#start' do
-      it 'returns pid' do
-        pid = @recorder.start
-        expect(pid).to be_a_kind_of(Integer)
+      before(:all) do
+        @recorder.start
       end
 
       it 'creates a log file based on name in #opts' do
-        sleep(1.0) # Wait for file generation
+        sleep(0.5) # Wait for file generation
         expect(File).to exist(@recorder.opts[:log])
       end
 
@@ -63,13 +57,21 @@ RSpec.describe FFMPEG::Screenrecorder do
   end # context
 
   context 'the user is ready to stop the record' do
+    before(:all) do
+      @recorder.stop
+    end
+
     describe '#stop' do
-      it 'returns a SUCCESS message' do
-        expect(@recorder.stop).to include('SUCCESS')
+      it 'outputs a video file' do
+        expect(File).to exist(@recorder.output)
       end
 
-      it 'outputs a file' do
-        expect(File).to exist(@recorder.output)
+      it 'returns a valid video file' do
+        expect(@recorder.video_file.valid?).to be(true)
+      end
+
+      it 'returns a 7s long video recording' do
+        expect(@recorder.video_file.duration).to be_between(7.00, 8.00)
       end
     end
   end # context
@@ -88,18 +90,13 @@ RSpec.describe FFMPEG::Screenrecorder do
         expect(@recorder.video_file.frame_rate).to equal(@recorder.opts[:framerate])
       end
 
-      it 'records at user given resolution' do
-        expect(@recorder.video_file.resolution).to eq(@recorder.opts[:extra_opts][:video_size])
-      end
-
       #
       # Clean up log and output file
       #
-      # after(:all) do
-      #   FileUtils.rm @recorder.output
-      #   sleep(0.5)
-      #   FileUtils.rm @recorder.opts[:log]
-      # end
+      after(:all) do
+        FileUtils.rm @recorder.output
+        FileUtils.rm @recorder.opts[:log]
+      end
     end
   end # context
 
