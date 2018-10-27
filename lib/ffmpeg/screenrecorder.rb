@@ -47,10 +47,11 @@ module FFMPEG
     private
 
     def default_config
-      { input:     'desktop',
-        framerate: 15,
-        device:    'gdigrab',
-        log:       'ffmpeg_recorder_log.txt' }
+      { input:         'desktop',
+        framerate:     15,
+        device:        'gdigrab',
+        logging_level: Logger::INFO,
+        log : 'ffmpeg_recorder_log.txt' }
     end
 
     def start_ffmpeg
