@@ -3,13 +3,13 @@ require 'os'
 
 module FFMPEG
   class Screenrecorder
-    attr_reader :opts, :output, :process_id
+    attr_reader :opts, :output
 
     def initialize(opts = {})
       @opts       = default_config.merge opts
       @output     = opts[:output]
       @video_file = nil
-      @process_id = nil
+      @process    = nil
       init_logger(opts[:logging_level])
     end
 
@@ -22,20 +22,17 @@ module FFMPEG
     def start
       FFMPEG.logger.debug "Starting: #{command}"
       @video_file = nil # New file
-      @process_id = start_ffmpeg
+      @process    = start_ffmpeg
       FFMPEG.logger.info 'Recording...'
-      @process_id
     end
 
     def stop
       FFMPEG.logger.debug 'Stopping ffmpeg.exe...'
       # msg = Process.kill('INT', @process_id)
       # Process.detach(@process_id)
-      msg = kill_ffmpeg
-      FFMPEG.logger.debug msg
+      kill_ffmpeg
       FFMPEG.logger.debug 'Stopped ffmpeg.exe'
       FFMPEG.logger.info 'Recording complete.'
-      msg
     end
 
     # def inputs(application)
@@ -57,14 +54,20 @@ module FFMPEG
     end
 
     def start_ffmpeg
-      spawn(command)
-      pid = `powershell (Get-Process ffmpeg).id`.to_i
-      raise 'ffmpeg failed to start.' if pid.zero?
-      pid
+      IO.popen(command, 'r+')
+      # spawn(command)
+      # pid = `powershell (Get-Process ffmpeg).id`.to_i
+      # raise 'ffmpeg failed to start.' if pid.zero?
+      # pid = Process.spawn(command, :new_pgroup => true)
+      # pid = `powershell (Get-Process ffmpeg).id`.to_i
+      # raise 'ffmpeg failed to start.' if pid.zero?
+      # pid
     end
 
     def kill_ffmpeg
-      `TASKKILL /f /im ffmpeg.exe`
+      @process.puts 'q' # Gracefully exit ffmpeg
+      sleep(1.0)
+      @process.close_write # Close IO
     end
 
     def init_logger(level)
