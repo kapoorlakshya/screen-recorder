@@ -38,10 +38,10 @@ module FFMPEG
       msg
     end
 
-    def inputs(application)
-      FFMPEG.logger.debug "Retrieving available windows from: #{application}"
-      available_inputs_by application
-    end
+    # def inputs(application)
+    #   FFMPEG.logger.debug "Retrieving available windows from: #{application}"
+    #   available_inputs_by application
+    # end
 
     def video_file
       @video_file ||= Movie.new(output)
@@ -64,13 +64,7 @@ module FFMPEG
     end
 
     def kill_ffmpeg
-      if opts[:input] == 'desktop'
-        `TASKKILL /f /pid #{@process_id}`
-      else
-        # /f creates invalid recordings for other inputs.
-        # No idea why...
-        `TASKKILL /pid #{@process_id}`
-      end
+      `TASKKILL /f /im ffmpeg.exe`
     end
 
     def init_logger(level)
@@ -87,7 +81,7 @@ module FFMPEG
       "#{extra_opts}" \
       "-f #{opts[:device]} " \
       "-framerate #{opts[:framerate]} " \
-      "-i #{input} " \
+      "-i #{opts[:input]} " \
       "#{opts[:output]} " \
       "2> #{opts[:log]}"
     end
@@ -103,15 +97,15 @@ module FFMPEG
       ' ' + arr.join(' ') + ' '
     end
 
-    def available_inputs_by(application)
-      `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
-        .split("\n")
-        .reject { |title| title == 'Window Title: N/A' }
-    end
-
-    def input
-      return opts[:input] if opts[:input] == 'desktop'
-      %Q(title="#{opts[:input].gsub('Window Title: ', '')}")
-    end
+    # def available_inputs_by(application)
+    #   `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
+    #     .split("\n")
+    #     .reject { |title| title == 'Window Title: N/A' }
+    # end
+    #
+    # def input
+    #   return opts[:input] if opts[:input] == 'desktop'
+    #   %Q(title="#{opts[:input].gsub('Window Title: ', '')}")
+    # end
   end # class Recorder
 end # module FFMPEG
