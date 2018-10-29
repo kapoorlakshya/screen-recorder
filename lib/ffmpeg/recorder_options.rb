@@ -41,7 +41,7 @@ module FFMPEG
       vals = "-f #{@options[:format]} "
       vals << "-r #{@options[:framerate]} "
       vals << advanced_options if @options[:advanced]
-      vals << "-i #{@options[:infile]} "
+      vals << "-i #{determine_infile @options[:infile]} "
       vals << @options[:output]
       vals << ffmpeg_log_to(@options[:log]) # If provided
     end
@@ -90,6 +90,15 @@ module FFMPEG
     def ffmpeg_log_to(file)
       return " 2> #{file}" if file
       ' > nul 2>&1' # No log file given
+    end
+
+    #
+    # Adds title= qualifier to infile parameter
+    # unless the user is recording the desktop.
+    #
+    def determine_infile(opt)
+      return opt if opt == 'desktop'
+      %Q("title=#{opt}")
     end
   end
 end

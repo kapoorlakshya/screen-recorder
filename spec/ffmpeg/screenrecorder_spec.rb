@@ -8,15 +8,15 @@ RSpec.describe FFMPEG::Screenrecorder do
   end
 
   before(:all) do
-    @opts               = { output:        'ffmpeg-screenrecorder-rspec-output.mkv',
-                            infile:        'desktop',
-                            format:        'gdigrab',
-                            framerate:     30.0,
+    @opts               = { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
+                            infile:    'desktop',
+                            format:    'gdigrab',
+                            framerate: 30.0,
                             log_level: Logger::DEBUG,
-                            log:           'ffmpeg-recorder-log.txt' }
+                            log:       'ffmpeg-recorder-log.txt' }
     FFMPEG.logger.level = Logger::WARN # To test the switch to DEBUG
-    @recorder           = FFMPEG::Screenrecorder.new(@opts)
-    @browser            = nil
+    # @recorder           = FFMPEG::Screenrecorder.new(@opts)
+    @browser = nil
   end
 
   describe '#new' do
@@ -113,11 +113,11 @@ RSpec.describe FFMPEG::Screenrecorder do
       end
 
       it 'returns a list of available browser windows as inputs (recording regions)' do
-        expect(@recorder.inputs('firefox')).to be_a_kind_of(Array)
+        expect(@recorder.available_inputs('firefox')).to be_a_kind_of(Array)
       end
 
       it 'returns the title of the currently open browser window' do
-        expect(@recorder.inputs('firefox').first).to eql('Google - Mozilla Firefox')
+        expect(@recorder.available_inputs('firefox').first).to eql('Google - Mozilla Firefox')
       end
 
       after(:all) do
@@ -126,40 +126,48 @@ RSpec.describe FFMPEG::Screenrecorder do
     end
   end
 
-  # context 'given a firefox widow is open and available to record', :specific_window do
-  #   it 'can record a specific browser window' do
-  #     # Facing a weird issue where the .webdrivers folder is not found
-  #     # after the first time geckodriver is downloaded,
-  #     # @todo Troubleshoot and remove this temporary fix.
-  #     FileUtils.rm_rf('C:\Users\Lakshya Kapoor\.webdrivers')
-  #
-  #     @browser = Watir::Browser.new :firefox
-  #     @browser.window.resize_to 800, 600
-  #
-  #     opts           = { output:        'output.mp4',
-  #                        input:         @recorder.inputs('firefox').first,
-  #                        framerate:     30,
-  #                        logging_level: Logger::DEBUG }
-  #     @recorder.options = opts
-  #
-  #     @recorder.start
-  #     @browser.goto 'google.com'
-  #     @browser.goto 'watir.com'
-  #     @browser.goto 'github.com'
-  #     @recorder.stop
-  #     @browser.quit
-  #
-  #     expect(File).to exist(@recorder.output)
-  #     expect(@recorder.video_file.valid?).to be(true)
-  #   end
-  #
-  #   #
-  #   # Clean up log and output file
-  #   #
-  #   after(:all) do
-  #     FileUtils.rm @recorder.output
-  #     sleep(0.5)
-  #     FileUtils.rm @recorder.options[:log]
-  #   end
-  # end # context
+  context 'given a firefox widow is open and available to record', :specific_window do
+    before(:all) do
+      # Facing a weird issue where the .webdrivers folder is not found
+      # after the first time geckodriver is downloaded,
+      # @todo Troubleshoot and remove this temporary fix.
+      `TASKKILL /f /im firefox.exe`
+      `TASKKILL /f /im geckodriver.exe`
+      FileUtils.rm_rf('C:\Users\Lakshya Kapoor\.webdrivers')
+
+      @browser = Watir::Browser.new :firefox
+      @browser.window.resize_to 1280, 720
+
+      opts      = { output:    'firefox-recorder.mp4',
+                    infile:    'Mozilla Firefox',
+                    format:    'gdigrab',
+                    framerate: 30,
+                    log:       'ffmpeg-log.txt',
+                    log_level: Logger::DEBUG }
+      @recorder = FFMPEG::Screenrecorder.new opts
+    end
+
+    it 'can record a specific browser window' do
+      @recorder.start
+      @browser.goto 'google.com'
+      @browser.goto 'watir.com'
+      @browser.goto 'github.com'
+      @browser.goto 'stackoverflow.com'
+      @browser.link(text: 'Ask Question').click
+      @browser.wait
+      @recorder.stop
+      @browser.quit
+
+      expect(File).to exist(@recorder.options.output)
+      expect(@recorder.video.valid?).to be(true)
+    end
+
+    #
+    # Clean up log and output file
+    #
+    after(:all) do
+      FileUtils.rm @recorder.options.output
+      FileUtils.rm @recorder.options.log
+    end
+  end # context
 end # RSpec.describe
