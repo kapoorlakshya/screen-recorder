@@ -14,7 +14,7 @@ module FFMPEG
       vals << "-framerate #{@options[:framerate]} "
       vals << advanced_options if @options[:advanced]
       vals << "-infile #{@options[:infile]} "
-      vals << "#{@options[:output]}"
+      vals << @options[:output]
       vals << ffmpeg_log_to(@options[:log]) # If provided
     end
 
