@@ -1,3 +1,7 @@
+require 'streamio-ffmpeg'
+require 'os'
+require 'recorder_options'
+
 module FFMPEG
   class Screenrecorder
     attr_reader :options, :video
