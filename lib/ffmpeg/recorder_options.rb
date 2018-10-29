@@ -10,10 +10,10 @@ module FFMPEG
     end
 
     def parsed_values
-      vals = "-fmt #{@options[:format]} "
-      vals << "-framerate #{@options[:framerate]} "
+      vals = "-f #{@options[:format]} "
+      vals << "-r #{@options[:framerate]} "
       vals << advanced_options if @options[:advanced]
-      vals << "-infile #{@options[:infile]} "
+      vals << "-i #{@options[:infile]} "
       vals << @options[:output]
       vals << ffmpeg_log_to(@options[:log]) # If provided
     end
