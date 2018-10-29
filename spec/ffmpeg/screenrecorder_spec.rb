@@ -12,7 +12,7 @@ RSpec.describe FFMPEG::Screenrecorder do
                             infile:        'desktop',
                             format:        'gdigrab',
                             framerate:     30.0,
-                            logging_level: Logger::DEBUG,
+                            log_level: Logger::DEBUG,
                             log:           'ffmpeg-recorder-log.txt' }
     FFMPEG.logger.level = Logger::WARN # To test the switch to DEBUG
     @recorder           = FFMPEG::Screenrecorder.new(@opts)
@@ -21,18 +21,18 @@ RSpec.describe FFMPEG::Screenrecorder do
 
   describe '#new' do
     it 'sets the opts' do
-      expect(@recorder.options).to eql(@opts)
+      expect(@recorder.options.all).to eql(@opts)
     end
 
-    it 'sets FFMPEG.logger.level to user defined level from opts[:logging_level]' do
-      expect(FFMPEG.logger.level).to eql(@recorder.options[:logging_level])
+    it 'sets FFMPEG.logger.level to user defined level from opts[:log_level]' do
+      expect(FFMPEG.logger.level).to eql(@recorder.options.log_level)
     end
   end
 
   context 'given FFMPEG::Screenrecorder has been initialized' do
     describe '#opts' do
       it 'returns a Hash of options' do
-        expect(@recorder.options).to be_a(Hash)
+        expect(@recorder.options.all).to be_a(Hash)
       end
     end
   end # context
@@ -45,7 +45,7 @@ RSpec.describe FFMPEG::Screenrecorder do
 
       it 'creates a log file based on name in #opts' do
         sleep(0.5) # Wait for file generation
-        expect(File).to exist(@recorder.options[:log])
+        expect(File).to exist(@recorder.options.log)
       end
 
       after(:all) do
@@ -63,7 +63,7 @@ RSpec.describe FFMPEG::Screenrecorder do
 
     describe '#stop' do
       it 'outputs a video file' do
-        expect(File).to exist(@recorder.options[:output])
+        expect(File).to exist(@recorder.options.output)
       end
 
       it 'returns a valid video file' do
@@ -87,15 +87,15 @@ RSpec.describe FFMPEG::Screenrecorder do
   context 'given FFMPEG::Screenrecorder accepts user defined parameters' do
     describe '#opts[:extra_opts]' do
       it 'records at the given FPS' do
-        expect(@recorder.video.frame_rate).to equal(@recorder.options[:framerate])
+        expect(@recorder.video.frame_rate).to equal(@recorder.options.framerate)
       end
 
       #
       # Clean up log and output file
       #
       after(:all) do
-        FileUtils.rm @recorder.options[:output]
-        FileUtils.rm @recorder.options[:log]
+        FileUtils.rm @recorder.options.output
+        FileUtils.rm @recorder.options.log
       end
     end
   end # context

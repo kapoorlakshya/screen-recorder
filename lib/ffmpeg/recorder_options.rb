@@ -5,11 +5,39 @@ module FFMPEG
       @options = verify_options options
     end
 
-    def values
+    def format
+      @options[:format]
+    end
+
+    def framerate
+      @options[:framerate]
+    end
+
+    def infile
+      @options[:infile]
+    end
+
+    def output
+      @options[:output]
+    end
+
+    def advanced
+      @options[:advanced]
+    end
+
+    def log
+      @options[:log]
+    end
+
+    def log_level
+      @options[:log_level]
+    end
+
+    def all
       @options
     end
 
-    def parsed_values
+    def parsed
       vals = "-f #{@options[:format]} "
       vals << "-r #{@options[:framerate]} "
       vals << advanced_options if @options[:advanced]

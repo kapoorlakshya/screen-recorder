@@ -4,17 +4,13 @@ require_relative 'recorder_options'
 
 module FFMPEG
   class Screenrecorder
-    attr_reader :video
+    attr_reader :options, :video
 
     def initialize(options = {})
       @options = RecorderOptions.new(options)
       @video   = nil
       @process = nil
-      init_logger(@options.values[:logging_level])
-    end
-
-    def options
-      @options.values
+      init_logger(@options.log_level || Logger::INFO)
     end
 
     def start
@@ -31,7 +27,7 @@ module FFMPEG
       elapsed = kill_ffmpeg
       FFMPEG.logger.debug "Stopped ffmpeg.exe in #{elapsed}s"
       FFMPEG.logger.info 'Recording complete.'
-      @video = Movie.new(options[:output])
+      @video = Movie.new(options.output)
     end
 
     # def inputs(application)
@@ -55,7 +51,7 @@ module FFMPEG
 
     def init_logger(level)
       FFMPEG.logger.progname  = 'FFMPEG'
-      FFMPEG.logger.level     = level || Logger::INFO
+      FFMPEG.logger.level     = level
       FFMPEG.logger.formatter = proc do |severity, time, progname, msg|
         "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
       end
@@ -64,7 +60,7 @@ module FFMPEG
 
     def command
       cmd = "#{FFMPEG.ffmpeg_binary} -y "
-      cmd << @options.parsed_values
+      cmd << @options.parsed
     end
 
     def wait_for_io_eof(timeout)
