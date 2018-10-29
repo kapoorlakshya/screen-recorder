@@ -1,6 +1,5 @@
 require 'streamio-ffmpeg'
 require 'os'
-require 'much-timeout'
 require 'recorder_options'
 
 module FFMPEG
@@ -63,7 +62,7 @@ module FFMPEG
     end
 
     def wait_for_io_eof(timeout)
-      MuchTimeout.timeout(timeout) do
+      Timeout.timeout(timeout) do
         sleep(0.1) until @process.eof?
       end
     end

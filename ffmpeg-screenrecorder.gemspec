@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'watir', '~> 6.0'
   spec.add_development_dependency 'webdrivers', '~> 3.0'
 
-  spec.add_runtime_dependency 'much-timeout', '~> 0.1.0'
   spec.add_runtime_dependency 'os', '~> 0.9.0'
   spec.add_runtime_dependency 'streamio-ffmpeg', '~> 1.0'
 end
