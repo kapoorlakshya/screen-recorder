@@ -100,31 +100,31 @@ RSpec.describe FFMPEG::Screenrecorder do
     end
   end # context
 
-  # context 'given a firefox window is open' do
-  #   describe '#inputs' do
-  #     before(:all) do
-  #       # Facing a weird issue where the .webdrivers folder is not found
-  #       # after the first time geckodriver is downloaded,
-  #       # @todo Troubleshoot and remove this temporary fix.
-  #       FileUtils.rm_rf('C:\Users\Lakshya Kapoor\.webdrivers')
-  #
-  #       @browser = Watir::Browser.new :firefox
-  #       @browser.goto 'google.com'
-  #     end
-  #
-  #     it 'returns a list of available browser windows as inputs (recording regions)' do
-  #       expect(@recorder.inputs('firefox')).to be_a_kind_of(Array)
-  #     end
-  #
-  #     it 'returns the title of the currently open browser window' do
-  #       expect(@recorder.inputs('firefox').first).to eql('Window Title: Google - Mozilla Firefox')
-  #     end
-  #
-  #     after(:all) do
-  #       @browser.quit
-  #     end
-  #   end
-  # end
+  context 'given a firefox window is open' do
+    describe '#inputs' do
+      before(:all) do
+        # Facing a weird issue where the .webdrivers folder is not found
+        # after the first time geckodriver is downloaded,
+        # @todo Troubleshoot and remove this temporary fix.
+        FileUtils.rm_rf('C:\Users\Lakshya Kapoor\.webdrivers')
+
+        @browser = Watir::Browser.new :firefox
+        @browser.goto 'google.com'
+      end
+
+      it 'returns a list of available browser windows as inputs (recording regions)' do
+        expect(@recorder.inputs('firefox')).to be_a_kind_of(Array)
+      end
+
+      it 'returns the title of the currently open browser window' do
+        expect(@recorder.inputs('firefox').first).to eql('Google - Mozilla Firefox')
+      end
+
+      after(:all) do
+        @browser.quit
+      end
+    end
+  end
 
   # context 'given a firefox widow is open and available to record', :specific_window do
   #   it 'can record a specific browser window' do

@@ -30,10 +30,10 @@ module FFMPEG
       @video = Movie.new(options.output)
     end
 
-    # def inputs(application)
-    #   FFMPEG.logger.debug "Retrieving available windows from: #{application}"
-    #   available_inputs_by application
-    # end
+    def inputs(application)
+      FFMPEG.logger.debug "Retrieving available windows from: #{application}"
+      available_inputs_by application
+    end
 
     private
 
@@ -71,15 +71,11 @@ module FFMPEG
       Time.now - start
     end
 
-    # def available_inputs_by(application)
-    #   `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
-    #     .split("\n")
-    #     .reject { |title| title == 'Window Title: N/A' }
-    # end
-    #
-    # def input
-    #   return options[:input] if options[:input] == 'desktop'
-    #   %Q(title="#{options[:input].gsub('Window Title: ', '')}")
-    # end
+    def available_inputs_by(application)
+      list = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
+             .split("\n")
+             .reject { |title| title == 'Window Title: N/A' }
+      list.map { |i| i.gsub('Window Title: ', '') }
+    end
   end # class Recorder
 end # module FFMPEG
