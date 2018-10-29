@@ -1,32 +1,37 @@
 require 'streamio-ffmpeg'
 require 'os'
-require 'recorder_options'
+require_relative 'recorder_options'
 
 module FFMPEG
   class Screenrecorder
-    attr_reader :options, :video
+    attr_reader :video
 
     def initialize(options = {})
-      @options = RecorderOptions.new(options).values
+      @options = RecorderOptions.new(options)
       @video   = nil
       @process = nil
-      init_logger(options[:logging_level])
+      init_logger(@options.values[:logging_level])
+    end
+
+    def options
+      @options.values
     end
 
     def start
-      @video   = nil # New file
-      @process = start_ffmpeg
+      @video     = nil # New file
+      start_time = Time.now
+      @process   = start_ffmpeg
+      elapsed    = Time.now - start_time
+      FFMPEG.logger.debug "Process started in #{elapsed}s"
       FFMPEG.logger.info 'Recording...'
     end
 
     def stop
       FFMPEG.logger.debug 'Stopping ffmpeg.exe...'
-      # msg = Process.kill('INT', @process_id)
-      # Process.detach(@process_id)
-      kill_ffmpeg
-      FFMPEG.logger.debug 'Stopped ffmpeg.exe'
+      elapsed = kill_ffmpeg
+      FFMPEG.logger.debug "Stopped ffmpeg.exe in #{elapsed}s"
       FFMPEG.logger.info 'Recording complete.'
-      @video = Movie.new(output)
+      @video = Movie.new(options[:output])
     end
 
     # def inputs(application)
@@ -43,8 +48,9 @@ module FFMPEG
 
     def kill_ffmpeg
       @process.puts 'q' # Gracefully exit ffmpeg
-      wait_for_io_eof(5)
+      elapsed = wait_for_io_eof(5)
       @process.close_write # Close IO
+      elapsed
     end
 
     def init_logger(level)
@@ -62,9 +68,11 @@ module FFMPEG
     end
 
     def wait_for_io_eof(timeout)
+      start = Time.now
       Timeout.timeout(timeout) do
         sleep(0.1) until @process.eof?
       end
+      Time.now - start
     end
 
     # def available_inputs_by(application)
