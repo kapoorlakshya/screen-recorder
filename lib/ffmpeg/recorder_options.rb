@@ -24,7 +24,7 @@ module FFMPEG
     # Verifies the required options are provided
     #
     def verify_options(options)
-      missing_options = required_options.collect { |req| options[req].nil? }
+      missing_options = required_options.select { |req| options[req].nil? }
       raise "Required options are missing: #{missing_options}" unless missing_options.empty?
 
       options
