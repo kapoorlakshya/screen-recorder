@@ -57,7 +57,7 @@ module FFMPEG
       FFMPEG.logger.formatter = proc do |severity, time, progname, msg|
         "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
       end
-      FFMPEG.logger.debug "Logger initialized."
+      FFMPEG.logger.debug 'Logger initialized.'
     end
 
     def command
@@ -70,6 +70,7 @@ module FFMPEG
       Timeout.timeout(timeout) do
         sleep(0.1) until @process.eof?
       end
+      FFMPEG.logger.debug "IO#eof? #{@process.eof?}"
       Time.now - start
     end
 
