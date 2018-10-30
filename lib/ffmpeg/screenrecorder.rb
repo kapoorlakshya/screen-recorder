@@ -10,7 +10,7 @@ module FFMPEG
       @options = RecorderOptions.new(options)
       @video   = nil
       @process = nil
-      init_logger(@options.log_level || Logger::INFO)
+      initialize_logger(@options.log_level || Logger::INFO)
     end
 
     def start
@@ -51,7 +51,7 @@ module FFMPEG
       elapsed
     end
 
-    def init_logger(level)
+    def initialize_logger(level)
       FFMPEG.logger.progname  = 'FFMPEG'
       FFMPEG.logger.level     = level
       FFMPEG.logger.formatter = proc do |severity, time, progname, msg|
