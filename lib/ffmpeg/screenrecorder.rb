@@ -39,7 +39,9 @@ module FFMPEG
 
     def start_ffmpeg
       FFMPEG.logger.debug "Command: #{command}"
-      IO.popen(command, 'r+')
+      process = IO.popen(command, 'r+')
+      sleep(1.5) # Takes ~1.5s on average to initialize
+      process
     end
 
     def kill_ffmpeg
