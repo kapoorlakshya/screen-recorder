@@ -1,9 +1,12 @@
 require 'streamio-ffmpeg'
 require 'os'
 require_relative 'recorder_options'
+require_relative 'windows'
 
 module FFMPEG
   class Screenrecorder
+    extend Windows
+
     attr_reader :options, :video
 
     def initialize(options = {})
@@ -28,11 +31,6 @@ module FFMPEG
       FFMPEG.logger.debug "Stopped ffmpeg.exe in #{elapsed}s"
       FFMPEG.logger.info 'Recording complete.'
       @video = Movie.new(options.output)
-    end
-
-    def available_inputs(application)
-      FFMPEG.logger.debug "Retrieving available windows from: #{application}"
-      available_inputs_by application
     end
 
     private
@@ -72,13 +70,6 @@ module FFMPEG
       end
       FFMPEG.logger.debug "IO#eof? #{@process.eof?}"
       Time.now - start
-    end
-
-    def available_inputs_by(application)
-      list = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
-             .split("\n")
-             .reject { |title| title == 'Window Title: N/A' }
-      list.map { |i| i.gsub('Window Title: ', '') } # Make it user friendly
     end
   end # class Recorder
 end # module FFMPEG
