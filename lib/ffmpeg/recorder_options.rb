@@ -53,7 +53,8 @@ module FFMPEG
     #
     def verify_options(options)
       missing_options = required_options.select { |req| options[req].nil? }
-      raise "Required options are missing: #{missing_options}" unless missing_options.empty?
+      err             = "Required options are missing: #{missing_options}"
+      raise(ArgumentError, err) unless missing_options.empty?
 
       options
     end
@@ -74,7 +75,7 @@ module FFMPEG
     #
     def advanced_options
       return nil unless @options[:advanced]
-      raise ':advanced cannot be empty.' if options[:advanced].empty?
+      raise(ArgumentError, ':advanced cannot be empty.') if options[:advanced].empty?
 
       arr = []
       options[:advanced].each { |k, v|
@@ -93,6 +94,7 @@ module FFMPEG
     end
 
     #
+    # Returns final infile parameter.
     # Adds title= qualifier to infile parameter
     # unless the user is recording the desktop.
     #
