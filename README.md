@@ -1,6 +1,6 @@
 # FFMPEG::Screenrecorder
 
-Ruby gem to record your computer screen using [FFMPEG](https://www.ffmpeg.org/).
+Ruby gem to record your computer screen - desktop or specific application/window - using [FFMPEG](https://www.ffmpeg.org/).
 
 ## Support
 
@@ -48,6 +48,7 @@ opts               = { output:        'ffmpeg-screenrecorder-output.mp4',
 ##### Record Specific Application/Window
 ```
 require 'watir'
+
 browser = Watir::Browser.new :firefox
 
 FFMPEG::Screenrecorder.window_titles('firefox') # Name of exe
