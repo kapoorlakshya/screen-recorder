@@ -1,5 +1,7 @@
 # FFMPEG::Screenrecorder
 
+[![Gem Version](https://badge.fury.io/rb/ffmpeg-screenrecorder.svg)](https://badge.fury.io/rb/ffmpeg-screenrecorder)
+
 Ruby gem to record your computer screen - desktop or specific application/window - using [FFMPEG](https://www.ffmpeg.org/).
 
 ## Windows Only
