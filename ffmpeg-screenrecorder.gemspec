@@ -3,14 +3,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name    = 'ffmpeg-screenrecorder'
-  spec.version = '1.0.0.beta2'
+  spec.version = '1.0.0.beta3'
   spec.authors = ['Lakshya Kapoor']
   spec.email   = ['kapoorlakshya@gmail.com']
 
   spec.summary     = 'Record your computer screen using ffmpeg via Ruby.'
   spec.description = 'Ruby gem to record your computer screen - desktop or specific application/window' \
                      ' - using FFMPEG (https://www.ffmpeg.org).'
-  spec.homepage    = 'https://github.com/kapoorlakshya/ffmpeg-screenrecorder'
+  spec.homepage    = 'http://github.com/kapoorlakshya/ffmpeg-screenrecorder'
   spec.license     = 'MIT'
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
