@@ -13,7 +13,7 @@ module FFMPEG
       @options = RecorderOptions.new(options)
       @video   = nil
       @process = nil
-      initialize_logger(@options.log_level || Logger::INFO)
+      initialize_logger(@options.log_level || Logger::ERROR)
     end
 
     def start
