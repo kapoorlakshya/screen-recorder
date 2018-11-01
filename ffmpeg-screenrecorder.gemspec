@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
 
   spec.summary     = 'Record your computer screen using ffmpeg via Ruby.'
   spec.description = 'Ruby gem to record your computer screen - desktop or specific application/window' \
-                     ' - using FFMPEG (https://www.ffmpeg.org).'
+                     ' - using FFmpeg (https://www.ffmpeg.org).'
   spec.homepage    = 'http://github.com/kapoorlakshya/ffmpeg-screenrecorder'
   spec.license     = 'MIT'
 

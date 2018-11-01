@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 RSpec.describe FFMPEG::Screenrecorder do
   context 'given the gem is loaded' do
-    it 'it can find the FFMPEG binary' do
+    it 'it can find the FFmpeg binary' do
       expect(`#{FFMPEG.ffmpeg_binary} -version`).to include('ffmpeg version')
     end
   end
