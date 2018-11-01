@@ -52,11 +52,11 @@ Or install it yourself as:
 ##### Record Desktop
 
 ```
-opts               = { output:        'ffmpeg-screenrecorder-output.mp4',
-                       input:         'desktop',
-                       framerate:     30.0,
-                       device:        'gdigrab',
-                       log:           'ffmpeg-screenrecorder-log.txt' }
+opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
+              input:     'desktop',
+              framerate: 30.0,
+              device:    'gdigrab',
+              log:       'ffmpeg-screenrecorder-log.txt' }
 @recorder = FFMPEG::Screenrecorder.new(opts)
 
 # Start recording
@@ -67,7 +67,7 @@ opts               = { output:        'ffmpeg-screenrecorder-output.mp4',
 # Stop recording
 @recorder.stop
 
-# Recording file will be available: ffmpeg-screenrecorder-output.mp4
+# Recording file will be available: ffmpeg-screenrecorder-desktop.mp4
 ```
 
 ##### Record Specific Application/Window
@@ -89,7 +89,9 @@ opts      = { output:    'ffmpeg-screenrecorder-firefox.mp4',
 # Start recording
 @recorder.start
 
-# ... Run tests or whatever you want to record
+# Run tests or whatever you want to record
+browser.goto 'watir.com'
+browser.link(text: 'News').wait_until_present.click
 
 # Stop recording
 @recorder.stop
@@ -98,18 +100,18 @@ browser.quit
 ```
 
 <b>Note</b>:
-1. Always stop the recording before closing the application. Otherwise, ffmpeg will not exit gracefully and may produce an invalid video file.
+1. Always stop the recording before closing the application. Otherwise, ffmpeg will force exit as soon as the window disappears and may produce an invalid video file.
 2. If you're launching multiple applications or testing an application at different window sizes, recording the `desktop` is a better option.
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/kapoorlakshya/ffmpeg-screenrecorder.
+Bug reports and pull requests are welcome. Please follow the Ruby style guide here: https://github.com/rubocop-hq/ruby-style-guide
 
 ## License
 
