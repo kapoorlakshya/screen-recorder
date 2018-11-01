@@ -1,42 +1,71 @@
 module FFMPEG
+  # @since 1.0.0-beta2
   class RecorderOptions
 
     def initialize(options)
       @options = verify_options options
     end
 
+    #
+    # Returns given recording format
+    #
     def format
       @options[:format]
     end
 
+    #
+    # Returns given framerate
+    #
     def framerate
       @options[:framerate]
     end
 
+    #
+    # Returns given input file or infile
+    #
     def infile
       @options[:infile]
     end
 
+    #
+    # Returns given output filepath
+    #
     def output
       @options[:output]
     end
 
+    #
+    # Returns given values that are optional
+    #
     def advanced
       @options[:advanced]
     end
 
+    #
+    # Returns given log filename
+    #
     def log
       @options[:log]
     end
 
+    #
+    # Returns given log_level
+    #
     def log_level
       @options[:log_level]
     end
 
+    #
+    # Returns all given options
+    #
     def all
       @options
     end
 
+    #
+    # Returns a String with all options parsed as a String,
+    # ready for the ffmpeg process to use
+    #
     def parsed
       vals = "-f #{@options[:format]} "
       vals << "-r #{@options[:framerate]} "
@@ -49,7 +78,8 @@ module FFMPEG
     private
 
     #
-    # Verifies the required options are provided
+    # Verifies the required options are provided and returns
+    # the given options Hash
     #
     def verify_options(options)
       missing_options = required_options.select { |req| options[req].nil? }
@@ -60,7 +90,7 @@ module FFMPEG
     end
 
     #
-    # Returns Array of require options a Symbols
+    # Returns Array of required options sa Symbols
     #
     def required_options
       # -f format
@@ -85,8 +115,10 @@ module FFMPEG
     end
 
     #
-    # Determines if the ffmpeg output will be to a log
-    # file based on given options.
+    # Returns portion of the command which determines
+    # if the ffmpeg output will be logged to a file
+    # or completely ignored based on if the user
+    # provides a log filepath in the options.
     #
     def ffmpeg_log_to(file)
       return " 2> #{file}" if file

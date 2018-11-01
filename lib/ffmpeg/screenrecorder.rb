@@ -4,6 +4,7 @@ require_relative 'recorder_options'
 require_relative 'windows'
 
 module FFMPEG
+  # @since 1.0.0-beta1
   class Screenrecorder
     extend Windows
 
@@ -16,6 +17,9 @@ module FFMPEG
       initialize_logger(@options.log_level || Logger::ERROR)
     end
 
+    #
+    # Starts the recording
+    #
     def start
       @video     = nil # New file
       start_time = Time.now
@@ -25,6 +29,9 @@ module FFMPEG
       FFMPEG.logger.info 'Recording...'
     end
 
+    #
+    # Stops the recording
+    #
     def stop
       FFMPEG.logger.debug 'Stopping ffmpeg.exe...'
       elapsed = kill_ffmpeg
@@ -35,6 +42,10 @@ module FFMPEG
 
     private
 
+    #
+    # Launches the ffmpeg binary using a generated command based on
+    # the given options.
+    #
     def start_ffmpeg
       FFMPEG.logger.debug "Command: #{command}"
       process = IO.popen(command, 'r+')
@@ -42,6 +53,9 @@ module FFMPEG
       process
     end
 
+    #
+    # Sends 'q' to the ffmpeg binary to gracefully stop the process.
+    #
     def kill_ffmpeg
       @process.puts 'q' # Gracefully exit ffmpeg
       elapsed = wait_for_io_eof(5)
@@ -49,6 +63,9 @@ module FFMPEG
       elapsed
     end
 
+    #
+    # Initializes the logger with the given log level.
+    #
     def initialize_logger(level)
       FFMPEG.logger.progname  = 'FFMPEG'
       FFMPEG.logger.level     = level
@@ -58,11 +75,19 @@ module FFMPEG
       FFMPEG.logger.debug 'Logger initialized.'
     end
 
+    #
+    # Generates the command line arguments based on the given
+    # options.
+    #
     def command
       cmd = "#{FFMPEG.ffmpeg_binary} -y "
       cmd << @options.parsed
     end
 
+    #
+    # Waits for IO#eof? to return true
+    # after 'q' is sent to the ffmpeg process.
+    #
     def wait_for_io_eof(timeout)
       start = Time.now
       Timeout.timeout(timeout) do
