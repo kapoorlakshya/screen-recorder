@@ -121,18 +121,15 @@ RSpec.describe FFMPEG::Screenrecorder do
     end
   end # context
 
+  #
+  # Application/Window Recording
+  #
   context 'given a firefox window is open' do
     describe '.window_titles' do
-      before(:each) do
-        # Facing a weird issue where the .webdrivers folder is not found
-        # after the first time geckodriver is downloaded,
-        # @todo Troubleshoot and remove this temporary fix.
-        `TASKKILL /f /im firefox.exe`
-        `TASKKILL /f /im geckodriver.exe`
-        FileUtils.rm_rf('C:\Users\Lakshya Kapoor\.webdrivers')
-      end
-
-      let(:browser) { Watir::Browser.new :firefox }
+      let(:browser) {
+        Webdrivers.install_dir = 'webdrivers_bin'
+        Watir::Browser.new :firefox
+      }
 
       it 'returns a list of available windows from firefox' do
         browser.wait
@@ -149,59 +146,40 @@ RSpec.describe FFMPEG::Screenrecorder do
     end
   end
 
-  context 'given a firefox widow is open and available to record', :specific_window do
-    describe '#start with opts[:infile] as "title=Mozilla Firefox"' do
-      before do
-        # Facing a weird issue where the .webdrivers folder is not found
-        # after the first time geckodriver is downloaded,
-        # @todo Troubleshoot and remove this temporary fix.
-        `TASKKILL /f /im firefox.exe`
-        `TASKKILL /f /im geckodriver.exe`
-        FileUtils.rm_rf('C:\Users\Lakshya Kapoor\.webdrivers')
-      end
+  describe '#start with opts[:infile] as "title=Mozilla Firefox"' do
+    let(:browser) {
+      Webdrivers.install_dir = 'webdrivers_bin'
+      Watir::Browser.new :firefox
+    }
+    let(:opts) {
+      { output:    'firefox-recorder.mp4',
+        infile:    'Mozilla Firefox',
+        format:    'gdigrab',
+        framerate: 30,
+        log:       'ffmpeg-log.txt' }
+    }
+    let(:recorder) { FFMPEG::Screenrecorder.new opts }
 
-      let(:browser) { Watir::Browser.new :firefox }
-      let(:opts) {
-        { output:    'firefox-recorder.mp4',
-          infile:    'Mozilla Firefox',
-          format:    'gdigrab',
-          framerate: 30,
-          log:       'ffmpeg-log.txt',
-          log_level: Logger::DEBUG }
-      }
-      let(:recorder) { FFMPEG::Screenrecorder.new opts }
+    it 'can record a specific firefox window with given title' do
+      # Note: browser is lazily loaded with let
+      browser.window.resize_to 1280, 720
+      recorder.start
+      browser.goto 'watir.com'
+      browser.link(text: 'News').wait_until_present.click
+      browser.wait
+      recorder.stop
+      browser.quit
 
-      before do
-        # Facing a weird issue where the .webdrivers folder is not found
-        # after the first time geckodriver is downloaded,
-        # @todo Troubleshoot and remove this temporary fix.
-        FileUtils.rm_rf('C:\Users\Lakshya Kapoor\.webdrivers')
-      end
+      expect(File).to exist(recorder.options.output)
+      expect(recorder.video.valid?).to be(true)
+    end
 
-      it 'can record a firefox window while user navigates to various websites' do
-        # Note: browser is lazily loaded with let
-        browser.window.resize_to 1280, 720
-        recorder.start
-        browser.goto 'google.com'
-        browser.goto 'watir.com'
-        browser.goto 'github.com'
-        browser.goto 'stackoverflow.com'
-        browser.link(text: 'Ask Question').click
-        browser.wait
-        recorder.stop
-        browser.quit
-
-        expect(File).to exist(recorder.options.output)
-        expect(recorder.video.valid?).to be(true)
-      end
-
-      #
-      # Clean up log and output file
-      #
-      after do
-        FileUtils.rm recorder.options.output
-        FileUtils.rm recorder.options.log
-      end
-    end # describe
+    #
+    # Clean up
+    #
+    after do
+      FileUtils.rm recorder.options.output
+      FileUtils.rm recorder.options.log
+    end
   end # context
 end # describe FFMPEG::Screenrecorder
