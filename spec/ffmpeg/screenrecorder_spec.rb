@@ -152,7 +152,8 @@ RSpec.describe FFMPEG::Screenrecorder do
 
     context 'given a firefox window is not open' do
       it 'raises an exception' do
-        expect { FFMPEG::Screenrecorder.window_titles('firefox') }.to raise_exception(FFMPEG::Windows::ApplicationNotFound)
+        exp = FFMPEG::RecordingRegions::ApplicationNotFound
+        expect { FFMPEG::Screenrecorder.window_titles('firefox') }.to raise_exception(exp)
       end
     end # context
   end # describe

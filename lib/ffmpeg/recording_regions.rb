@@ -1,6 +1,6 @@
 module FFMPEG
-  # @since 1.0.0-beta2
-  module Windows
+  # @since 1.0.0-beta4
+  module RecordingRegions
 
     #
     # Returns a list of available window titles for the given application (process) name.
@@ -10,7 +10,7 @@ module FFMPEG
       WindowGrabber.new.available_windows_for application
     end
 
-    # @since 1.0.0-beta2
+    # @since 1.0.0-beta4
     class WindowGrabber
       #
       # Returns a cleaned up list of available window titles

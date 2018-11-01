@@ -1,12 +1,12 @@
 require 'streamio-ffmpeg'
 require 'os'
 require_relative 'recorder_options'
-require_relative 'windows'
+require_relative 'recording_regions'
 
 module FFMPEG
   # @since 1.0.0-beta1
   class Screenrecorder
-    extend Windows
+    extend RecordingRegions
 
     attr_reader :options, :video
 
