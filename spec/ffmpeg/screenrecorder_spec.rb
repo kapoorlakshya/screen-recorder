@@ -22,7 +22,7 @@ RSpec.describe FFMPEG::Screenrecorder do
       end
 
       it 'defaults FFMPEG.logger.level to Logger::WARN' do
-        expect(FFMPEG.logger.level).to eql(Logger::WARN)
+        expect(FFMPEG.logger.level).to eql(Logger::ERROR)
       end
 
       it 'sets @video to nil' do
@@ -124,8 +124,8 @@ RSpec.describe FFMPEG::Screenrecorder do
   #
   # Application/Window Recording
   #
-  context 'given a firefox window is open' do
-    describe '.window_titles' do
+  describe '.window_titles' do
+    context 'given a firefox window is open' do
       let(:browser) {
         Webdrivers.install_dir = 'webdrivers_bin'
         Watir::Browser.new :firefox
@@ -136,6 +136,11 @@ RSpec.describe FFMPEG::Screenrecorder do
         expect(FFMPEG::Screenrecorder.window_titles('firefox')).to be_a_kind_of(Array)
       end
 
+      it 'does not return an empty list' do
+        browser.wait
+        expect(FFMPEG::Screenrecorder.window_titles('firefox').empty?).to be(false)
+      end
+
       it 'returns the title of the currently open window' do
         browser.goto 'google.com'
         browser.wait
@@ -143,10 +148,16 @@ RSpec.describe FFMPEG::Screenrecorder do
       end
 
       after { browser.quit }
-    end
-  end
+    end # context
 
-  describe '#start with opts[:infile] as "title=Mozilla Firefox"' do
+    context 'given a firefox window is not open' do
+      it 'raises an exception' do
+        expect { FFMPEG::Screenrecorder.window_titles('firefox') }.to raise_exception(FFMPEG::Windows::ApplicationNotFound)
+      end
+    end # context
+  end # describe
+
+  describe '#start with opts[:infile] as "Mozilla Firefox"' do
     let(:browser) {
       Webdrivers.install_dir = 'webdrivers_bin'
       Watir::Browser.new :firefox
@@ -181,5 +192,5 @@ RSpec.describe FFMPEG::Screenrecorder do
       FileUtils.rm recorder.options.output
       FileUtils.rm recorder.options.log
     end
-  end # context
+  end # describe
 end # describe FFMPEG::Screenrecorder
