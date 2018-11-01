@@ -2,6 +2,10 @@
 
 Ruby gem to record your computer screen using [FFMPEG](https://www.ffmpeg.org/).
 
+## Support
+
+Only supports Windows OS as of version `1.0.0-beta2`.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -20,12 +24,40 @@ Or install it yourself as:
 
 ## Usage
 
+##### Record Desktop
+
 ```
 opts               = { output:        'ffmpeg-screenrecorder-output.mp4',
                        input:         'desktop',
                        framerate:     30.0,
                        device:        'gdigrab',
                        log:           'ffmpeg-screenrecorder-log.txt' }
+@recorder = FFMPEG::Screenrecorder.new(opts)
+
+# Start recording
+@recorder.start
+
+# ... Run tests or whatever you want to record
+
+# Stop recording
+@recorder.stop
+
+# Recording file will be available: ffmpeg-screenrecorder-output.mp4
+```
+
+##### Record Specific Application/Window
+```
+require 'watir'
+browser = Watir::Browser.new :firefox
+
+FFMPEG::Screenrecorder.window_titles('firefox') # Name of exe
+#=> "Mozilla Firefox"
+
+opts      = { output:    'ffmpeg-screenrecorder-firefox.mp4',
+              input:     'Mozilla Firefox',
+              framerate: 30.0,
+              device:    'gdigrab',
+              log:       'ffmpeg-screenrecorder-firefox.txt' }
 @recorder = FFMPEG::Screenrecorder.new(opts)
 
 # Start recording
