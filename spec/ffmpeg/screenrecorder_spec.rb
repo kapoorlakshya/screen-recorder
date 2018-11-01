@@ -9,13 +9,11 @@ RSpec.describe FFMPEG::Screenrecorder do
 
   describe '#new' do
     context 'user provides all required options' do
-      before(:all) { FFMPEG.logger.level = Logger::WARN } # To test the switch to DEBUG
       let(:opts) {
         { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
           infile:    'desktop',
           format:    'gdigrab',
-          framerate: 30.0,
-          log_level: Logger::DEBUG }
+          framerate: 30.0 }
       }
       let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
 
@@ -23,8 +21,8 @@ RSpec.describe FFMPEG::Screenrecorder do
         expect(recorder.options.all).to eql(opts)
       end
 
-      it 'sets FFMPEG.logger.level to user defined level from opts[:log_level]' do
-        expect(FFMPEG.logger.level).to eql(recorder.options.log_level)
+      it 'defaults FFMPEG.logger.level to Logger::WARN' do
+        expect(FFMPEG.logger.level).to eql(Logger::WARN)
       end
 
       it 'sets @video to nil' do
