@@ -18,11 +18,17 @@ module FFMPEG
       # Note: Only supports Windows OS as of version beta2.
       #
       def available_windows_for(application)
-        list = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
-                 .split("\n")
-                 .reject { |title| title == 'Window Title: N/A' }
-        list.map { |i| i.gsub('Window Title: ', '') } # Make it user friendly
+        raw_list   = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
+                       .split("\n")
+                       .reject { |title| title == 'Window Title: N/A' }
+        final_list = raw_list.map { |i| i.gsub('Window Title: ', '') } # Make it user friendly
+
+        raise ApplicationNotFound, "No open windows found for: #{application}.exe" if final_list.empty?
+        final_list
       end
     end
+
+    # @since 1.0.0-beta3
+    class ApplicationNotFound < StandardError; end
   end # module Windows
 end # module FFMPEG
