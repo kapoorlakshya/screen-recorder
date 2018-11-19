@@ -48,7 +48,10 @@ module FFMPEG
     # the given options.
     #
     def start_ffmpeg
+      raise RecorderErrors::DependencyNotFound, 'ffmpeg binary not found.' unless ffmpeg_exists?
+
       FFMPEG.logger.debug "Command: #{command}"
+      puts "Command: #{command}" # @todo Remove this after debugging
       process = IO.popen(command, 'r+')
       sleep(1.5) # Takes ~1.5s on average to initialize
       process
@@ -96,6 +99,12 @@ module FFMPEG
       end
       FFMPEG.logger.debug "IO#eof? #{@process.eof?}"
       Time.now - start
+    end
+
+    def ffmpeg_exists?
+      !`which ffmpeg`.empty? if OS.linux? # "" if not found
+
+      true # @todo Check on windows
     end
   end # class Recorder
 end # module FFMPEG
