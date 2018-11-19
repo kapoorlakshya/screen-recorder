@@ -1,5 +1,6 @@
 require 'streamio-ffmpeg'
 require 'os'
+require_relative 'recorder_errors'
 require_relative 'recorder_options'
 require_relative 'recording_regions'
 
