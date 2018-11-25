@@ -10,7 +10,7 @@ module FFMPEG
     # Returns given recording format
     #
     def format
-      @options[:format]
+      determine_format
     end
 
     #
@@ -67,7 +67,7 @@ module FFMPEG
     # ready for the ffmpeg process to use
     #
     def parsed
-      vals = "-f #{@options[:format]} "
+      vals = "-f #{determine_format} "
       vals << "-r #{@options[:framerate]} "
       vals << advanced_options if @options[:advanced]
       vals << "-i #{determine_infile @options[:infile]} "
@@ -131,8 +131,27 @@ module FFMPEG
     # unless the user is recording the desktop.
     #
     def determine_infile(opt)
-      return opt if opt == 'desktop'
+      # x11grab doesn't support window capture
+      return opt if opt == 'desktop' || OS.linux?
+
       %Q("title=#{opt}")
+    end
+
+    #
+    # Returns format based on the current OS.
+    #
+    def determine_format
+      return @options[:format] if @options[:format]
+
+      if OS.windows?
+        'gdigrab'
+      elsif OS.linux?
+        'x11grab'
+      elsif OS.mac?
+        'avfoundation'
+      else
+        raise NotImplementedError, 'Your OS is not supported.'
+      end
     end
   end
 end
