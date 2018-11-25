@@ -14,9 +14,8 @@ RSpec.describe FFMPEG::Screenrecorder do
   describe '#new' do
     context 'user provides all required options' do
       let(:opts) {
-        { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
+        { output:    'recorder-output.mkv',
           infile:    'desktop',
-          format:    'gdigrab',
           framerate: 30.0 }
       }
       let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
@@ -25,12 +24,12 @@ RSpec.describe FFMPEG::Screenrecorder do
         expect(recorder.options.all).to eql(opts)
       end
 
-      it 'defaults FFMPEG.logger.level to Logger::WARN' do
+      it 'defaults FFMPEG.logger.level to Logger::ERROR' do
         expect(FFMPEG.logger.level).to eql(Logger::ERROR)
       end
 
       it 'sets @video to nil' do
-        expect(recorder.video).to eql(nil)
+        expect(recorder.video).to be_nil
       end
     end
 
@@ -44,9 +43,8 @@ RSpec.describe FFMPEG::Screenrecorder do
   context 'given FFMPEG::Screenrecorder has been initialized' do
     describe '#options' do
       let(:opts) {
-        { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
+        { output:    'recorder-output.mkv',
           infile:    'desktop',
-          format:    'gdigrab',
           framerate: 30.0 }
       }
       let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
@@ -54,15 +52,27 @@ RSpec.describe FFMPEG::Screenrecorder do
       it 'returns a Hash of options' do
         expect(recorder.options.all).to be_a(Hash)
       end
+
+      it 'returns valid format for current OS' do
+        expected_format = if OS.windows?
+                            'gdigrab'
+                          elsif OS.linux?
+                            'x11grab'
+                          elsif OS.mac?
+                            'avfoundation'
+                          else
+                            raise NotImplementedError, 'Your OS is not supported.'
+                          end
+        expect(recorder.options.format).to eql(expected_format)
+      end
     end
 
     describe '#start' do
       let(:opts) {
-        { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
+        { output:    'recorder-output.mkv',
           infile:    'desktop',
-          format:    'gdigrab',
           framerate: 30.0,
-          log:       'ffmpeg-recorder-log.txt' }
+          log:       'recorder-log.txt' }
       }
       let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
 
@@ -90,9 +100,8 @@ RSpec.describe FFMPEG::Screenrecorder do
 
   context 'the user is ready to stop the recording' do
     let(:opts) {
-      { output:    'ffmpeg-screenrecorder-rspec-output.mkv',
+      { output:    'recorder-output.mkv',
         infile:    'desktop',
-        format:    'gdigrab',
         framerate: 30.0 }
     }
     let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
@@ -156,46 +165,50 @@ RSpec.describe FFMPEG::Screenrecorder do
 
     context 'given a firefox window is not open' do
       it 'raises an exception' do
-        exp = FFMPEG::RecordingRegions::ApplicationNotFound
-        expect { FFMPEG::Screenrecorder.window_titles('firefox') }.to raise_exception(exp)
+        expect { FFMPEG::Screenrecorder.window_titles('firefox') }.to raise_exception(FFMPEG::RecorderErrors::ApplicationNotFound)
       end
     end # context
   end # describe
 
-  describe '#start with opts[:infile] as "Mozilla Firefox"' do
-    let(:browser) {
-      Webdrivers.install_dir = 'webdrivers_bin'
-      Watir::Browser.new :firefox
-    }
-    let(:opts) {
-      { output:    'firefox-recorder.mp4',
-        infile:    'Mozilla Firefox',
-        format:    'gdigrab',
-        framerate: 30,
-        log:       'ffmpeg-log.txt' }
-    }
-    let(:recorder) { FFMPEG::Screenrecorder.new opts }
+  #
+  # Windows Only
+  #
+  if OS.windows? # Only gdigrab supports window capture
+    describe '#start with opts[:infile] as "Mozilla Firefox"' do
+      let(:browser) {
+        Webdrivers.install_dir = 'webdrivers_bin'
+        Watir::Browser.new :firefox
+      }
+      let(:opts) {
+        { output:    'firefox-recorder.mp4',
+          infile:    'Mozilla Firefox',
+          framerate: 30,
+          log:       'ffmpeg-log.txt',
+          log_level: Logger::DEBUG }
+      }
+      let(:recorder) { FFMPEG::Screenrecorder.new opts }
 
-    it 'can record a specific firefox window with given title' do
-      # Note: browser is lazily loaded with let
-      browser.window.resize_to 1280, 720
-      recorder.start
-      browser.goto 'watir.com'
-      browser.link(text: 'News').wait_until_present.click
-      browser.wait
-      recorder.stop
-      browser.quit
+      it 'can record a specific firefox window with given title' do
+        # Note: browser is lazily loaded with let
+        browser.window.resize_to 1280, 720
+        recorder.start
+        browser.goto 'watir.com'
+        browser.link(text: 'News').wait_until_present.click
+        browser.wait
+        recorder.stop
+        browser.quit
 
-      expect(File).to exist(recorder.options.output)
-      expect(recorder.video.valid?).to be(true)
-    end
+        expect(File).to exist(recorder.options.output)
+        expect(recorder.video.valid?).to be(true)
+      end
 
-    #
-    # Clean up
-    #
-    after do
-      FileUtils.rm recorder.options.output
-      FileUtils.rm recorder.options.log
-    end
-  end # describe
+      #
+      # Clean up
+      #
+      after do
+        FileUtils.rm recorder.options.output
+        FileUtils.rm recorder.options.log
+      end
+    end # describe
+  end # Os.windows?
 end # describe FFMPEG::Screenrecorder
