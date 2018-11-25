@@ -1,7 +1,6 @@
 module FFMPEG
   # @since 1.0.0-beta2
   class RecorderOptions
-
     def initialize(options)
       @options = verify_options options
     end
@@ -109,9 +108,9 @@ module FFMPEG
       raise(ArgumentError, ':advanced cannot be empty.') if options[:advanced].empty?
 
       arr = []
-      options[:advanced].each { |k, v|
+      options[:advanced].each do |k, v|
         arr.push "-#{k} #{v}"
-      }
+      end
       arr.join(' ') + ' '
     end
 
@@ -123,6 +122,7 @@ module FFMPEG
     #
     def ffmpeg_log_to(file)
       return " 2> #{file}" if file
+
       ' > nul 2>&1' # No log file given
     end
 
@@ -138,7 +138,7 @@ module FFMPEG
       return opt if opt == 'desktop'
 
       # Windows only
-      %Q("title=#{opt}")
+      %("title=#{opt}")
     end
 
     #

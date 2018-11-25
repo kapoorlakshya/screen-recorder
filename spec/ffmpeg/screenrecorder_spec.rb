@@ -7,17 +7,18 @@ RSpec.describe FFMPEG::Screenrecorder do
     end
 
     it 'it can find the FFmpeg binary' do
+      # noinspection RubyResolve
       expect(`#{FFMPEG.ffmpeg_binary} -version`).to include('ffmpeg version')
     end
   end
 
   describe '#new' do
     context 'user provides all required options' do
-      let(:opts) {
-        { output:    'recorder-output.mkv',
-          infile:    'desktop',
+      let(:opts) do
+        { output: 'recorder-output.mkv',
+          infile: 'desktop',
           framerate: 30.0 }
-      }
+      end
       let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
 
       it 'sets the options' do
@@ -42,11 +43,11 @@ RSpec.describe FFMPEG::Screenrecorder do
 
   context 'given FFMPEG::Screenrecorder has been initialized' do
     describe '#options' do
-      let(:opts) {
-        { output:    'recorder-output.mkv',
-          infile:    'desktop',
+      let(:opts) do
+        { output: 'recorder-output.mkv',
+          infile: 'desktop',
           framerate: 30.0 }
-      }
+      end
       let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
 
       it 'returns a Hash of options' do
@@ -68,12 +69,12 @@ RSpec.describe FFMPEG::Screenrecorder do
     end
 
     describe '#start' do
-      let(:opts) {
-        { output:    'recorder-output.mkv',
-          infile:    'desktop',
+      let(:opts) do
+        { output: 'recorder-output.mkv',
+          infile: 'desktop',
           framerate: 30.0,
-          log:       'recorder-log.txt' }
-      }
+          log: 'recorder-log.txt' }
+      end
       let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
 
       before do
@@ -99,11 +100,11 @@ RSpec.describe FFMPEG::Screenrecorder do
   end # context
 
   context 'the user is ready to stop the recording' do
-    let(:opts) {
-      { output:    'recorder-output.mkv',
-        infile:    'desktop',
+    let(:opts) do
+      { output: 'recorder-output.mkv',
+        infile: 'desktop',
         framerate: 30.0 }
-    }
+    end
     let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
 
     before do
@@ -139,10 +140,10 @@ RSpec.describe FFMPEG::Screenrecorder do
   #
   describe '.window_titles' do
     context 'given a firefox window is open' do
-      let(:browser) {
+      let(:browser) do
         Webdrivers.install_dir = 'webdrivers_bin'
         Watir::Browser.new :firefox
-      }
+      end
 
       it 'returns a list of available windows from firefox' do
         browser.wait
@@ -175,17 +176,17 @@ RSpec.describe FFMPEG::Screenrecorder do
   #
   if OS.windows? # Only gdigrab supports window capture
     describe '#start with opts[:infile] as "Mozilla Firefox"' do
-      let(:browser) {
+      let(:browser) do
         Webdrivers.install_dir = 'webdrivers_bin'
         Watir::Browser.new :firefox
-      }
-      let(:opts) {
-        { output:    'firefox-recorder.mp4',
-          infile:    'Mozilla Firefox',
+      end
+      let(:opts) do
+        { output: 'firefox-recorder.mp4',
+          infile: 'Mozilla Firefox',
           framerate: 30,
-          log:       'ffmpeg-log.txt',
+          log: 'ffmpeg-log.txt',
           log_level: Logger::DEBUG }
-      }
+      end
       let(:recorder) { FFMPEG::Screenrecorder.new opts }
 
       it 'can record a specific firefox window with given title' do

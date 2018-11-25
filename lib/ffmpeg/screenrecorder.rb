@@ -101,6 +101,9 @@ module FFMPEG
       Time.now - start
     end
 
+    #
+    # Returns true if ffmpeg binary is found.
+    #
     def ffmpeg_exists?
       !`which ffmpeg`.empty? if OS.linux? # "" if not found
 

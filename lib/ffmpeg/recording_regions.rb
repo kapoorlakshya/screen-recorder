@@ -1,7 +1,6 @@
 module FFMPEG
   # @since 1.0.0-beta4
   module RecordingRegions
-
     #
     # Returns a list of available window titles for the given application (process) name.
     #
