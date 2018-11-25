@@ -93,11 +93,12 @@ module FFMPEG
     # Returns Array of required options sa Symbols
     #
     def required_options
-      # -f format
       # -r framerate
       # -i input
       # output
-      %i[format framerate infile output]
+      return %i[framerate infile output] unless OS.linux?
+
+      %i[framerate output] # Linux
     end
 
     #
@@ -132,8 +133,11 @@ module FFMPEG
     #
     def determine_infile(opt)
       # x11grab doesn't support window capture
-      return opt if opt == 'desktop' || OS.linux?
+      return ':0.0' if OS.linux?
 
+      return opt if opt == 'desktop'
+
+      # Windows only
       %Q("title=#{opt}")
     end
 
