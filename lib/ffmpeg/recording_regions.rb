@@ -17,8 +17,10 @@ module FFMPEG
       # Note: Only supports Windows OS as of version beta2.
       #
       def available_windows_for(application)
-        windows_os(application) if OS.windows?
-        linux_os(application) if OS.linux?
+        return windows_os(application) if OS.windows?
+        return linux_os(application) if OS.linux?
+
+        raise NotImplementedError, 'Your OS is not supported.'
       end
 
       private
