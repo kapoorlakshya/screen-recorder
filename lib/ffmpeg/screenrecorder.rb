@@ -1,8 +1,8 @@
 require 'streamio-ffmpeg'
 require 'os'
-require_relative 'screenrecorder/recorder_errors'
-require_relative 'screenrecorder/recorder_options'
-require_relative 'screenrecorder/recording_regions'
+require_relative 'recorder_errors'
+require_relative 'recorder_options'
+require_relative 'recording_regions'
 
 module FFMPEG
   # @since 1.0.0-beta1
