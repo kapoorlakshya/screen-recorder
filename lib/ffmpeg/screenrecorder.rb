@@ -103,7 +103,9 @@ module FFMPEG
     # Returns true if ffmpeg binary is found.
     #
     def ffmpeg_exists?
-      !`which ffmpeg`.empty? if OS.linux? # "" if not found
+      return !`which ffmpeg`.empty? if OS.linux? # "" if not found
+
+      return !`where ffmpeg`.empty? if OS.windows?
 
       true # @todo Check on windows
     end
