@@ -7,8 +7,6 @@ require_relative 'recording_regions'
 module FFMPEG
   # @since 1.0.0-beta1
   class Screenrecorder
-    extend RecordingRegions
-
     attr_reader :options, :video
 
     def initialize(options = {})

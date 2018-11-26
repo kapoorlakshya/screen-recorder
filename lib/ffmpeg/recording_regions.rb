@@ -4,7 +4,7 @@ module FFMPEG
     #
     # Returns a list of available window titles for the given application (process) name.
     #
-    def window_titles(application)
+    def self.fetch(application)
       FFMPEG.logger.debug "Retrieving available windows for: #{application}"
       WindowGrabber.new.available_windows_for application
     end

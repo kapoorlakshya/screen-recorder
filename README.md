@@ -70,13 +70,13 @@ opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
 # Recording file will be available: ffmpeg-screenrecorder-desktop.mp4
 ```
 
-##### Record Specific Application/Window
+##### Record Specific Application/Window - gdigrab (Windows) Only
 ```
 require 'watir'
 
 browser = Watir::Browser.new :firefox
 
-FFMPEG::Screenrecorder.window_titles('firefox') # Name of exe
+FFMPEG::RecordingRegions.fetch('firefox') # Name of exe
 #=> "Mozilla Firefox"
 
 opts      = { output:    'ffmpeg-screenrecorder-firefox.mp4',
