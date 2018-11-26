@@ -1,4 +1,4 @@
-# FFMPEG::Screenrecorder
+# FFMPEG::ScreenRecorder
 
 [![Gem Version](https://badge.fury.io/rb/ffmpeg-screenrecorder.svg)](https://badge.fury.io/rb/ffmpeg-screenrecorder)
 
@@ -57,7 +57,7 @@ opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
               framerate: 30.0,
               device:    'gdigrab',
               log:       'ffmpeg-screenrecorder-log.txt' }
-@recorder = FFMPEG::Screenrecorder.new(opts)
+@recorder = FFMPEG::ScreenRecorder.new(opts)
 
 # Start recording
 @recorder.start
@@ -84,7 +84,7 @@ opts      = { output:    'ffmpeg-screenrecorder-firefox.mp4',
               framerate: 30.0,
               device:    'gdigrab',
               log:       'ffmpeg-screenrecorder-firefox.txt' }
-@recorder = FFMPEG::Screenrecorder.new(opts)
+@recorder = FFMPEG::ScreenRecorder.new(opts)
 
 # Start recording
 @recorder.start

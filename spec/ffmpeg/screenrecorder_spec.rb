@@ -1,9 +1,9 @@
 require_relative '../spec_helper'
 
-RSpec.describe FFMPEG::Screenrecorder do
+RSpec.describe FFMPEG::ScreenRecorder do
   context 'given the gem is loaded' do
     it 'has a version number' do
-      expect(FFMPEG::Screenrecorder::VERSION).not_to be nil
+      expect(FFMPEG::ScreenRecorder::VERSION).not_to be nil
     end
 
     it 'it can find the FFmpeg binary' do
@@ -19,7 +19,7 @@ RSpec.describe FFMPEG::Screenrecorder do
           infile: 'desktop',
           framerate: 30.0 }
       end
-      let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
+      let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
       it 'sets the options' do
         expect(recorder.options.all).to eql(opts)
@@ -36,19 +36,19 @@ RSpec.describe FFMPEG::Screenrecorder do
 
     context 'user does not provide required options' do
       it 'raises an error when required options are not provided' do
-        expect { FFMPEG::Screenrecorder.new({}) }.to raise_exception(ArgumentError)
+        expect { FFMPEG::ScreenRecorder.new({}) }.to raise_exception(ArgumentError)
       end
     end
   end # describe #new
 
-  context 'given FFMPEG::Screenrecorder has been initialized' do
+  context 'given FFMPEG::ScreenRecorder has been initialized' do
     describe '#options' do
       let(:opts) do
         { output: 'recorder-output.mkv',
           infile: 'desktop',
           framerate: 30.0 }
       end
-      let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
+      let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
       it 'returns a Hash of options' do
         expect(recorder.options.all).to be_a(Hash)
@@ -75,7 +75,7 @@ RSpec.describe FFMPEG::Screenrecorder do
           framerate: 30.0,
           log: 'recorder-log.txt' }
       end
-      let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
+      let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
       before do
         recorder.start
@@ -105,7 +105,7 @@ RSpec.describe FFMPEG::Screenrecorder do
         infile: 'desktop',
         framerate: 30.0 }
     end
-    let(:recorder) { FFMPEG::Screenrecorder.new(opts) }
+    let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
     before do
       recorder.start
@@ -187,7 +187,7 @@ RSpec.describe FFMPEG::Screenrecorder do
           log: 'ffmpeg-log.txt',
           log_level: Logger::DEBUG }
       end
-      let(:recorder) { FFMPEG::Screenrecorder.new opts }
+      let(:recorder) { FFMPEG::ScreenRecorder.new opts }
 
       it 'can record a specific firefox window with given title' do
         # Note: browser is lazily loaded with let
@@ -212,4 +212,4 @@ RSpec.describe FFMPEG::Screenrecorder do
       end
     end # describe
   end # Os.windows?
-end # describe FFMPEG::Screenrecorder
+end # describe FFMPEG::ScreenRecorder
