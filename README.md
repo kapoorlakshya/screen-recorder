@@ -4,9 +4,9 @@
 
 Ruby gem to record your computer screen - desktop or specific application/window - using [FFmpeg](https://www.ffmpeg.org/).
 
-## Windows Only
+## Compatibility
 
-Only supports Windows as of version `1.0.0-beta3`. Linux and macOS support will be added before the final release of `v1.0.0`.
+Supports Windows and Linux as of version `1.0.0-beta5`. macOS support will be added before the final release of `v1.0.0`.
 
 ## Installation
 
