@@ -107,7 +107,7 @@ module FFMPEG
 
       return !`where ffmpeg`.empty? if OS.windows?
 
-      true # @todo Check on windows
+      true
     end
   end # class Recorder
 end # module FFMPEG
