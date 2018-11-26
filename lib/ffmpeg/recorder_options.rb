@@ -123,7 +123,7 @@ module FFMPEG
     def ffmpeg_log_to(file)
       return " 2> #{file}" if file
 
-      ' > nul 2>&1' # No log file given
+      '> nul 2>&1' # No log file given
     end
 
     #
