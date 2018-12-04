@@ -1,6 +1,8 @@
 module FFMPEG
   # @since 1.0.0-beta2
   class RecorderOptions
+    DEFAULT_LOG_FILE = 'ffmpeg.log'
+
     def initialize(options)
       @options = verify_options options
     end
@@ -44,7 +46,7 @@ module FFMPEG
     # Returns given log filename
     #
     def log
-      @options[:log]
+      @options[:log] || DEFAULT_LOG_FILE
     end
 
     #
@@ -115,15 +117,12 @@ module FFMPEG
     end
 
     #
-    # Returns portion of the command which determines
-    # if the ffmpeg output will be logged to a file
-    # or completely ignored based on if the user
-    # provides a log filepath in the options.
+    # Returns logging command with user given log file
+    # from options or the default file.
     #
     def ffmpeg_log_to(file)
-      return " 2> #{file}" if file
-
-      '> nul 2>&1' # No log file given
+      file ||= DEFAULT_LOG_FILE
+      " 2> #{file}"
     end
 
     #

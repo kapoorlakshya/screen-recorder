@@ -66,6 +66,10 @@ RSpec.describe FFMPEG::ScreenRecorder do
                           end
         expect(recorder.options.format).to eql(expected_format)
       end
+
+      it 'sets log file name to the default name' do
+        expect(recorder.options.log).to eq('ffmpeg.log')
+      end
     end
 
     describe '#start' do
