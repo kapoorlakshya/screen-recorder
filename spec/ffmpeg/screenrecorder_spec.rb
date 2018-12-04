@@ -153,10 +153,16 @@ RSpec.describe FFMPEG::ScreenRecorder do
     end
 
     describe '#stop' do
-
       it 'raises an exception and prints ffmpeg error to console' do
         expect { recorder.stop }.to raise_exception(FFMPEG::Error)
       end
+    end
+
+    #
+    # Clean up
+    #
+    after do
+      FileUtils.rm recorder.options.log
     end
   end
 
