@@ -118,9 +118,12 @@ module FFMPEG
     # Returns lines from the log file
     #
     def get_lines_from_log(count = 2, position = :last)
-      lines = File.open(options.log).readlines
+      f = File.open(options.log)
+      lines = f.readlines
       lines = lines.last(count) if position == :last
       lines = lines.first(count) if position == :first
+      f.close
+
       lines.join(' ')
     end
   end # class Recorder
