@@ -25,16 +25,22 @@ module FFMPEG
 
       private
 
+      #
+      # Returns list of windows for Microsoft Windows
+      #
       def windows_os(application)
         raw_list   = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
                      .split("\n")
                      .reject { |title| title == 'Window Title: N/A' }
-        final_list = raw_list.map { |i| i.gsub('Window Title: ', '') } # Make it user friendly
+        final_list = raw_list.map { |i| i.gsub('Window Title: ', '') } # Match ffmpeg expected format
         raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}.exe" if final_list.empty?
 
         final_list
       end
 
+      #
+      # Returns list of windows for Linux
+      #
       def linux_os(application)
         raise DependencyNotFound, 'wmctrl is not installed. Run: sudo apt-get install wmctrl.' unless wmctrl_installed?
 
@@ -47,6 +53,9 @@ module FFMPEG
         final_list
       end
 
+      #
+      # Returns true if wmctrl is installed
+      #
       def wmctrl_installed?
         !`which wmctrl`.empty? # "" when not found
       end
