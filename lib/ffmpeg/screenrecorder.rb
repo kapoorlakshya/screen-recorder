@@ -13,7 +13,7 @@ module FFMPEG
       @options = RecorderOptions.new(options)
       @video   = nil
       @process = nil
-      initialize_logger(@options.log_level || Logger::ERROR)
+      initialize_logger(@options.log_level)
     end
 
     #
@@ -49,7 +49,6 @@ module FFMPEG
       raise RecorderErrors::DependencyNotFound, 'ffmpeg binary not found.' unless ffmpeg_exists?
 
       FFMPEG.logger.debug "Command: #{command}"
-      puts "Command: #{command}" # @todo Remove this after debugging
       process = IO.popen(command, 'r+')
       sleep(1.5) # Takes ~1.5s on average to initialize
       process
@@ -70,7 +69,7 @@ module FFMPEG
     #
     def initialize_logger(level)
       FFMPEG.logger.progname  = 'FFmpeg'
-      FFMPEG.logger.level     = level
+      FFMPEG.logger.level     = level || Logger::ERROR
       FFMPEG.logger.formatter = proc do |severity, time, progname, msg|
         "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
       end
