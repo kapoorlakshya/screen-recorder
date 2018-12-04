@@ -15,8 +15,8 @@ RSpec.describe FFMPEG::ScreenRecorder do
   describe '#new' do
     context 'user provides all required options' do
       let(:opts) do
-        { output: 'recorder-output.mkv',
-          infile: 'desktop',
+        { output:    'recorder-output.mkv',
+          infile:    'desktop',
           framerate: 30.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -44,8 +44,8 @@ RSpec.describe FFMPEG::ScreenRecorder do
   context 'given FFMPEG::ScreenRecorder has been initialized' do
     describe '#options' do
       let(:opts) do
-        { output: 'recorder-output.mkv',
-          infile: 'desktop',
+        { output:    'recorder-output.mkv',
+          infile:    'desktop',
           framerate: 30.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -74,10 +74,10 @@ RSpec.describe FFMPEG::ScreenRecorder do
 
     describe '#start' do
       let(:opts) do
-        { output: 'recorder-output.mkv',
-          infile: 'desktop',
+        { output:    'recorder-output.mkv',
+          infile:    'desktop',
           framerate: 30.0,
-          log: 'recorder-log.txt' }
+          log:       'recorder-log.txt' }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
@@ -105,8 +105,8 @@ RSpec.describe FFMPEG::ScreenRecorder do
 
   context 'the user is ready to stop the recording' do
     let(:opts) do
-      { output: 'recorder-output.mkv',
-        infile: 'desktop',
+      { output:    'recorder-output.mkv',
+        infile:    'desktop',
         framerate: 30.0 }
     end
     let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -206,10 +206,10 @@ RSpec.describe FFMPEG::ScreenRecorder do
         Watir::Browser.new :firefox
       end
       let(:opts) do
-        { output: 'firefox-recorder.mp4',
-          infile: 'Mozilla Firefox',
+        { output:    'firefox-recorder.mp4',
+          infile:    'Mozilla Firefox',
           framerate: 30,
-          log: 'ffmpeg-log.txt',
+          log:       'ffmpeg-log.txt',
           log_level: Logger::DEBUG }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new opts }
