@@ -15,6 +15,7 @@ Gemfile.lock # Part of best practice
 /spec/reports/
 /tmp/
 /webdrivers_bin
+*.log
 
 Gemfile.lock
 
