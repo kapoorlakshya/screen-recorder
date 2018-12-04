@@ -62,6 +62,11 @@ module FFMPEG
       elapsed = wait_for_io_eof(5)
       @process.close_write # Close IO
       elapsed
+
+    rescue Errno::EPIPE
+      # Gets last line from log file
+      err_line = get_lines_from_log(count = 2, :last)
+      raise FFMPEG::Error, err_line
     end
 
     #
@@ -107,6 +112,16 @@ module FFMPEG
       return !`where ffmpeg`.empty? if OS.windows?
 
       true
+    end
+
+    #
+    # Returns lines from the log file
+    #
+    def get_lines_from_log(count = 2, position = :last)
+      lines = File.open(options.log).readlines
+      lines = lines.last(count) if position == :last
+      lines = lines.first(count) if position == :first
+      lines.join(' ')
     end
   end # class Recorder
 end # module FFMPEG

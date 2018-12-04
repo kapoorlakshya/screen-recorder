@@ -139,6 +139,27 @@ RSpec.describe FFMPEG::ScreenRecorder do
     end
   end # context
 
+  context 'the user provides an invalid option' do
+    let(:opts) do
+      { output: 'recorder-output.mkv',
+        infile: 'myscreen', # Invalid option
+        framerate: 30.0 }
+    end
+    let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
+
+    before do
+      recorder.start
+      sleep(1.0)
+    end
+
+    describe '#stop' do
+
+      it 'raises an exception and prints ffmpeg error to console' do
+        expect { recorder.stop }.to raise_exception(FFMPEG::Error)
+      end
+    end
+  end
+
   #
   # Application/Window Recording
   #
