@@ -54,9 +54,7 @@ Or install it yourself as:
 ```
 opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
               input:     'desktop',
-              framerate: 30.0,
-              device:    'gdigrab',
-              log:       'ffmpeg-screenrecorder-log.txt' }
+              framerate: 30.0 }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 
 # Start recording
@@ -67,7 +65,10 @@ opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
 # Stop recording
 @recorder.stop
 
-# Recording file will be available: ffmpeg-screenrecorder-desktop.mp4
+# Recorded file
+@recorder.video #=> 'ffmpeg-screenrecorder-desktop.mp4'
+
+# ffmpeg log will be stored in 'ffmpeg.log'
 ```
 
 ##### Record Specific Application/Window - gdigrab (Windows) Only
@@ -82,7 +83,6 @@ FFMPEG::RecordingRegions.fetch('firefox') # Name of exe
 opts      = { output:    'ffmpeg-screenrecorder-firefox.mp4',
               input:     'Mozilla Firefox',
               framerate: 30.0,
-              device:    'gdigrab',
               log:       'ffmpeg-screenrecorder-firefox.txt' }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 
