@@ -59,7 +59,7 @@ opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 
 # Start recording
-@recorder.start
+@recorder.start #=> #<IO:fd 5>
 
 # ... Run tests or whatever you want to record
 
@@ -69,8 +69,7 @@ opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
 # Recorded file
 @recorder.video #=> #<FFMPEG::Movie:0x0000000004015b18 @path="ffmpeg-screenrecorder-desktop.mp4", ...>
 
-
-# ffmpeg log will be stored in 'ffmpeg.log'
+# ffmpeg log will be stored in 'ffmpeg.log' unless provided in opts.
 ```
 
 ##### Record Specific Application/Window - Windows Only
