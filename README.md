@@ -72,17 +72,17 @@ opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
 # ffmpeg log will be stored in 'ffmpeg.log'
 ```
 
-##### Record Specific Application/Window - gdigrab (Windows) Only
+##### Record Specific Application/Window - Windows Only
 ```
 require 'watir'
 
 browser = Watir::Browser.new :firefox
 
 FFMPEG::RecordingRegions.fetch('firefox') # Name of exe
-#=> "Mozilla Firefox"
+#=> ["Mozilla Firefox"]
 
 opts      = { output:    'ffmpeg-screenrecorder-firefox.mp4',
-              input:     'Mozilla Firefox',
+              input:     FFMPEG::RecordingRegions.fetch('firefox').first,
               framerate: 30.0,
               log:       'ffmpeg-screenrecorder-firefox.txt' }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
