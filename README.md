@@ -64,10 +64,11 @@ opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
 # ... Run tests or whatever you want to record
 
 # Stop recording
-@recorder.stop
+@recorder.stop #=> #<FFMPEG::Movie:0x0000000004015b18 @path="ffmpeg-screenrecorder-desktop.mp4", ...>
 
 # Recorded file
-@recorder.video #=> 'ffmpeg-screenrecorder-desktop.mp4'
+@recorder.video #=> #<FFMPEG::Movie:0x0000000004015b18 @path="ffmpeg-screenrecorder-desktop.mp4", ...>
+
 
 # ffmpeg log will be stored in 'ffmpeg.log'
 ```
