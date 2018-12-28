@@ -1,7 +1,7 @@
 module FFMPEG
   # @since 1.0.0-beta2
   class RecorderOptions
-    DEFAULT_LOG_FILE = 'ffmpeg.log'
+    DEFAULT_LOG_FILE = 'ffmpeg.log'.freeze
 
     def initialize(options)
       @options = verify_options options
@@ -107,10 +107,10 @@ module FFMPEG
     #
     def advanced_options
       return nil unless @options[:advanced]
-      raise(ArgumentError, ':advanced cannot be empty.') if options[:advanced].empty?
+      raise(ArgumentError, ':advanced cannot be empty.') if @options[:advanced].empty?
 
       arr = []
-      options[:advanced].each do |k, v|
+      @options[:advanced].each do |k, v|
         arr.push "-#{k} #{v}"
       end
       arr.join(' ') + ' '

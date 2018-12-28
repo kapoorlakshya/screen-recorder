@@ -26,6 +26,7 @@ module FFMPEG
       elapsed    = Time.now - start_time
       FFMPEG.logger.debug "Process started in #{elapsed}s"
       FFMPEG.logger.info 'Recording...'
+      @process
     end
 
     #
