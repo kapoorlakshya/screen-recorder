@@ -42,3 +42,6 @@ Style/Documentation:
 # SupportedStyles: when_needed, always, never
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+TrailingBlankLines:
+  Enabled: false
