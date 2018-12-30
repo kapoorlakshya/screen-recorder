@@ -41,6 +41,7 @@ module FFMPEG
       # Returns list of windows when using Linux
       #
       def linux_os_window(application)
+        FFMPEG.logger.warn 'Note: Default capture device x11grab on Linux does not support window recording.'
         raise DependencyNotFound, 'wmctrl is not installed. Run: sudo apt-get install wmctrl.' unless wmctrl_installed?
 
         final_list = `wmctrl -l | awk '{$3=""; $2=""; $1=""; print $0}'` # Returns all open windows
