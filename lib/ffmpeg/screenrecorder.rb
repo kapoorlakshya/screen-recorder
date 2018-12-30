@@ -63,10 +63,9 @@ module FFMPEG
       elapsed = wait_for_io_eof(5)
       @process.close_write # Close IO
       elapsed
-
     rescue Errno::EPIPE
       # Gets last line from log file
-      err_line = get_lines_from_log(count = 2, :last)
+      err_line = get_lines_from_log(2, :last)
       raise FFMPEG::Error, err_line
     end
 
