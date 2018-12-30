@@ -9,6 +9,8 @@ branches:
     - master
 rvm:
   - 2.5.3
+addons:
+  firefox: latest
 before_install:
   - gem update --system
   - gem install bundler
