@@ -65,7 +65,7 @@ module FFMPEG
       elapsed
     rescue Errno::EPIPE
       # Gets last line from log file
-      err_line = get_lines_from_log(2, :last)
+      err_line = get_lines_from_log(:last, 2)
       raise FFMPEG::Error, err_line
     end
 
@@ -117,7 +117,7 @@ module FFMPEG
     #
     # Returns lines from the log file
     #
-    def get_lines_from_log(count = 2, position = :last)
+    def get_lines_from_log(position = :last, count = 2)
       f = File.open(options.log)
       lines = f.readlines
       lines = lines.last(count) if position == :last
