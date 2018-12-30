@@ -11,9 +11,13 @@ Supports Windows and Linux as of version `1.0.0-beta5`. macOS support will be ad
 
 ## Installation
 
-[Download](https://www.ffmpeg.org/download.html), extract and add the location of `ffmpeg.exe` to your ENV `PATH` variable. Make sure you can execute ffmpeg:
+On Microsoft Windows, [download](https://www.ffmpeg.org/download.html#build-windows), extract and add the location of `/bin` to your ENV `PATH` variable. 
 
-    C:\Users\Lakshya Kapoor>ffmpeg -version
+For Linux, follow instructions here - https://ffmpeg.org/download.html#build-linux
+
+Once installed, make sure ffmpeg is found:
+
+    $ ffmpeg -version
     ffmpeg version N-92132-g0a41a8bf29 Copyright (c) 2000-2018 the FFmpeg developers
     built with gcc 8.2.1 (GCC) 20180813
     configuration: --enable-gpl --enable-version3 --enable-sdl2 --enable-fontconfig --enable-g
@@ -34,7 +38,7 @@ Supports Windows and Linux as of version `1.0.0-beta5`. macOS support will be ad
     libswresample   3.  2.100 /  3.  2.100
     libpostproc    55.  2.100 / 55.  2.100
 
-Add this line to your application's Gemfile:
+Next, add this line to your application's Gemfile:
 
 ```ruby
 gem 'ffmpeg-screenrecorder'
