@@ -52,24 +52,25 @@ Or install it yourself as:
 
 #### Required Options
 
-1. `:input`
-2. `:output`
-3. `:framerate`
+- `:input` - `desktop` or application window name
+- `:output` - Output file location/name
+- `:framerate` - Capture FPS
 
 #### Advanced Options
 
-1. `:log`
-2. `:log_level` for this gem
+- `:log`  - Defaults to `ffmpeg.log`
+- `:log_level` for this gem
 
-All other FFmpeg options, such as compression, can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request features.
+All other FFmpeg options, such as compression, can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request a feature.
 
 <b>Example</b>:
 
 ```
-opts = { input:    'desktop',
+opts = { input:     'desktop',
          output:    'recorder-test.mp4',
          framerate: 30,
-         log:       'recorder.log' # Default -> ffmpeg.log 
+         log:       'recorder.log',
+         log_level: Logger::DEBUG,
          advanced:  { loglevel: 'level+debug',
                       preset:   'ultrafast',
                       crf:      22 }
@@ -79,8 +80,8 @@ opts = { input:    'desktop',
 ##### Record Desktop
 
 ```
-opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
-              input:     'desktop',
+opts      = { input:     'desktop',
+              output:    'screenrecorder-desktop.mp4',
               framerate: 30.0 }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 
@@ -96,7 +97,7 @@ opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
 @recorder.video #=> #<FFMPEG::Movie...>
 ```
 
-##### Record Specific Application/Window - Windows Only
+##### Record Application Window - Microsoft Windows (`gdigrab`) Only
 ```
 require 'watir'
 
@@ -105,10 +106,10 @@ browser = Watir::Browser.new :firefox
 FFMPEG::RecordingRegions.fetch('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 
-opts      = { output:    'ffmpeg-screenrecorder-firefox.mp4',
-              input:     FFMPEG::RecordingRegions.fetch('firefox').first,
+opts      = { input:     FFMPEG::RecordingRegions.fetch('firefox').first,
+              output:    'screenrecorder-firefox.mp4',
               framerate: 30.0,
-              log:       'ffmpeg-screenrecorder-firefox.txt' }
+              log:       'screenrecorder-firefox.log' }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 
 # Start recording
@@ -125,12 +126,12 @@ browser.quit
 ```
 
 <b>Note</b>:
-1. Always stop the recording before closing the application. Otherwise, ffmpeg will force exit as soon as the window disappears and may produce an invalid video file.
-2. If you're launching multiple applications or testing an application at different window sizes, recording the `desktop` is a better option.
+- Always stop the recording before closing the application. Otherwise, ffmpeg will force exit as soon as the window disappears and may produce an invalid video file.
+- If you're launching multiple applications or testing an application at different window sizes, recording the `desktop` is a better option.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. 
 
@@ -138,8 +139,8 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 
 Bug reports and pull requests are welcome. 
 
-1. Please update the specs for your code changes and run them locally with `bundle exec rake spec`.
-2. Follow the Ruby style guide and format your code - https://github.com/rubocop-hq/ruby-style-guide
+- Please update the specs for your code changes and run them locally with `bundle exec rake spec`.
+- Follow the Ruby style guide and format your code - https://github.com/rubocop-hq/ruby-style-guide
 
 ## License
 
