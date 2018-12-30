@@ -14,11 +14,10 @@ module FFMPEG
       #
       # Returns a cleaned up list of available window titles
       # for the given application (process) name.
-      # Note: Only supports Windows OS as of version beta2.
       #
       def available_windows_for(application)
-        return windows_os(application) if OS.windows?
-        return linux_os(application) if OS.linux?
+        return windows_os_window(application) if OS.windows?
+        return linux_os_window(application) if OS.linux?
 
         raise NotImplementedError, 'Your OS is not supported.'
       end
@@ -26,12 +25,12 @@ module FFMPEG
       private
 
       #
-      # Returns list of windows for Microsoft Windows
+      # Returns list of windows when using Microsoft Windows
       #
-      def windows_os(application)
+      def windows_os_window(application)
         raw_list   = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
-                     .split("\n")
-                     .reject { |title| title == 'Window Title: N/A' }
+                       .split("\n")
+                       .reject { |title| title == 'Window Title: N/A' }
         final_list = raw_list.map { |i| i.gsub('Window Title: ', '') } # Match ffmpeg expected format
         raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}.exe" if final_list.empty?
 
@@ -39,15 +38,15 @@ module FFMPEG
       end
 
       #
-      # Returns list of windows for Linux
+      # Returns list of windows when using Linux
       #
-      def linux_os(application)
+      def linux_os_window(application)
         raise DependencyNotFound, 'wmctrl is not installed. Run: sudo apt-get install wmctrl.' unless wmctrl_installed?
 
         final_list = `wmctrl -l | awk '{$3=""; $2=""; $1=""; print $0}'` # Returns all open windows
-                     .split("\n")
-                     .map(&:strip)
-                     .select { |t| t.match?(/#{application}/i) } # Narrow down to given application
+                       .split("\n")
+                       .map(&:strip)
+                       .select { |t| t.match?(/#{application}/i) } # Narrow down to given application
         raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}" if final_list.empty?
 
         final_list
