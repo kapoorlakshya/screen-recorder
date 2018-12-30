@@ -50,6 +50,29 @@ Or install it yourself as:
 
 ## Usage
 
+#### Required Options
+
+1. output
+2. input
+3. framerate
+
+#### Advanced Options
+
+All other FFmpeg options besides the required ones can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request features.
+
+<b>Example</b>:
+
+```
+opts = { framerate: 30,
+         infile:    'desktop',
+         output:    'recorder-test.mp4',
+         log:       'recorder.log' # Default -> ffmpeg.log 
+         advanced:  { loglevel: 'level+debug',
+                      preset:   'ultrafast',
+                      crf:      22 }
+}
+```
+
 ##### Record Desktop
 
 ```
@@ -64,12 +87,10 @@ opts      = { output:    'ffmpeg-screenrecorder-desktop.mp4',
 # ... Run tests or whatever you want to record
 
 # Stop recording
-@recorder.stop #=> #<FFMPEG::Movie:0x0000000004015b18 @path="ffmpeg-screenrecorder-desktop.mp4", ...>
+@recorder.stop #=> #<FFMPEG::Movie...>
 
 # Recorded file
-@recorder.video #=> #<FFMPEG::Movie:0x0000000004015b18 @path="ffmpeg-screenrecorder-desktop.mp4", ...>
-
-# ffmpeg log will be stored in 'ffmpeg.log' unless provided in opts.
+@recorder.video #=> #<FFMPEG::Movie...>
 ```
 
 ##### Record Specific Application/Window - Windows Only
