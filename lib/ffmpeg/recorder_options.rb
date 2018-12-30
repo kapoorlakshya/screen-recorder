@@ -22,10 +22,10 @@ module FFMPEG
     end
 
     #
-    # Returns given input file or infile
+    # Returns given input file or input
     #
-    def infile
-      @options[:infile]
+    def input
+      @options[:input]
     end
 
     #
@@ -71,7 +71,7 @@ module FFMPEG
       vals = "-f #{determine_format} "
       vals << "-r #{@options[:framerate]} "
       vals << advanced_options if @options[:advanced]
-      vals << "-i #{determine_infile} "
+      vals << "-i #{determine_input} "
       vals << @options[:output]
       vals << ffmpeg_log_to(@options[:log]) # If provided
     end
@@ -97,7 +97,7 @@ module FFMPEG
       # -r framerate
       # -i input
       # output
-      return %i[framerate infile output] unless OS.linux?
+      return %i[framerate input output] unless OS.linux?
 
       %i[framerate output] # Linux
     end
@@ -126,18 +126,18 @@ module FFMPEG
     end
 
     #
-    # Returns final infile parameter.
-    # Adds title= qualifier to infile parameter
+    # Returns final input parameter.
+    # Adds title= qualifier to input parameter
     # unless the user is recording the desktop.
     #
-    def determine_infile
+    def determine_input
       # x11grab doesn't support window capture
       return ':0.0' if OS.linux?
 
-      return @options[:infile] if @options[:infile] == 'desktop'
+      return @options[:input] if @options[:input] == 'desktop'
 
       # Windows only
-      %("title=#{@options[:infile]}")
+      %("title=#{@options[:input]}")
     end
 
     #

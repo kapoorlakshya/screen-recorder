@@ -16,7 +16,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     context 'user provides all required options' do
       let(:opts) do
         { output:    'recorder-output.mkv',
-          infile:    'desktop',
+          input:    'desktop',
           framerate: 30.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -45,7 +45,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     describe '#options' do
       let(:opts) do
         { output:    'recorder-output.mkv',
-          infile:    'desktop',
+          input:    'desktop',
           framerate: 30.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -75,7 +75,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     describe '#start' do
       let(:opts) do
         { output:    'recorder-output.mkv',
-          infile:    'desktop',
+          input:    'desktop',
           framerate: 30.0,
           log:       'recorder-log.txt' }
       end
@@ -106,7 +106,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
   context 'the user is ready to stop the recording' do
     let(:opts) do
       { output:    'recorder-output.mkv',
-        infile:    'desktop',
+        input:    'desktop',
         framerate: 30.0 }
     end
     let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -142,7 +142,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
   context 'the user provides an invalid option' do
     let(:opts) do
       { output: 'recorder-output.mkv',
-        infile: 'myscreen', # Invalid option
+        input: 'myscreen', # Invalid option
         framerate: 30.0 }
     end
     let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -206,14 +206,14 @@ RSpec.describe FFMPEG::ScreenRecorder do
   # Windows Only
   #
   if OS.windows? # Only gdigrab supports window capture
-    describe '#start with opts[:infile] as "Mozilla Firefox"' do
+    describe '#start with opts[:input] as "Mozilla Firefox"' do
       let(:browser) do
         Webdrivers.install_dir = 'webdrivers_bin'
         Watir::Browser.new :firefox
       end
       let(:opts) do
         { output:    'firefox-recorder.mp4',
-          infile:    'Mozilla Firefox',
+          input:    'Mozilla Firefox',
           framerate: 30,
           log:       'ffmpeg-log.txt',
           log_level: Logger::DEBUG }

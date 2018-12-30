@@ -52,7 +52,7 @@ Or install it yourself as:
 
 #### Required Options
 
-1. `:infile`
+1. `:input`
 2. `:output`
 3. `:framerate`
 
@@ -66,7 +66,7 @@ All other FFmpeg options, such as compression, can be passed through the `advanc
 <b>Example</b>:
 
 ```
-opts = { infile:    'desktop',
+opts = { input:    'desktop',
          output:    'recorder-test.mp4',
          framerate: 30,
          log:       'recorder.log' # Default -> ffmpeg.log 
