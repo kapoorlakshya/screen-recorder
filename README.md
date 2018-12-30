@@ -52,20 +52,23 @@ Or install it yourself as:
 
 #### Required Options
 
-1. output
-2. input
-3. framerate
+1. `:infile`
+2. `:output`
+3. `:framerate`
 
 #### Advanced Options
 
-All other FFmpeg options besides the required ones can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request features.
+1. `:log`
+2. `:log_level` for this gem
+
+All other FFmpeg options, such as compression, can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request features.
 
 <b>Example</b>:
 
 ```
-opts = { framerate: 30,
-         infile:    'desktop',
+opts = { infile:    'desktop',
          output:    'recorder-test.mp4',
+         framerate: 30,
          log:       'recorder.log' # Default -> ffmpeg.log 
          advanced:  { loglevel: 'level+debug',
                       preset:   'ultrafast',
