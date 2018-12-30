@@ -133,7 +133,10 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome. Please follow the Ruby style guide here: https://github.com/rubocop-hq/ruby-style-guide
+Bug reports and pull requests are welcome. 
+
+1. Please update the specs for your code changes and run them locally with `bundle exec rake spec`.
+2. Follow the Ruby style guide and format your code - https://github.com/rubocop-hq/ruby-style-guide
 
 ## License
 
