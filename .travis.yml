@@ -1,7 +1,7 @@
 ---
 sudo: required
 os:
-  - windows
+  - linux
 language: ruby
 cache: bundler
 branches:
