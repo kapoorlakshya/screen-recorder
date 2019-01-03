@@ -1,9 +1,10 @@
 ### 1.0.0.beta8 (TBD)
 
+* Fix a bug where the gem was incorrectly configured to be required as `ffmpeg/screenrecorder` instead of `ffmpeg-screenrecorder`.
 * `ScreenRecorder#start` now returns the IO process object in case the user has a use case for it.
 * `RecordingRegion#fetch` now logs a warning that `x11grab` for Linux does not supporting window recording.
 * :warning: Parameter `infile` is now `input` to make it more intuitive.
-
+g
 ### 1.0.0.beta7 (2018-12-23)
 
 * Fix bug in RecorderOptions where an incorrect object was referenced to read the user provided options.
