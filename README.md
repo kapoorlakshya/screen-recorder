@@ -57,7 +57,7 @@ Or install it yourself as:
 
 #### Required Options
 
-- `:input` - `desktop` or application window name
+- `:input` - `'desktop'` or application window name
 - `:output` - Output file location/name
 - `:framerate` - Capture FPS
 
@@ -131,6 +131,9 @@ browser.quit
 <b>Note</b>:
 - Always stop the recording before closing the application. Otherwise, ffmpeg will force exit as soon as the window disappears and may produce an invalid video file.
 - If you're launching multiple applications or testing an application at different window sizes, recording the `desktop` is a better option.
+
+## Example with Cucumber + Watir
+[kapoorlakshya/cucumber-watir-test-recorder-example](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example)
 
 ## Development
 
