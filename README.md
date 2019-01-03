@@ -149,3 +149,9 @@ Bug reports and pull requests are welcome.
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Credits
+
+![SauceLabs Logo](https://saucelabs.com/content/images/logo.png)
+
+Thanks to [SauceLabs](https://saucelabs.com) for providing me with a free account. If you manage an open source project, you can get your free account [here](https://saucelabs.com/open-source).
