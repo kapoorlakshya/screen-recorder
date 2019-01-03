@@ -156,4 +156,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ![SauceLabs Logo](https://saucelabs.com/content/images/logo.png)
 
-Thanks to [SauceLabs](https://saucelabs.com) for providing me with a free account. If you manage an open source project, you can get your free account [here](https://saucelabs.com/open-source).
+Thanks to [SauceLabs](https://saucelabs.com) for providing me with a free account. If you manage an open source project, you can apply for a free account [here](https://saucelabs.com/open-source).
