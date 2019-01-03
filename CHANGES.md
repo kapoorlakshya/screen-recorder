@@ -1,4 +1,4 @@
-### 1.0.0.beta8 (TBD)
+### 1.0.0.beta8 (2019-01-03)
 
 * Fix a bug where the gem was incorrectly configured to be required as `ffmpeg/screenrecorder` instead of `ffmpeg-screenrecorder`.
 * `ScreenRecorder#start` now returns the IO process object in case the user has a use case for it.
