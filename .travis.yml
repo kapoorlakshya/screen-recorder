@@ -20,5 +20,8 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install -y ffmpeg
   - ffmpeg -hwaccels
+  - "export DISPLAY=:0.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
   - echo $DISPLAY
-script: xvfb-run --server-args="-screen 0 1024x768x24" rake spec
+script: bundle exec rake spec
