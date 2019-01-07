@@ -21,3 +21,4 @@ before_script:
   - sudo apt-get install -y ffmpeg
   - ffmpeg -hwaccels
   - echo $DISPLAY
+script: xvfb-run --server-args="-screen 0 1024x768x24" rake spec
