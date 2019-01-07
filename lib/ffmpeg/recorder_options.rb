@@ -132,7 +132,7 @@ module FFMPEG
     #
     def determine_input
       # x11grab doesn't support window capture
-      return ':0' if OS.linux?
+      return ':0.0' if OS.linux?
 
       return @options[:input] if @options[:input] == 'desktop'
 
