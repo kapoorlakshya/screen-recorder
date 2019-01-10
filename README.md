@@ -68,15 +68,15 @@ Or install it yourself as:
 
 All other FFmpeg options can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request a feature.
 
-<b>Example</b>:
-
 ```
 opts = { input:     'desktop',
          output:    'recorder-test.mp4',
          framerate: 30,
          log:       'recorder.log',
          log_level: Logger::DEBUG, # For gem
-         advanced:  { loglevel: 'level+debug' } # For FFmpeg
+         advanced: { loglevel: 'level+debug', # For FFmpeg
+                     video_size:  '640x480',
+                     show_region: '1' }
 }
 ```
 
