@@ -132,8 +132,11 @@ browser.quit
 - Always stop the recording before closing the application. Otherwise, ffmpeg will force exit as soon as the window disappears and may produce an invalid video file.
 - If you're launching multiple applications or testing an application at different window sizes, recording the `desktop` is a better option.
 
-## Example with Cucumber + Watir
-[kapoorlakshya/cucumber-watir-test-recorder-example](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example)
+## Demo
+
+You can find example video recordings here - [https://kapoorlakshya.github.io/record-videos-of-your-browser-or-gui-based-automated-tests/](https://kapoorlakshya.github.io/record-videos-of-your-browser-or-gui-based-automated-tests/)
+
+Cucumber + Watir based example - [kapoorlakshya/cucumber-watir-test-recorder-example](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example)
 
 ## Development
 
