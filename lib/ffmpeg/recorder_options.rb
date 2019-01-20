@@ -64,7 +64,7 @@ module FFMPEG
     end
 
     #
-    # Returns a String with all options parsed as a String,
+    # Returns a String with all options parsed and
     # ready for the ffmpeg process to use
     #
     def parsed
