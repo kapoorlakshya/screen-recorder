@@ -134,7 +134,7 @@ browser.quit
 
 ## Demo
 
-You can find example video recordings here - [https://kapoorlakshya.github.io/record-videos-of-your-browser-or-gui-based-automated-tests/](https://kapoorlakshya.github.io/record-videos-of-your-browser-or-gui-based-automated-tests/)
+You can find example video recordings here - [https://kapoorlakshya.github.io/introducing-ffmpeg-screenrecorder](https://kapoorlakshya.github.io/introducing-ffmpeg-screenrecorder)
 
 Cucumber + Watir based example - [kapoorlakshya/cucumber-watir-test-recorder-example](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example)
 
