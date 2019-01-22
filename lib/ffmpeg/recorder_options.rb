@@ -4,6 +4,12 @@ module FFMPEG
     DEFAULT_LOG_FILE = 'ffmpeg.log'.freeze
 
     def initialize(options)
+      raise ArgumentError, "Expected Hash, given: #{options.class}" unless options.is_a? Hash
+
+      if options[:advanced]
+        raise ArgumentError, "Expected Hash, given: #{options.class}" unless options[:advanced].is_a? Hash
+      end
+
       @options = verify_options options
     end
 
