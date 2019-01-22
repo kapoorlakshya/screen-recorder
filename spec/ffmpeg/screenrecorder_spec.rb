@@ -17,7 +17,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
       let(:opts) do
         { output:    'recorder-output.mkv',
           input:    'desktop',
-          framerate: 30.0 }
+          framerate: 15.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
@@ -40,7 +40,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
       let(:opts) do
         { output:    'recorder-output.mkv',
           input:    'desktop',
-          framerate: 30.0 }
+          framerate: 15.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
@@ -65,7 +65,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
       let(:opts) do
         { output:    'recorder-output.mkv',
           input:    'desktop',
-          framerate: 30.0,
+          framerate: 15.0,
           log:       'recorder-log.txt' }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -96,7 +96,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     let(:opts) do
       { output:    'recorder-output.mkv',
         input:    'desktop',
-        framerate: 30.0 }
+        framerate: 15.0 }
     end
     let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
@@ -132,7 +132,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     let(:opts) do
       { output: 'recorder-output.mkv',
         input: 'myscreen', # Invalid option
-        framerate: 30.0 }
+        framerate: 15.0 }
     end
     let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
@@ -203,7 +203,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
       let(:opts) do
         { output:    'firefox-recorder.mp4',
           input:    'Mozilla Firefox',
-          framerate: 30,
+          framerate: 15,
           log:       'ffmpeg-log.txt',
           log_level: Logger::DEBUG }
       end

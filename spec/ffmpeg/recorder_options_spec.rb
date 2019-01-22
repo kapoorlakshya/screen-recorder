@@ -4,7 +4,7 @@ RSpec.describe FFMPEG::RecorderOptions do
   let(:opts) do
     { input:     'desktop',
       output:    'recorder-output.mkv',
-      framerate: 30.0,
+      framerate: 15.0,
       log_level: Logger::INFO,
       advanced:  { loglevel: 'level+debug', # For FFmpeg
                    video_size:  '640x480',
@@ -69,7 +69,7 @@ RSpec.describe FFMPEG::RecorderOptions do
       it 'raise ArgumentError if user provides an object other than a Hash' do
         bad_opts = { output:    'recorder-output.mkv',
                      input:     'desktop',
-                     framerate: 30.0,
+                     framerate: 15.0,
                      advanced:  %w(let me fool you) }
         expect { FFMPEG::RecorderOptions.new(bad_opts) }.to raise_exception(ArgumentError)
       end
