@@ -109,6 +109,11 @@ module FFMPEG
 
       return !`where ffmpeg`.empty? if OS.windows?
 
+      # If the user does not use FFMPEG#ffmpeg_binary=() to set the binary path,
+      # FFMPEG#ffmpeg_binary returns 'ffmpeg' assuming it must be in ENV. However,
+      # if the above two checks fail, it is not in the ENV either.
+      return false if FFMPEG.ffmpeg_binary == 'ffmpeg'
+
       true
     end
 
@@ -116,7 +121,7 @@ module FFMPEG
     # Returns lines from the log file
     #
     def get_lines_from_log(position = :last, count = 2)
-      f = File.open(options.log)
+      f     = File.open(options.log)
       lines = f.readlines
       lines = lines.last(count) if position == :last
       lines = lines.first(count) if position == :first
