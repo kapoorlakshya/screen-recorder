@@ -33,12 +33,6 @@ RSpec.describe FFMPEG::ScreenRecorder do
         expect(recorder.video).to be_nil
       end
     end
-
-    context 'user does not provide required options' do
-      it 'raises an error when required options are not provided' do
-        expect { FFMPEG::ScreenRecorder.new({}) }.to raise_exception(ArgumentError)
-      end
-    end
   end # describe #new
 
   context 'given FFMPEG::ScreenRecorder has been initialized' do
@@ -50,24 +44,19 @@ RSpec.describe FFMPEG::ScreenRecorder do
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
-      it 'returns a Hash of options' do
-        expect(recorder.options.all).to be_a(Hash)
+      it 'returns a FFMPEG::RecorderOptions object' do
+        expect(recorder.options).to be_a(FFMPEG::RecorderOptions)
       end
 
-      it 'returns valid format for current OS' do
-        expected_format = if OS.windows?
-                            'gdigrab'
-                          elsif OS.linux?
-                            'x11grab'
-                          elsif OS.mac?
-                            'avfoundation'
-                          else
-                            raise NotImplementedError, 'Your OS is not supported.'
-                          end
-        expect(recorder.options.format).to eql(expected_format)
+      it 'sets output value' do
+        expect(recorder.options.output).to be(opts.output)
       end
 
-      it 'sets log file name to the default name' do
+      it 'sets input value' do
+        expect(recorder.options.input).to be(opts.input)
+      end
+
+      it 'sets default log file name' do
         expect(recorder.options.log).to eq('ffmpeg.log')
       end
     end
