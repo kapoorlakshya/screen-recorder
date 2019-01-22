@@ -49,11 +49,11 @@ RSpec.describe FFMPEG::ScreenRecorder do
       end
 
       it 'sets output value' do
-        expect(recorder.options.output).to be(opts.output)
+        expect(recorder.options.output).to be(opts[:output])
       end
 
       it 'sets input value' do
-        expect(recorder.options.input).to be(opts.input)
+        expect(recorder.options.input).to be(opts[:input])
       end
 
       it 'sets default log file name' do
