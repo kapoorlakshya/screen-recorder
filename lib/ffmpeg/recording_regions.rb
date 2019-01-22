@@ -30,7 +30,7 @@ module FFMPEG
       def windows_os_window(application)
         raw_list   = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
                        .split("\n")
-                       .reject { |title| title == 'Window Title: N/A' }
+                       .select { |t| t.match?(/#{application}/i) } # Narrow down to given application
         final_list = raw_list.map { |i| i.gsub('Window Title: ', '') } # Match ffmpeg expected format
         raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}.exe" if final_list.empty?
 
