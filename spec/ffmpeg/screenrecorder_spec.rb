@@ -16,7 +16,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     context 'user provides all required options' do
       let(:opts) do
         { output:    'recorder-output.mkv',
-          input:    'desktop',
+          input:     'desktop',
           framerate: 15.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -39,7 +39,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     describe '#options' do
       let(:opts) do
         { output:    'recorder-output.mkv',
-          input:    'desktop',
+          input:     'desktop',
           framerate: 15.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -64,7 +64,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     describe '#start' do
       let(:opts) do
         { output:    'recorder-output.mkv',
-          input:    'desktop',
+          input:     'desktop',
           framerate: 15.0,
           log:       'recorder-log.txt' }
       end
@@ -95,7 +95,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
   context 'the user is ready to stop the recording' do
     let(:opts) do
       { output:    'recorder-output.mkv',
-        input:    'desktop',
+        input:     'desktop',
         framerate: 15.0 }
     end
     let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -131,7 +131,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
   context 'the user provides an invalid option' do
     let(:opts) do
       { output: 'recorder-output.mkv',
-        input: 'myscreen', # Invalid option
+        input:  'myscreen', # Invalid option
         framerate: 15.0 }
     end
     let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -144,6 +144,35 @@ RSpec.describe FFMPEG::ScreenRecorder do
     describe '#stop' do
       it 'raises an exception and prints ffmpeg error to console' do
         expect { recorder.stop }.to raise_exception(FFMPEG::Error)
+      end
+    end
+
+    #
+    # Clean up
+    #
+    after do
+      FileUtils.rm recorder.options.log
+    end
+  end
+
+  context 'user wants to discard the video' do
+    let(:opts) do
+      { input:     'desktop',
+        output:    'recorder-output.mkv',
+        framerate: 15.0 }
+    end
+    let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
+
+    before do
+      recorder.start
+      sleep(1.0)
+      recorder.stop
+    end
+
+    describe '#discard' do
+      it 'discards the recorded video at the given output filepath' do
+        recorder.discard
+        expect(File).to_not exist(recorder.options.output)
       end
     end
 
@@ -202,7 +231,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
       end
       let(:opts) do
         { output:    'firefox-recorder.mp4',
-          input:    'Mozilla Firefox',
+          input:     'Mozilla Firefox',
           framerate: 15,
           log:       'ffmpeg-log.txt',
           log_level: Logger::DEBUG }
