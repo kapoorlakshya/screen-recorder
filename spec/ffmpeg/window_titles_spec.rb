@@ -4,7 +4,7 @@ require_relative '../spec_helper'
 # Windows Only
 #
 if OS.windows? # Only gdigrab supports window capture
-  RSpec.describe FFMPEG::RecordingRegions do
+  RSpec.describe FFMPEG::WindowTitles do
     describe '#fetch' do
       let(:browser_process) {
         'firefox'
@@ -27,7 +27,7 @@ if OS.windows? # Only gdigrab supports window capture
         # Note: browser is lazily loaded with let
         browser.goto url
         browser.wait
-        expect(FFMPEG::RecordingRegions.fetch(browser_process)).to eql(expected_title)
+        expect(FFMPEG::WindowTitles.fetch(browser_process)).to eql(expected_title)
         browser.quit
       end
     end # describe

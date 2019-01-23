@@ -1,6 +1,6 @@
 require_relative 'recorder_errors'
 require_relative 'recorder_options'
-require_relative 'recording_regions'
+require_relative 'window_titles'
 
 module FFMPEG
   # @since 1.0.0-beta

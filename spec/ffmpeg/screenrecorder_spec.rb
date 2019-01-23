@@ -167,18 +167,18 @@ RSpec.describe FFMPEG::ScreenRecorder do
 
       it 'returns a list of available windows from firefox' do
         browser.wait
-        expect(FFMPEG::RecordingRegions.fetch('firefox')).to be_a_kind_of(Array)
+        expect(FFMPEG::WindowTitles.fetch('firefox')).to be_a_kind_of(Array)
       end
 
       it 'does not return an empty list' do
         browser.wait
-        expect(FFMPEG::RecordingRegions.fetch('firefox').empty?).to be(false)
+        expect(FFMPEG::WindowTitles.fetch('firefox').empty?).to be(false)
       end
 
       it 'returns the title of the currently open window' do
         browser.goto 'google.com'
         browser.wait
-        expect(FFMPEG::RecordingRegions.fetch('firefox').first).to eql('Google - Mozilla Firefox')
+        expect(FFMPEG::WindowTitles.fetch('firefox').first).to eql('Google - Mozilla Firefox')
       end
 
       after { browser.quit }
@@ -186,7 +186,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
 
     context 'given a firefox window is not open' do
       it 'raises an exception' do
-        expect { FFMPEG::RecordingRegions.fetch('firefox') }.to raise_exception(FFMPEG::RecorderErrors::ApplicationNotFound)
+        expect { FFMPEG::WindowTitles.fetch('firefox') }.to raise_exception(FFMPEG::RecorderErrors::ApplicationNotFound)
       end
     end # context
   end # describe
