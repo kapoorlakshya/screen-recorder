@@ -16,6 +16,10 @@ Gemfile.lock # Part of best practice
 /tmp/
 /webdrivers_bin
 *.log
+*.mkv
+*.mp4
+*.avi
+*.gif
 
 Gemfile.lock
 
