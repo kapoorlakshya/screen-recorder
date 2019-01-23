@@ -12,7 +12,8 @@ Supports Windows and Linux as of version `1.0.0-beta5`. macOS support will be ad
 
 ## Installation
 
-On Microsoft Windows, [download](https://www.ffmpeg.org/download.html#build-windows), extract and add the location of `/bin` to your ENV `PATH` variable. 
+On Microsoft Windows, [download](https://www.ffmpeg.org/download.html#build-windows), extract and add the location of `/bin` to your ENV `PATH` variable.  If you want to use `libx264`, download
+[this build](https://ffmpeg.zeranoe.com/builds/) instead.
 
 For Linux, follow instructions here - https://ffmpeg.org/download.html#build-linux
 
