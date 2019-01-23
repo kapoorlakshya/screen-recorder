@@ -174,6 +174,10 @@ RSpec.describe FFMPEG::ScreenRecorder do
         recorder.discard
         expect(File).to_not exist(recorder.options.output)
       end
+
+      it 'responds to #delete' do
+        expect(recorder.method(:discard)).to eql(recorder.method(:delete))
+      end
     end
 
     #
