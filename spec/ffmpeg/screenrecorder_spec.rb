@@ -158,7 +158,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
   #
   # Application/Window Recording
   #
-  describe '.window_titles' do
+  describe '.fetch' do
     context 'given a firefox window is open' do
       let(:browser) do
         Webdrivers.install_dir = 'webdrivers_bin'
