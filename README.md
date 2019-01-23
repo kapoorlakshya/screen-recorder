@@ -54,6 +54,10 @@ Or install it yourself as:
 
     $ gem install ffmpeg-screenrecorder
 
+Require it in your project and start using the gem:
+
+    require ffmpeg-screenrecorder
+
 ## Usage
 
 #### Required Options
