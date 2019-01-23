@@ -1,8 +1,9 @@
-### 1.0.0.beta9 (TBD)
+### 1.0.0.beta9 (2019-01-22)
 
 * :warning: `FFMPEG::RecordingRegions` is now `FFMPEG::WindowTitles`, so the module name is true to the function it provides.
 * Added support for for a user given path via `FFMPEG#ffmpeg_binary=()`.
 * Removed Bundler version requirement from gemspec to support all versions.
+* Implement `#discard` (alias `#delete`) to discard the video file. Useful when your test passes and you want to get rid of the video file.
 
 ### 1.0.0.beta8 (2019-01-03)
 
