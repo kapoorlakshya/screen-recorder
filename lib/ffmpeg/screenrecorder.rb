@@ -48,6 +48,8 @@ module FFMPEG
       FileUtils.rm options.output
     end
 
+    alias_method :delete, :discard
+
     private
 
     #
