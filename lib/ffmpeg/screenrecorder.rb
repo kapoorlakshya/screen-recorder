@@ -39,6 +39,15 @@ module FFMPEG
       @video = Movie.new(options.output)
     end
 
+    #
+    # Discards the recorded file. Useful in automated testing
+    # when a test passes and the recorded file is no longer
+    # needed.
+    #
+    def discard
+      FileUtils.rm options.output
+    end
+
     private
 
     #
