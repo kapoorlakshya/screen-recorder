@@ -72,7 +72,7 @@ All other FFmpeg options can be passed through the `advanced` key. This feature 
 ```
 opts = { input:     'desktop',
          output:    'recorder-test.mp4',
-         framerate: 30,
+         framerate: 15,
          log:       'recorder.log',
          log_level: Logger::DEBUG, # For gem
          advanced: { loglevel: 'level+debug', # For FFmpeg
@@ -86,7 +86,7 @@ opts = { input:     'desktop',
 ```
 opts      = { input:     'desktop',
               output:    'screenrecorder-desktop.mp4',
-              framerate: 30.0 }
+              framerate: 15.0 }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 
 # Start recording
@@ -112,7 +112,7 @@ FFMPEG::RecordingRegions.fetch('firefox') # Name of exe
 
 opts      = { input:     FFMPEG::RecordingRegions.fetch('firefox').first,
               output:    'screenrecorder-firefox.mp4',
-              framerate: 30.0,
+              framerate: 15.0,
               log:       'screenrecorder-firefox.log' }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 
