@@ -172,6 +172,13 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Credits
 
+[![Streamio](http://d253c4ja9jigvu.cloudfront.net/assets/small-logo.png)](http://streamio.com)
+
+This gem is based on the backbone provided by the [streamio-ffmpeg](https://github.com/streamio/streamio-ffmpeg) gem.
+Thanks to its maintainers for the wonderful features!
+<br />
+<br />
+
 ![SauceLabs Logo](https://saucelabs.com/content/images/logo.png)
 
 Thanks to [SauceLabs](https://saucelabs.com) for providing me with a free account. If you manage an open source project, you can apply for a free account [here](https://saucelabs.com/open-source).
