@@ -82,7 +82,8 @@ module FFMPEG
 
     #
     # Verifies the required options are provided and returns
-    # the given options Hash
+    # the given options Hash. Raises ArgumentError if all required
+    # options are not present in the given Hash.
     #
     def verify_options(options)
       missing_options = required_options.select { |req| options[req].nil? }
