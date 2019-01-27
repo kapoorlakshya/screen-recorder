@@ -5,11 +5,7 @@ module FFMPEG
 
     def initialize(options)
       TypeChecker.check options, Hash
-
-      if options[:advanced]
-        TypeChecker.check options[:advanced], Hash
-      end
-
+      TypeChecker.check options[:advanced], Hash if options[:advanced]
       @options = verify_options options
     end
 
