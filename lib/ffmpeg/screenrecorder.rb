@@ -1,4 +1,5 @@
 require 'fileutils'
+require_relative 'type_checker'
 require_relative 'recorder_errors'
 require_relative 'recorder_options'
 require_relative 'window_titles'
