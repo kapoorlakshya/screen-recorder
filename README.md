@@ -15,7 +15,7 @@ Supports Windows and Linux as of version `1.0.0-beta5`. macOS support will be ad
 
 #### 1. Setup FFmpeg
 
-Download FFmpeg and add location of the binary to the `PATH` environment variable.
+Download FFmpeg and add location of the binary to the `PATH` environment variable if using Microsoft Windows ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
 Alternatively, you can define the path via `FFMPEG.ffmpeg_binary='/path/to/binary'` in your project.
 
 
