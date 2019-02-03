@@ -15,15 +15,14 @@ Supports Windows and Linux as of version `1.0.0-beta5`. macOS support will be ad
 
 #### 1. Setup FFmpeg
 
-Download FFmpeg and add location of the binary to the `PATH` environment variable if using Microsoft Windows ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
-Alternatively, you can define the path via `FFMPEG.ffmpeg_binary='/path/to/binary'` in your project.
-
-
 | OS                | Download                                                                       |
 |-------------------|--------------------------------------------------------------------------------|
 | Microsoft Windows | [ffmpeg.org#build-windows](https://www.ffmpeg.org/download.html#build-windows) or [libx264 enabled build](https://ffmpeg.zeranoe.com/builds/) |
 | Linux             | [ffmpeg.org#build-linux](https://ffmpeg.org/download.html#build-linux)        |
 | macOS             | [ffmpeg.org#build-mac](https://www.ffmpeg.org/download.html#build-mac)         |
+
+<b>Note</b>: Add location of the `/bin` folder to `PATH` environment variable if using Microsoft Windows ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
+Alternatively, you can define the location using `FFMPEG.ffmpeg_binary='/path/to/binary'` in your project.
 
 #### 2. Install gem
 
@@ -39,7 +38,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install ffmpeg-screenrecorder
+    $ gem install ffmpeg-screenrecorder --pre
 
 #### 3. Require gem
 
