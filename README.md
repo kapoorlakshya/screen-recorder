@@ -50,7 +50,7 @@ require 'ffmpeg-screenrecorder'
 
 ##### Record Desktop
 
-```
+```ruby
 opts      = { input:     'desktop',
               output:    'screenrecorder-desktop.mp4',
               framerate: 15.0 }
@@ -79,7 +79,8 @@ opts      = { input:     'desktop',
 ```
 
 ##### Record Application Window - Microsoft Windows (`gdigrab`) Only
-```
+
+```ruby
 require 'watir'
 
 browser = Watir::Browser.new :firefox
@@ -116,7 +117,7 @@ browser.quit
 
 All other FFmpeg options can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request a feature.
 
-```
+```ruby
 opts = { input:     'desktop',
          output:    'recorder-test.mp4',
          framerate: 15,
