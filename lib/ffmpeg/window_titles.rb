@@ -1,6 +1,8 @@
 module FFMPEG
   # @since 1.0.0-beta4
   module WindowTitles
+    IGNORED_WINDOW_TITLES = %r{^Window Title:( N/A|\s+)?} # From Chrome extensions
+
     #
     # Returns a list of available window titles for the given application (process) name.
     #
@@ -25,32 +27,33 @@ module FFMPEG
       private
 
       #
-      # Returns list of windows when using Microsoft Windows
+      # Returns list of window titles in FFmpeg expected format when using Microsoft Windows
       #
       def windows_os_window(application)
-        raw_list   = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
-                       .split("\n")
-                       .select { |t| t.match?(/#{application}/i) } # Narrow down to given application
-        final_list = raw_list.map { |i| i.gsub('Window Title: ', '') } # Match ffmpeg expected format
-        raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}.exe" if final_list.empty?
+        titles = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
+                   .split("\n")
+                   .map { |i| i.gsub(IGNORED_WINDOW_TITLES, '') }
+                   .reject(&:empty?)
+        raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}.exe" if titles.empty?
 
-        final_list
+        titles
       end
 
       #
-      # Returns list of windows when using Linux
+      # Returns list of window titles in FFmpeg expected format when using Linux
       #
       def linux_os_window(application)
         FFMPEG.logger.warn 'Note: Default capture device x11grab on Linux does not support window recording.'
-        raise DependencyNotFound, 'wmctrl is not installed. Run: sudo apt-get install wmctrl.' unless wmctrl_installed?
+        raise DependencyNotFound, 'wmctrl is not installed. Run: sudo apt install wmctrl.' unless wmctrl_installed?
 
-        final_list = `wmctrl -l | awk '{$3=""; $2=""; $1=""; print $0}'` # Returns all open windows
-                       .split("\n")
-                       .map(&:strip)
-                       .select { |t| t.match?(/#{application}/i) } # Narrow down to given application
-        raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}" if final_list.empty?
+        titles = `wmctrl -l | awk '{$3=""; $2=""; $1=""; print $0}'` # Returns all open windows
+                   .split("\n")
+                   .map(&:strip)
+                   .map { |i| i.gsub(IGNORED_WINDOW_TITLES, '') }
+                   .reject(&:empty?)
+        raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}" if titles.empty?
 
-        final_list
+        titles
       end
 
       #
