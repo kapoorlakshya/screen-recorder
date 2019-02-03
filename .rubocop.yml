@@ -45,3 +45,6 @@ Style/FrozenStringLiteralComment:
 
 TrailingBlankLines:
   Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
