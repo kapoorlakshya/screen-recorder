@@ -48,39 +48,6 @@ Require this gem in your project and start using the gem:
 require 'ffmpeg-screenrecorder'
 ```
 
-## Usage
-
-#### Required Options
-
-- `:input` - `'desktop'` or application window name
-- `:output` - Output file location/name
-- `:framerate` - Capture FPS
-
-#### Advanced Options
-
-- `:log`  - Defaults to `ffmpeg.log`
-- `:log_level` for this gem
-
-All other FFmpeg options can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request a feature.
-
-```
-opts = { input:     'desktop',
-         output:    'recorder-test.mp4',
-         framerate: 15,
-         log:       'recorder.log',
-         log_level: Logger::DEBUG, # For gem
-         advanced: { loglevel: 'level+debug', # For FFmpeg
-                     video_size:  '640x480',
-                     show_region: '1' }
-}
-
-#
-# Command to FFmpeg:
-#
-# ffmpeg -y -f gdigrab -r 15 -loglevel level+debug -video_size 640x480
-#   -show_region 1 -i desktop recorder-test.mp4 2> recorder.log
-```
-
 ##### Record Desktop
 
 ```
@@ -88,16 +55,13 @@ opts      = { input:     'desktop',
               output:    'screenrecorder-desktop.mp4',
               framerate: 15.0 }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
-
-# Start recording
-@recorder.start #=> #<IO:fd 5>
+@recorder.start
 
 # ... Run tests or whatever you want to record
 
-# Stop recording
-@recorder.stop #=> #<FFMPEG::Movie...>
+@recorder.stop
 
-# Recorded file
+# Recorded file metadata
 @recorder.video
 #=> #<FFMPEG::Movie:0x00000000067e0a08
     @path="screenrecorder-desktop.mp4",
@@ -128,17 +92,13 @@ opts      = { input:     FFMPEG::WindowTitles.fetch('firefox').first,
               framerate: 15.0,
               log:       'screenrecorder-firefox.log' }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
-
-# Start recording
 @recorder.start
 
 # Run tests or whatever you want to record
 browser.goto 'watir.com'
 browser.link(text: 'News').wait_until_present.click
 
-# Stop recording
 @recorder.stop
-
 browser.quit 
 ```
 
@@ -146,11 +106,38 @@ browser.quit
 - Always stop the recording before closing the application. Otherwise, ffmpeg will force exit as soon as the window disappears and may produce an invalid video file.
 - If you're launching multiple applications or testing an application at different window sizes, recording the `desktop` is a better option.
 
+#### Options
+
+- `:input` - `'desktop'` or application window name
+- `:output` - Output file location/name
+- `:framerate` - Capture FPS
+- `:log`  - Defaults to `ffmpeg.log`
+- `:log_level` for this gem. Default: ERROR
+
+All other FFmpeg options can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request a feature.
+
+```
+opts = { input:     'desktop',
+         output:    'recorder-test.mp4',
+         framerate: 15,
+         log:       'recorder.log',
+         log_level: Logger::DEBUG, # For gem
+         advanced: { loglevel: 'level+debug', # For FFmpeg
+                     video_size:  '640x480',
+                     show_region: '1' }
+}
+
+#
+# Command to FFmpeg:
+#
+# ffmpeg -y -f gdigrab -r 15 -loglevel level+debug -video_size 640x480
+#   -show_region 1 -i desktop recorder-test.mp4 2> recorder.log
+```
+
 ## Demo
 
-You can find example video recordings here - [https://kapoorlakshya.github.io/introducing-ffmpeg-screenrecorder](https://kapoorlakshya.github.io/introducing-ffmpeg-screenrecorder)
-
-Cucumber + Watir based example - [kapoorlakshya/cucumber-watir-test-recorder-example](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example)
+You can find example video recordings [here](https://kapoorlakshya.github.io/introducing-ffmpeg-screenrecorder).
+Cucumber + Watir based example is [here](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example).
 
 ## Development
 
@@ -173,8 +160,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 [![Streamio](http://d253c4ja9jigvu.cloudfront.net/assets/small-logo.png)](http://streamio.com)
 
-This gem is based on the backbone provided by the [streamio-ffmpeg](https://github.com/streamio/streamio-ffmpeg) gem.
-Thanks to its maintainers for the wonderful features!
+This gem is based on the [streamio-ffmpeg](https://github.com/streamio/streamio-ffmpeg) gem.
 <br />
 <br />
 
