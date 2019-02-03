@@ -23,7 +23,7 @@ RSpec.describe FFMPEG::RecorderOptions do
 
   describe 'new' do
     it '#accepts a Hash' do
-      expect { FFMPEG::RecorderOptions.new(opts) }.to_not raise_exception(ArgumentError)
+      expect { FFMPEG::RecorderOptions.new(opts) }.to_not raise_exception # ArgumentError
     end
 
     it 'raise ArgumentError if user provides an object other than a Hash' do
