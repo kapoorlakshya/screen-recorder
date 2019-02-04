@@ -1,6 +1,8 @@
 require_relative '../spec_helper'
 
 RSpec.describe FFMPEG::ScreenRecorder do
+  let(:display) { OS.linux? ? ':0.0' : display }
+
   context 'given the gem is loaded' do
     it 'has a version number' do
       expect(FFMPEG::ScreenRecorder::VERSION).not_to be nil
@@ -16,7 +18,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     context 'user provides all required options' do
       let(:opts) do
         { output:    'recorder-output.mkv',
-          input:     'desktop',
+          input:     display,
           framerate: 15.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -39,7 +41,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     describe '#options' do
       let(:opts) do
         { output:    'recorder-output.mkv',
-          input:     'desktop',
+          input:     display,
           framerate: 15.0 }
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -64,7 +66,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     describe '#start' do
       let(:opts) do
         { output:    'recorder-output.mkv',
-          input:     'desktop',
+          input:     display,
           framerate: 15.0,
           log:       'recorder-log.txt' }
       end
@@ -95,7 +97,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
   context 'the user is ready to stop the recording' do
     let(:opts) do
       { output:    'recorder-output.mkv',
-        input:     'desktop',
+        input:     display,
         framerate: 15.0 }
     end
     let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
@@ -157,7 +159,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
 
   context 'user wants to discard the video' do
     let(:opts) do
-      { input:     'desktop',
+      { input:     display,
         output:    'recorder-output.mkv',
         framerate: 15.0 }
     end
@@ -187,42 +189,6 @@ RSpec.describe FFMPEG::ScreenRecorder do
       FileUtils.rm recorder.options.log
     end
   end
-
-  #
-  # Application/Window Recording
-  #
-  describe '.fetch' do
-    context 'given a firefox window is open' do
-      let(:browser) do
-        Webdrivers.install_dir = 'webdrivers_bin'
-        Watir::Browser.new :firefox
-      end
-
-      it 'returns a list of available windows from firefox' do
-        browser.wait
-        expect(FFMPEG::WindowTitles.fetch('firefox')).to be_a_kind_of(Array)
-      end
-
-      it 'does not return an empty list' do
-        browser.wait
-        expect(FFMPEG::WindowTitles.fetch('firefox').empty?).to be(false)
-      end
-
-      it 'returns the title of the currently open window' do
-        browser.goto 'google.com'
-        browser.wait
-        expect(FFMPEG::WindowTitles.fetch('firefox').first).to eql('Google - Mozilla Firefox')
-      end
-
-      after { browser.quit }
-    end # context
-
-    context 'given a firefox window is not open' do
-      it 'raises an exception' do
-        expect { FFMPEG::WindowTitles.fetch('firefox') }.to raise_exception(FFMPEG::RecorderErrors::ApplicationNotFound)
-      end
-    end # context
-  end # describe
 
   #
   # Windows Only

@@ -1,8 +1,9 @@
 require_relative '../spec_helper'
 
 RSpec.describe FFMPEG::RecorderOptions do
+  let(:display) { OS.linux? ? ':1.0' : display } # Test user given display number over default of :0.0
   let(:opts) do
-    { input:     'desktop',
+    { input:     display,
       output:    'recorder-output.mkv',
       framerate: 15.0,
       log_level: Logger::INFO,
@@ -31,7 +32,7 @@ RSpec.describe FFMPEG::RecorderOptions do
     end
 
     it 'raises an error when required options are not provided' do
-      expect { FFMPEG::RecorderOptions.new({ output: 'recorder-output.mkv', input: 'desktop', }) }.to raise_exception(ArgumentError)
+      expect { FFMPEG::RecorderOptions.new({ output: 'recorder-output.mkv', input: display, }) }.to raise_exception(ArgumentError)
     end
   end
 
@@ -50,7 +51,6 @@ RSpec.describe FFMPEG::RecorderOptions do
   describe '#input' do
     it 'returns user given input value' do
       expect(recorder_options.input).to eql(opts[:input])
-
     end
   end
 
@@ -68,7 +68,7 @@ RSpec.describe FFMPEG::RecorderOptions do
 
       it 'raise ArgumentError if user provides an object other than a Hash' do
         bad_opts = { output:    'recorder-output.mkv',
-                     input:     'desktop',
+                     input:     display,
                      framerate: 15.0,
                      advanced:  %w(let me fool you) }
         expect { FFMPEG::RecorderOptions.new(bad_opts) }.to raise_exception(ArgumentError)

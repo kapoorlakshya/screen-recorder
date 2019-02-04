@@ -15,12 +15,28 @@ if OS.windows? # Only gdigrab supports window capture
           Watir::Browser.new browser_process
         end
 
+        it 'returns a list of available windows from firefox' do
+          browser.wait
+          expect(FFMPEG::WindowTitles.fetch('firefox')).to be_a_kind_of(Array)
+        end
+
+        it 'does not return an empty list' do
+          browser.wait
+          expect(FFMPEG::WindowTitles.fetch('firefox').empty?).to be(false)
+        end
+
         it 'returns window title from Mozilla Firefox' do
           # Note: browser is lazily loaded with let
           browser.goto url
           browser.wait
           expect(FFMPEG::WindowTitles.fetch(browser_process).first).to eql(expected_title)
           browser.quit
+        end
+      end
+
+      context 'given a firefox window is not open' do
+        it 'raises an exception' do
+          expect { FFMPEG::WindowTitles.fetch('firefox') }.to raise_exception(FFMPEG::RecorderErrors::ApplicationNotFound)
         end
       end
 
