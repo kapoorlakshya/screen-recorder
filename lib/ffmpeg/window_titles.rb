@@ -49,8 +49,7 @@ module FFMPEG
         titles = `wmctrl -l | awk '{$3=""; $2=""; $1=""; print $0}'` # Returns all open windows
                    .split("\n")
                    .map(&:strip)
-                   .map { |i| i.gsub(IGNORED_WINDOW_TITLES, '') }
-                   .reject(&:empty?)
+                   .select { |t| t.match?(/#{application}/i) } # Narrow down to given application
         raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}" if titles.empty?
 
         titles
