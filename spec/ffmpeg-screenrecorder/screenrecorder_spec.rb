@@ -190,6 +190,42 @@ RSpec.describe FFMPEG::ScreenRecorder do
     end
   end
 
+  describe 'user wants to record the desktop' do
+    let(:browser) do
+      Webdrivers.install_dir = 'webdrivers_bin'
+      Watir::Browser.new :firefox
+    end
+    let(:opts) do
+      { output:    'desktop-recording.mp4',
+        input:     'desktop',
+        framerate: 15 }
+    end
+    let(:recorder) { FFMPEG::ScreenRecorder.new opts }
+
+    it 'the recorder can record the desktop' do
+      # Note: browser is lazily loaded with let
+      browser.window.resize_to 1280, 720
+      recorder.start
+      browser.goto 'watir.com'
+      browser.link(text: 'News').wait_until_present.click
+      browser.wait
+      recorder.stop
+      browser.quit
+
+      expect(File).to exist(recorder.options.output)
+      expect(recorder.video.valid?).to be(true)
+    end
+
+    #
+    # Clean up
+    #
+    after do
+      FileUtils.rm recorder.options.output
+      FileUtils.rm recorder.options.log
+    end
+  end
+
+
   #
   # Windows Only
   #
