@@ -36,6 +36,7 @@ module FFMPEG
                    .reject(&:empty?)
         raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}.exe" if titles.empty?
 
+        warn_on_mismatch(titles, application)
         titles
       end
 
@@ -43,7 +44,7 @@ module FFMPEG
       # Returns list of window titles in FFmpeg expected format when using Linux
       #
       def linux_os_window(application)
-        FFMPEG.logger.warn 'Note: Default capture device x11grab on Linux does not support window recording.'
+        FFMPEG.logger.warn 'Default capture device on Linux (x11grab) does not support window recording.'
         raise DependencyNotFound, 'wmctrl is not installed. Run: sudo apt install wmctrl.' unless wmctrl_installed?
 
         titles = `wmctrl -l | awk '{$3=""; $2=""; $1=""; print $0}'` # Returns all open windows
@@ -61,6 +62,17 @@ module FFMPEG
       def wmctrl_installed?
         !`which wmctrl`.empty? # "" when not found
       end
-    end
+
+      #
+      # Prints a warning if the retrieved list of window titles does no include
+      # the given application process name, which applications commonly do.
+      #
+      def warn_on_mismatch(titles, application)
+        unless titles.map(&:downcase).join(',').include? application.to_s
+          FFMPEG.logger.warn "Process name and window title(s) do not match: #{titles}"
+          FFMPEG.logger.warn "Please manually provide the displayed window title."
+        end
+      end
+    end # class WindowGrabber
   end # module Windows
 end # module FFMPEG
