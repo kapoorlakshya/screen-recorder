@@ -52,7 +52,7 @@ Require this gem in your project and start using the gem:
 require 'ffmpeg-screenrecorder'
 ```
 
-##### Record Desktop
+## Record Desktop
 
 ```ruby
 opts      = { input:     'desktop',
@@ -82,7 +82,7 @@ opts      = { input:     'desktop',
     @resolution="2560x1440">
 ```
 
-##### Record Application Window
+## Record Application Window
 
 ```ruby
 require 'watir'
@@ -104,7 +104,7 @@ opts      = { input:     FFMPEG::WindowTitles.fetch('firefox').first,
 browser.quit 
 ```
 
-<b>Limitations</b>:
+<b>Limitations</b>
 - Only works on Microsoft Windows (gdigrab).
 - `#fetch` only returns titles from currently active (visible) windows.
 - `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
@@ -117,7 +117,7 @@ an invalid video file.
 - If you're launching multiple applications or testing an application
 at different window sizes, recording the `desktop` is a better option.
 
-#### Options
+## Options
 
 - `:input` - `'desktop'` or application window name
 - `:output` - Output file location/name
