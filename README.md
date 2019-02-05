@@ -97,7 +97,7 @@ opts      = { input:     FFMPEG::WindowTitles.fetch('firefox').first,
 
 # Run tests or whatever you want to record
 browser.goto 'watir.com'
-browser.link(text: 'News').wait_until_present.click
+browser.link(text: 'News').wait_until(&:present?).click
 
 @recorder.stop
 browser.quit 
