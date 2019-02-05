@@ -1,3 +1,24 @@
+### 1.0.0.beta10 (2019-02-05)
+* Fixed an edge case in Microsoft Windows specific implementation of
+`WindowTitles#fetch` where processes with mismatching names and window
+titles, such as process `"Calculator.exe"` with window title `"CicMarshalWnd"`,
+were omitted ([#35](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/35)).
+This fix also prints a warning when this mismatch occurs.
+* The fix for #35 introduces a mild inconvenience when using
+applications like Chrome, which spawn a new process per window or
+extension. `#fetch` now returns titles for these additional processes
+with the visible window (web page) title. In a future release, you will
+be able to use something like `full_match: true` to prevent this.
+* Fixed bug in Linux specific `WindowTitles#fetch` implementation where
+the filter by application name logic was removed. This filter is required
+on Linux here because `wmctrl` returns all open window titles unlike
+Microsoft Windows where `taskmgr` allows us get window titles by process
+name.
+* On Linux, you are now required to provide the `input` as `"desktop"`
+or a display number, such as `":0.0"`. Run `echo $DISPLAY` to check your display number.
+* QOL improvements - Type checking of inputs, spec cleanup, added more
+tests, and fixed rubocop warnings.
+
 ### 1.0.0.beta9 (2019-01-22)
 
 * :warning: `FFMPEG::RecordingRegions` is now `FFMPEG::WindowTitles`, so the module name is true to the function it provides.
