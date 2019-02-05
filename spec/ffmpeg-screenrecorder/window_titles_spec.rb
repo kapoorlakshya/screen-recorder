@@ -15,6 +15,12 @@ if OS.windows? # Only gdigrab supports window capture
           Watir::Browser.new browser_process
         end
 
+        before do
+          # Note: browser is lazily loaded with let
+          browser.goto url
+          browser.wait
+        end
+
         it 'returns a list of available windows from firefox' do
           browser.wait
           expect(FFMPEG::WindowTitles.fetch('firefox')).to be_a_kind_of(Array)
@@ -26,10 +32,10 @@ if OS.windows? # Only gdigrab supports window capture
         end
 
         it 'returns window title from Mozilla Firefox' do
-          # Note: browser is lazily loaded with let
-          browser.goto url
-          browser.wait
           expect(FFMPEG::WindowTitles.fetch(browser_process).first).to eql(expected_title)
+        end
+
+        after do
           browser.quit
         end
       end
@@ -49,11 +55,17 @@ if OS.windows? # Only gdigrab supports window capture
           Watir::Browser.new browser_process
         end
 
-        it 'excludes titles from extensions' do
+        before do
           # Note: browser is lazily loaded with let
           browser.goto url
           browser.wait
+        end
+
+        it 'excludes titles from extensions' do
           expect(FFMPEG::WindowTitles.fetch(browser_process)).to eql(expected_titles)
+        end
+
+        after do
           browser.quit
         end
       end
