@@ -18,10 +18,10 @@ Supports Windows and Linux as of version `1.0.0-beta5`. macOS support will be ad
 | OS                | Download                                                                       |
 |-------------------|--------------------------------------------------------------------------------|
 | Microsoft Windows | [ffmpeg.org#build-windows](https://www.ffmpeg.org/download.html#build-windows) or [libx264 enabled build](https://ffmpeg.zeranoe.com/builds/) |
-| Linux             | [ffmpeg.org#build-linux](https://ffmpeg.org/download.html#build-linux)        |
-| macOS             | [ffmpeg.org#build-mac](https://www.ffmpeg.org/download.html#build-mac)         |
+| Linux             | [ffmpeg.org#build-linux](https://ffmpeg.org/download.html#build-linux) |
+| macOS             | [ffmpeg.org#build-mac](https://www.ffmpeg.org/download.html#build-mac) |
 
-<b>Note</b>: Add location of the `/bin` folder to `PATH` environment variable if using Microsoft Windows ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
+Add location of the `ffmpeg/bin` folder to `PATH` environment variable if using Microsoft Windows ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
 Alternatively, you can define the location using `FFMPEG.ffmpeg_binary='/path/to/binary'` in your project.
 
 #### 2. Install gem
@@ -34,11 +34,15 @@ gem 'ffmpeg-screenrecorder'
 
 And then execute:
 
-    $ bundle
+```bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install ffmpeg-screenrecorder --pre
+```bash
+$ gem install ffmpeg-screenrecorder --pre
+```
 
 #### 3. Require gem
 
@@ -52,7 +56,7 @@ require 'ffmpeg-screenrecorder'
 
 ```ruby
 opts      = { input:     'desktop',
-              output:    'screenrecorder-desktop.mp4',
+              output:    'recording.mp4',
               framerate: 15.0 }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 @recorder.start
@@ -78,7 +82,7 @@ opts      = { input:     'desktop',
     @resolution="2560x1440">
 ```
 
-##### Record Application Window - Microsoft Windows (`gdigrab`) Only
+##### Record Application Window
 
 ```ruby
 require 'watir'
@@ -89,23 +93,29 @@ FFMPEG::WindowTitles.fetch('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 
 opts      = { input:     FFMPEG::WindowTitles.fetch('firefox').first,
-              output:    'screenrecorder-firefox.mp4',
-              framerate: 15.0,
-              log:       'screenrecorder-firefox.log' }
+              output:    'recording.mp4',
+              framerate: 15.0 }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 @recorder.start
 
 # Run tests or whatever you want to record
-browser.goto 'watir.com'
-browser.link(text: 'News').wait_until(&:present?).click
 
 @recorder.stop
 browser.quit 
 ```
 
-<b>Note</b>:
-- Always stop the recording before closing the application. Otherwise, ffmpeg will force exit as soon as the window disappears and may produce an invalid video file.
-- If you're launching multiple applications or testing an application at different window sizes, recording the `desktop` is a better option.
+<b>Limitations</b>:
+- Only works on Microsoft Windows (gdigrab).
+- `#fetch` only returns titles from currently active (visible) windows.
+- `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
+for a window title with non `UTF-8` characters.
+See [#38](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/38)
+for workaround.
+- Always stop the recording before closing the application. Otherwise,
+ffmpeg will force exit as soon as the window disappears and may produce
+an invalid video file.
+- If you're launching multiple applications or testing an application
+at different window sizes, recording the `desktop` is a better option.
 
 #### Options
 
