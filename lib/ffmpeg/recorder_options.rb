@@ -97,12 +97,7 @@ module FFMPEG
     # Returns Array of required options sa Symbols
     #
     def required_options
-      # -r framerate
-      # -i input
-      # output
-      return %i[framerate input output] unless OS.linux?
-
-      %i[framerate output] # Linux
+      %i[framerate input output]
     end
 
     #
