@@ -1,7 +1,14 @@
 require_relative '../spec_helper'
 
 RSpec.describe FFMPEG::ScreenRecorder do
-  let(:display) { OS.linux? ? ':0.0' : 'desktop' }
+  let(:display) {
+    if OS.linux?
+      number = `echo $DISPLAY`.strip
+      number ? number : ':0.0' # If $DISPLAY is not set, use default of 0.0
+    else
+      'desktop'
+    end
+  }
 
   context 'given the gem is loaded' do
     it 'has a version number' do
@@ -197,7 +204,7 @@ RSpec.describe FFMPEG::ScreenRecorder do
     end
     let(:opts) do
       { output:    'desktop-recording.mp4',
-        input:     'desktop',
+        input:     display,
         framerate: 15 }
     end
     let(:recorder) { FFMPEG::ScreenRecorder.new opts }
