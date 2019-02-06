@@ -22,4 +22,6 @@ before_script:
   - sudo apt-get install -y ffmpeg
   - ffmpeg -hwaccels
   - sudo apt-get install wmctrl
-script: xvfb-run --server-args=":0.0 -screen 0 1024x768x24" rake spec
+script: xvfb-run --server-args=":99 -ac -screen 0 1024x768x24" rake spec
+env:
+  -DISPLAY=99
