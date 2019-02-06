@@ -12,6 +12,8 @@ rvm:
   - 2.4.5
   - 2.5.3
   - 2.6.1
+env:
+  - DISPLAY=":99"
 addons:
   firefox: latest
   chrome: stable
@@ -25,8 +27,4 @@ before_script:
   - sudo apt-get install -y ffmpeg
   - ffmpeg -hwaccels
   - sudo apt-get install wmctrl
-
-env:
-  -DISPLAY=99
-
 script: xvfb-run --server-args=":99 -ac -screen 0 1024x768x24" rake spec
