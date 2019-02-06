@@ -2,7 +2,6 @@
 sudo: required
 os:
   - linux
-dist: xenial
 language: ruby
 cache: bundler
 branches:
