@@ -70,5 +70,5 @@ if OS.windows? # Only gdigrab supports window capture
         end
       end
     end # describe
-  end # Os.windows?
-end
+  end # RSpec.describe
+end # Os.windows?
