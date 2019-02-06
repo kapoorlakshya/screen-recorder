@@ -1,53 +1,27 @@
 ---
 sudo: required
-dist: trusty
+os:
+  - linux
 language: ruby
 cache: bundler
-
 branches:
   only:
     - 17_specs_on_travis
-
-_version:
-  three: &three
-    language: ruby
-    rvm: 2.3.8
-  four: &four
-    language: ruby
-    rvm: 2.4.5
-  five: &five
-    language: ruby
-    rvm: 2.5.3
-  six: &six
-    language: ruby
-    rvm: 2.6.1
-
+rvm:
+  - 2.5.3
 addons:
   firefox: latest
   chrome: stable
-
 before_install:
   - gem update --system
   - gem install bundler
   - bundle update
-
 before_script:
   - sudo add-apt-repository -y ppa:mc3man/trusty-media
   - sudo apt-get update
   - sudo apt-get install -y ffmpeg
   - ffmpeg -hwaccels
   - sudo apt-get install wmctrl
-
+script: xvfb-run --server-args=":99 -ac -screen 0 1024x768x24" rake spec
 env:
   -DISPLAY=99
-
-matrix:
-  include:
-    - env: xvfb-run --server-args=":99 -ac -screen 0 1024x768x24" rake spec
-      <<: *three
-    - env: xvfb-run --server-args=":99 -ac -screen 0 1024x768x24" rake spec
-      <<: *four
-    - env: xvfb-run --server-args=":99 -ac -screen 0 1024x768x24" rake spec
-      <<: *five
-    - env: xvfb-run --server-args=":99 -ac -screen 0 1024x768x24" rake spec
-      <<: *six
