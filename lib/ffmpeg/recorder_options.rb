@@ -13,7 +13,7 @@ module FFMPEG
     # Returns given recording format
     #
     def format
-      determine_format
+      determine_capture_device
     end
 
     #
@@ -70,7 +70,7 @@ module FFMPEG
     # ready for the ffmpeg process to use
     #
     def parsed
-      vals = "-f #{determine_format} "
+      vals = "-f #{determine_capture_device} "
       vals << "-r #{@options[:framerate]} "
       vals << advanced_options if @options[:advanced]
       vals << "-i #{determine_input} "
@@ -143,9 +143,9 @@ module FFMPEG
     end
 
     #
-    # Returns format based on the current OS.
+    # Returns capture device based on user given value or the current OS.
     #
-    def determine_format
+    def determine_capture_device
       return @options[:format] if @options[:format]
 
       if OS.windows?
