@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 RSpec.describe FFMPEG::RecorderOptions do
-  let(:display) { OS.linux? ? ':1.0' : 'desktop' } # Test user given display number over default of :0.0
+  let(:display) { OS.linux? ? ':99' : 'desktop' } # Test user given display number over default of :0.0
   let(:opts) do
     { input:     display,
       output:    'recorder-output.mkv',

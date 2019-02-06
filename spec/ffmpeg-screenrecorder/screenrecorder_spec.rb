@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 RSpec.describe FFMPEG::ScreenRecorder do
-  let(:display) { OS.linux? ? ':0.0' : 'desktop' }
+  let(:display) { OS.linux? ? ':99' : 'desktop' }
 
   context 'given the gem is loaded' do
     it 'has a version number' do
