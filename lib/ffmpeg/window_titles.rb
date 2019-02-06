@@ -1,7 +1,12 @@
 module FFMPEG
   # @since 1.0.0-beta4
   module WindowTitles
-    IGNORED_WINDOW_TITLES = %r{^Window Title:( N/A|\s+)?} # From Chrome extensions
+    # Blank or "N/A" titles
+    # "Window Title: N/A" and "Window Title: " is removed
+    # from retrieved window titles to match the Ffmpeg expected format.
+    # For example, "Window Title: Google - Mozilla Firefox" becomes
+    # "Google - Mozilla Forefpx".
+    FILTERED_TITLES = %r{^Window Title:( N/A|\s+)?}
 
     #
     # Returns a list of available window titles for the given application (process) name.
@@ -32,7 +37,7 @@ module FFMPEG
       def windows_os_window(application)
         titles = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
                    .split("\n")
-                   .map { |i| i.gsub(IGNORED_WINDOW_TITLES, '') }
+                   .map { |i| i.gsub(FILTERED_TITLES, '') }
                    .reject(&:empty?)
         raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}.exe" if titles.empty?
 
