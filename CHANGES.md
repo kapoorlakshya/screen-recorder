@@ -4,11 +4,6 @@
 titles, such as process `"Calculator.exe"` with window title `"CicMarshalWnd"`,
 were omitted ([#35](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/35)).
 This fix also prints a warning when this mismatch occurs.
-* The fix for #35 introduces a mild inconvenience when using
-applications like Chrome, which spawn a new process per window or
-extension. `#fetch` now returns titles for these additional processes
-with the visible window (web page) title. In a future release, you will
-be able to use something like `full_match: true` to prevent this.
 * Fixed bug in Linux specific `WindowTitles#fetch` implementation where
 the filter by application name logic was removed. This filter is required
 on Linux here because `wmctrl` returns all open window titles unlike

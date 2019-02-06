@@ -2,7 +2,7 @@ module FFMPEG
   # @since 1.0.0-beta4
   module WindowTitles
     # Blank or "N/A" titles
-    # "Window Title: N/A" and "Window Title: " is removed
+    # "Window Title: N/A" from Chrome extensions and "Window Title: " is removed
     # from retrieved window titles to match the Ffmpeg expected format.
     # For example, "Window Title: Google - Mozilla Firefox" becomes
     # "Google - Mozilla Forefpx".
