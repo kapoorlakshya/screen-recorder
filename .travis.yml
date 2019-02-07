@@ -6,7 +6,7 @@ cache: bundler
 
 branches:
   only:
-    - 17_specs_on_travis
+    - /.*/
 
 rvm:
   - 2.3.8
