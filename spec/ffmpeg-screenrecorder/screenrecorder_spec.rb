@@ -214,7 +214,8 @@ RSpec.describe FFMPEG::ScreenRecorder do
       browser.window.resize_to 1280, 720
       recorder.start
       browser.goto 'watir.com'
-      browser.link(text: 'News').wait_until(&:present?).click
+      browser.link(text: 'News').wait_until(&:present?)
+        .wait_while(&:obscured?).click
       browser.wait
       recorder.stop
       browser.quit
