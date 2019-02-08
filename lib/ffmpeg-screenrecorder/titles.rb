@@ -1,6 +1,6 @@
 module ScreenRecorder
   # @since 1.0.0-beta4
-  module WindowTitles
+  module Titles
     # Regex to filter out "Window Title: N/A" from Chrome extensions and "Window Title: ".
     # This is done to remove unusable titles and to match the Ffmpeg expected input format
     # for capturing specific windows.
