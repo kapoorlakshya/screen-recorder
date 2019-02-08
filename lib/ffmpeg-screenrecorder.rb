@@ -1,3 +1,3 @@
 require 'streamio-ffmpeg'
 require 'os'
-require 'ffmpeg/screenrecorder'
+require 'ffmpeg-screenrecorder/screenrecorder'
