@@ -2,6 +2,7 @@ module FFMPEG
   # @since 1.0.0-beta2
   class RecorderOptions
     DEFAULT_LOG_FILE = 'ffmpeg.log'.freeze
+    DEFAULT_FPS      = 15.0
 
     def initialize(options)
       TypeChecker.check options, Hash
@@ -20,7 +21,7 @@ module FFMPEG
     # Returns given framerate
     #
     def framerate
-      @options[:framerate]
+      @options[:framerate] || DEFAULT_FPS
     end
 
     #
@@ -97,7 +98,7 @@ module FFMPEG
     # Returns Array of required options sa Symbols
     #
     def required_options
-      %i[framerate input output]
+      %i[input output]
     end
 
     #

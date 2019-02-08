@@ -60,8 +60,7 @@ require 'ffmpeg-screenrecorder'
 
 ```ruby
 opts      = { input:     'desktop',
-              output:    'recording.mp4',
-              framerate: 15.0 }
+              output:    'recording.mp4' }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 @recorder.start
 
@@ -72,7 +71,7 @@ opts      = { input:     'desktop',
 # Recorded file metadata
 @recorder.video
 #=> #<FFMPEG::Movie:0x00000000067e0a08
-    @path="screenrecorder-desktop.mp4",
+    @path="recording.mp4",
     @container="mov,mp4,m4a,3gp,3g2,mj2",
     @duration=5.0,
     @time=0.0,
@@ -97,8 +96,7 @@ FFMPEG::WindowTitles.fetch('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 
 opts      = { input:     FFMPEG::WindowTitles.fetch('firefox').first,
-              output:    'recording.mp4',
-              framerate: 15.0 }
+              output:    'recording.mp4' }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 @recorder.start
 
@@ -134,7 +132,7 @@ All other FFmpeg options can be passed through the `advanced` key. This feature 
 ```ruby
 opts = { input:     'desktop',
          output:    'recorder-test.mp4',
-         framerate: 15,
+         framerate: 30.0,
          log:       'recorder.log',
          log_level: Logger::DEBUG, # For gem
          advanced: { loglevel: 'level+debug', # For FFmpeg
