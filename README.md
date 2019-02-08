@@ -71,7 +71,7 @@ opts      = { input:     'desktop',
 # Recorded file metadata
 @recorder.video
 #=> #<FFMPEG::Movie:0x00000000067e0a08
-    @path="screenrecorder-desktop.mp4",
+    @path="recording.mp4",
     @container="mov,mp4,m4a,3gp,3g2,mj2",
     @duration=5.0,
     @time=0.0,
