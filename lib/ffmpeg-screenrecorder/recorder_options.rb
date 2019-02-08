@@ -1,4 +1,4 @@
-module FFMPEG
+module ScreenRecorder
   # @since 1.0.0-beta2
   class RecorderOptions
     DEFAULT_LOG_FILE = 'ffmpeg.log'.freeze

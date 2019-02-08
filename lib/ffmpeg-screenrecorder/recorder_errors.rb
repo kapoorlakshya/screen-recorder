@@ -1,4 +1,4 @@
-module FFMPEG
+module ScreenRecorder
   # @since 1.0.0-beta5
   module RecorderErrors
     # @since 1.0.0-beta3
