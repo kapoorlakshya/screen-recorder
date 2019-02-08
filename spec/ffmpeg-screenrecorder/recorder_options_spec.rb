@@ -13,7 +13,6 @@ RSpec.describe FFMPEG::RecorderOptions do
   let(:opts) do
     { input:     display,
       output:    'recorder-output.mkv',
-      framerate: 15.0,
       log_level: Logger::INFO,
       advanced:  { loglevel: 'level+debug', # For FFmpeg
                    video_size:  '640x480',
@@ -39,8 +38,8 @@ RSpec.describe FFMPEG::RecorderOptions do
       expect { FFMPEG::RecorderOptions.new([]) }.to raise_exception(ArgumentError)
     end
 
-    it 'raises an error when required options are not provided' do
-      expect { FFMPEG::RecorderOptions.new({ output: 'recorder-output.mkv', input: display, }) }.to raise_exception(ArgumentError)
+    it 'raises an error when a required option (ex: output) is not provided' do
+      expect { FFMPEG::RecorderOptions.new({ input: display, }) }.to raise_exception(ArgumentError)
     end
   end
 
@@ -51,8 +50,8 @@ RSpec.describe FFMPEG::RecorderOptions do
   end
 
   describe '#framerate' do
-    it 'returns user given framerate value' do
-      expect(recorder_options.framerate).to eql(opts[:framerate])
+    it 'returns default framerate value' do
+      expect(recorder_options.framerate).to eql(FFMPEG::RecorderOptions::DEFAULT_FPS)
     end
   end
 
@@ -80,6 +79,18 @@ RSpec.describe FFMPEG::RecorderOptions do
                      framerate: 15.0,
                      advanced:  %w(let me fool you) }
         expect { FFMPEG::RecorderOptions.new(bad_opts) }.to raise_exception(ArgumentError)
+      end
+    end
+
+    describe '#framerate' do
+      let(:opts) do
+        { input:     display,
+          output:    'recorder-output.mkv',
+          framerate: 30.0 }
+      end
+
+      it 'returns user given framerate value' do
+        expect(recorder_options.framerate).to eql(opts[:framerate])
       end
     end
   end
