@@ -1,6 +1,7 @@
+# @since 1.0.0-beta11
 module ScreenRecorder
-  # @since 1.0.0-beta2
-  class RecorderOptions
+  # @since 1.0.0-beta11
+  class Options
     DEFAULT_LOG_FILE = 'ffmpeg.log'.freeze
     DEFAULT_FPS      = 15.0
 

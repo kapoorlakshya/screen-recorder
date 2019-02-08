@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-RSpec.describe FFMPEG::RecorderOptions do
+RSpec.describe FFMPEG::Options do
   let(:display) {
     if OS.linux?
       number = `echo $DISPLAY`.strip
@@ -26,20 +26,20 @@ RSpec.describe FFMPEG::RecorderOptions do
   }
 
   let(:recorder_options) {
-    FFMPEG::RecorderOptions.new(opts)
+    FFMPEG::Options.new(opts)
   }
 
   describe 'new' do
     it '#accepts a Hash' do
-      expect { FFMPEG::RecorderOptions.new(opts) }.to_not raise_exception # ArgumentError
+      expect { FFMPEG::Options.new(opts) }.to_not raise_exception # ArgumentError
     end
 
     it 'raise ArgumentError if user provides an object other than a Hash' do
-      expect { FFMPEG::RecorderOptions.new([]) }.to raise_exception(ArgumentError)
+      expect { FFMPEG::Options.new([]) }.to raise_exception(ArgumentError)
     end
 
     it 'raises an error when a required option (ex: output) is not provided' do
-      expect { FFMPEG::RecorderOptions.new({ input: display, }) }.to raise_exception(ArgumentError)
+      expect { FFMPEG::Options.new({ input: display, }) }.to raise_exception(ArgumentError)
     end
   end
 
@@ -51,7 +51,7 @@ RSpec.describe FFMPEG::RecorderOptions do
 
   describe '#framerate' do
     it 'returns default framerate value' do
-      expect(recorder_options.framerate).to eql(FFMPEG::RecorderOptions::DEFAULT_FPS)
+      expect(recorder_options.framerate).to eql(FFMPEG::Options::DEFAULT_FPS)
     end
   end
 
@@ -78,7 +78,7 @@ RSpec.describe FFMPEG::RecorderOptions do
                      input:     display,
                      framerate: 15.0,
                      advanced:  %w(let me fool you) }
-        expect { FFMPEG::RecorderOptions.new(bad_opts) }.to raise_exception(ArgumentError)
+        expect { FFMPEG::Options.new(bad_opts) }.to raise_exception(ArgumentError)
       end
     end
 

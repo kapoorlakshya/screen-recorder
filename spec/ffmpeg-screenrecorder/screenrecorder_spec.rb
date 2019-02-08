@@ -53,8 +53,8 @@ RSpec.describe FFMPEG::ScreenRecorder do
       end
       let(:recorder) { FFMPEG::ScreenRecorder.new(opts) }
 
-      it 'returns a FFMPEG::RecorderOptions object' do
-        expect(recorder.options).to be_a(FFMPEG::RecorderOptions)
+      it 'returns a FFMPEG::Options object' do
+        expect(recorder.options).to be_a(FFMPEG::Options)
       end
 
       it 'sets output value' do
