@@ -1,12 +1,7 @@
-require 'fileutils'
-require_relative 'type_checker'
-require_relative 'recorder_errors'
-require_relative 'recorder_options'
-require_relative 'window_titles'
-
-module FFMPEG
-  # @since 1.0.0-beta
-  class ScreenRecorder
+# @since 1.0.0-beta11
+module ScreenRecorder
+  # @since 1.0.0-beta11
+  class Common
     attr_reader :options, :video
 
     def initialize(options = {})
@@ -142,5 +137,5 @@ module FFMPEG
 
       lines.join(' ')
     end
-  end # class Recorder
-end # module FFMPEG
+  end
+end
