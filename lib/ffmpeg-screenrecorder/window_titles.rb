@@ -38,7 +38,7 @@ module ScreenRecorder
                    .split("\n")
                    .map { |i| i.gsub(FILTERED_TITLES, '') }
                    .reject(&:empty?)
-        raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}.exe" if titles.empty?
+        raise Errors::ApplicationNotFound, "No open windows found for: #{application}.exe" if titles.empty?
 
         warn_on_mismatch(titles, application)
         titles
@@ -55,7 +55,7 @@ module ScreenRecorder
                    .split("\n")
                    .map(&:strip)
                    .select { |t| t.match?(/#{application}/i) } # Narrow down to given application
-        raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}" if titles.empty?
+        raise Errors::ApplicationNotFound, "No open windows found for: #{application}" if titles.empty?
 
         titles
       end

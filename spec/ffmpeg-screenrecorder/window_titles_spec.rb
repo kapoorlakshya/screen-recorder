@@ -42,7 +42,7 @@ if OS.windows? # Only gdigrab supports window capture
 
       context 'given a firefox window is not open' do
         it 'raises an exception' do
-          expect { FFMPEG::WindowTitles.fetch('firefox') }.to raise_exception(FFMPEG::RecorderErrors::ApplicationNotFound)
+          expect { FFMPEG::WindowTitles.fetch('firefox') }.to raise_exception(FFMPEG::Errors::ApplicationNotFound)
         end
       end
 

@@ -53,7 +53,7 @@ module ScreenRecorder
     # the given options.
     #
     def start_ffmpeg
-      raise RecorderErrors::DependencyNotFound, 'ffmpeg binary not found.' unless ffmpeg_exists?
+      raise Errors::DependencyNotFound, 'ffmpeg binary not found.' unless ffmpeg_exists?
 
       FFMPEG.logger.debug "Command: #{command}"
       process = IO.popen(command, 'r+')
