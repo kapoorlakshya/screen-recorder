@@ -98,7 +98,7 @@ module FFMPEG
     # Returns Array of required options sa Symbols
     #
     def required_options
-      %i[framerate input output]
+      %i[input output]
     end
 
     #
