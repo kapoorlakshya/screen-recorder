@@ -10,7 +10,6 @@ module ScreenRecorder
                              advanced:  advanced)
       @video   = nil
       @process = nil
-      initialize_logger(@options.log_level)
     end
 
     #
@@ -21,8 +20,8 @@ module ScreenRecorder
       start_time = Time.now
       @process   = start_ffmpeg
       elapsed    = Time.now - start_time
-      FFMPEG.logger.debug "Process started in #{elapsed}s"
-      FFMPEG.logger.info 'Recording...'
+      ScreenRecorder.logger.debug "Process started in #{elapsed}s"
+      ScreenRecorder.logger.info 'Recording...'
       @process
     end
 
@@ -30,10 +29,10 @@ module ScreenRecorder
     # Stops the recording
     #
     def stop
-      FFMPEG.logger.debug 'Stopping ffmpeg.exe...'
+      ScreenRecorder.logger.debug 'Stopping ffmpeg.exe...'
       elapsed = kill_ffmpeg
-      FFMPEG.logger.debug "Stopped ffmpeg.exe in #{elapsed}s"
-      FFMPEG.logger.info 'Recording complete.'
+      ScreenRecorder.logger.debug "Stopped ffmpeg.exe in #{elapsed}s"
+      ScreenRecorder.logger.info 'Recording complete.'
       @video = FFMPEG::Movie.new(options.output)
     end
 
@@ -57,7 +56,7 @@ module ScreenRecorder
     def start_ffmpeg
       raise Errors::DependencyNotFound, 'ffmpeg binary not found.' unless ffmpeg_exists?
 
-      FFMPEG.logger.debug "Command: #{command}"
+      ScreenRecorder.logger.debug "Command: #{command}"
       process = IO.popen(command, 'r+')
       sleep(1.5) # Takes ~1.5s on average to initialize
       process
@@ -78,18 +77,6 @@ module ScreenRecorder
     end
 
     #
-    # Initializes the logger with the given log level.
-    #
-    def initialize_logger(level)
-      FFMPEG.logger.progname  = 'FFmpeg'
-      FFMPEG.logger.level     = level || Logger::ERROR
-      FFMPEG.logger.formatter = proc do |severity, time, progname, msg|
-        "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
-      end
-      FFMPEG.logger.debug 'Logger initialized.'
-    end
-
-    #
     # Generates the command line arguments based on the given
     # options.
     #
@@ -107,7 +94,7 @@ module ScreenRecorder
       Timeout.timeout(timeout) do
         sleep(0.1) until @process.eof?
       end
-      FFMPEG.logger.debug "IO#eof? #{@process.eof?}"
+      ScreenRecorder.logger.debug "IO#eof? #{@process.eof?}"
       Time.now - start
     end
 

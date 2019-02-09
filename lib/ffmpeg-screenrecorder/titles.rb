@@ -11,7 +11,7 @@ module ScreenRecorder
     # Returns a list of available window titles for the given application (process) name.
     #
     def self.fetch(application)
-      FFMPEG.logger.debug "Retrieving available windows for: #{application}"
+      ScreenRecorder.logger.debug "Retrieving available windows for: #{application}"
       WindowGrabber.new.available_windows_for application
     end
 
@@ -48,7 +48,7 @@ module ScreenRecorder
       # Returns list of window titles in FFmpeg expected format when using Linux
       #
       def linux_os_window(application)
-        FFMPEG.logger.warn 'Default capture device on Linux (x11grab) does not support window recording.'
+        ScreenRecorder.logger.warn 'Default capture device on Linux (x11grab) does not support window recording.'
         raise DependencyNotFound, 'wmctrl is not installed. Run: sudo apt install wmctrl.' unless wmctrl_installed?
 
         titles = `wmctrl -l | awk '{$3=""; $2=""; $1=""; print $0}'` # Returns all open windows
@@ -73,8 +73,8 @@ module ScreenRecorder
       #
       def warn_on_mismatch(titles, application)
         unless titles.map(&:downcase).join(',').include? application.to_s
-          FFMPEG.logger.warn "Process name and window title(s) do not match: #{titles}"
-          FFMPEG.logger.warn "Please manually provide the displayed window title."
+          ScreenRecorder.logger.warn "Process name and window title(s) do not match: #{titles}"
+          ScreenRecorder.logger.warn "Please manually provide the displayed window title."
         end
       end
     end # class WindowGrabber

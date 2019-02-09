@@ -54,13 +54,6 @@ module ScreenRecorder
     end
 
     #
-    # Returns given log_level
-    #
-    def log_level
-      @options[:log_level]
-    end
-
-    #
     # Returns all given options
     #
     def all
