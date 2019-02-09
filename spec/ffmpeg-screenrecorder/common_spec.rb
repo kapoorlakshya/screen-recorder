@@ -1,7 +1,7 @@
 RSpec.describe ScreenRecorder::Common do
   context 'given the gem is loaded' do
     it 'has a version number' do
-      expect(FFMPEG::ScreenRecorder::VERSION).not_to be nil
+      expect(ScreenRecorder::VERSION).not_to be nil
     end
 
     it 'it can find the FFmpeg binary' do
