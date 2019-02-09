@@ -4,8 +4,8 @@ module ScreenRecorder
   class Common
     attr_reader :options, :video
 
-    def initialize(options = {})
-      @options = RecorderOptions.new(options)
+    def initialize(input:, output:, advanced:)
+      @options = RecorderOptions.new(opts)
       @video   = nil
       @process = nil
       initialize_logger(@options.log_level)
