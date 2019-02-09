@@ -4,7 +4,7 @@ require 'ffmpeg-screenrecorder/version'
 
 Gem::Specification.new do |spec|
   spec.name        = 'ffmpeg-screenrecorder'
-  spec.version     = FFMPEG::ScreenRecorder::VERSION
+  spec.version     = ScreenRecorder::VERSION
   spec.authors     = ['Lakshya Kapoor']
   spec.email       = ['kapoorlakshya@gmail.com']
   spec.homepage    = 'http://github.com/kapoorlakshya/ffmpeg-screenrecorder'
