@@ -14,8 +14,8 @@ module ScreenRecorder
     #
     # Returns given recording format
     #
-    def format
-      determine_capture_device
+    def input_device
+      determine_input_device
     end
 
     #
@@ -72,7 +72,7 @@ module ScreenRecorder
     # ready for the ffmpeg process to use
     #
     def parsed
-      vals = "-f #{determine_capture_device} "
+      vals = "-f #{determine_input_device} "
       vals << "-r #{framerate} "
       vals << advanced_options unless advanced.empty?
       vals << "-i #{input} "
@@ -123,10 +123,10 @@ module ScreenRecorder
     end
 
     #
-    # Returns capture device based on user given value or the current OS.
+    # Returns input capture device based on user given value or the current OS.
     #
-    def determine_capture_device
-      return @options[:format] if @options[:format]
+    def determine_input_device
+      return advanced[:input_device] if advanced[:input_device]
 
       if OS.windows?
         'gdigrab'
