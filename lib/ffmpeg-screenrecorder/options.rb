@@ -15,7 +15,7 @@ module ScreenRecorder
     # Returns given input file or input
     #
     def input
-      @options[:input]
+      determine_input
     end
 
     #
@@ -113,6 +113,22 @@ module ScreenRecorder
     def ffmpeg_log_to(file)
       file ||= DEFAULT_LOG_FILE
       " 2> #{file}"
+    end
+
+    #
+    # Returns final input parameter.
+    # Adds title= qualifier to input parameter
+    # unless the user is recording the desktop.
+    #
+    def determine_input
+      # x11grab doesn't support window capture
+      if OS.linux?
+        return ':0.0' if @options[:input] == 'desktop'
+
+        return @options[:input] # User given display number
+      end
+
+      'desktop'
     end
 
     #
