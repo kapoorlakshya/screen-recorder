@@ -4,7 +4,7 @@ require_relative '../spec_helper'
 # Windows Only
 #
 if OS.windows? # Only gdigrab supports window capture
-  RSpec.describe FFMPEG::WindowTitles do
+  RSpec.describe FFMPEG::Titles do
     describe '.fetch' do
       context 'given application is Firefox' do
         let(:browser_process) { :firefox }
@@ -23,16 +23,16 @@ if OS.windows? # Only gdigrab supports window capture
 
         it 'returns a list of available windows from firefox' do
           browser.wait
-          expect(FFMPEG::WindowTitles.fetch('firefox')).to be_a_kind_of(Array)
+          expect(FFMPEG::Titles.fetch('firefox')).to be_a_kind_of(Array)
         end
 
         it 'does not return an empty list' do
           browser.wait
-          expect(FFMPEG::WindowTitles.fetch('firefox').empty?).to be(false)
+          expect(FFMPEG::Titles.fetch('firefox').empty?).to be(false)
         end
 
         it 'returns window title from Mozilla Firefox' do
-          expect(FFMPEG::WindowTitles.fetch(browser_process).first).to eql(expected_title)
+          expect(FFMPEG::Titles.fetch(browser_process).first).to eql(expected_title)
         end
 
         after do
@@ -42,7 +42,7 @@ if OS.windows? # Only gdigrab supports window capture
 
       context 'given a firefox window is not open' do
         it 'raises an exception' do
-          expect { FFMPEG::WindowTitles.fetch('firefox') }.to raise_exception(FFMPEG::RecorderErrors::ApplicationNotFound)
+          expect { FFMPEG::Titles.fetch('firefox') }.to raise_exception(FFMPEG::Errors::ApplicationNotFound)
         end
       end
 
@@ -62,7 +62,7 @@ if OS.windows? # Only gdigrab supports window capture
         end
 
         it 'excludes titles from extensions' do
-          expect(FFMPEG::WindowTitles.fetch(browser_process)).to eql(expected_titles)
+          expect(FFMPEG::Titles.fetch(browser_process)).to eql(expected_titles)
         end
 
         after do

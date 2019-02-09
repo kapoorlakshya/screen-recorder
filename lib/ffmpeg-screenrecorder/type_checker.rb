@@ -1,4 +1,4 @@
-module FFMPEG
+module ScreenRecorder
   # @since 1.0.0.beta10
   module TypeChecker
     #

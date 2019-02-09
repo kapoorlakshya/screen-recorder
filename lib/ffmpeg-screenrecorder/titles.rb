@@ -1,6 +1,6 @@
-module FFMPEG
+module ScreenRecorder
   # @since 1.0.0-beta4
-  module WindowTitles
+  module Titles
     # Regex to filter out "Window Title: N/A" from Chrome extensions and "Window Title: ".
     # This is done to remove unusable titles and to match the Ffmpeg expected input format
     # for capturing specific windows.
@@ -38,7 +38,7 @@ module FFMPEG
                    .split("\n")
                    .map { |i| i.gsub(FILTERED_TITLES, '') }
                    .reject(&:empty?)
-        raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}.exe" if titles.empty?
+        raise Errors::ApplicationNotFound, "No open windows found for: #{application}.exe" if titles.empty?
 
         warn_on_mismatch(titles, application)
         titles
@@ -55,7 +55,7 @@ module FFMPEG
                    .split("\n")
                    .map(&:strip)
                    .select { |t| t.match?(/#{application}/i) } # Narrow down to given application
-        raise RecorderErrors::ApplicationNotFound, "No open windows found for: #{application}" if titles.empty?
+        raise Errors::ApplicationNotFound, "No open windows found for: #{application}" if titles.empty?
 
         titles
       end

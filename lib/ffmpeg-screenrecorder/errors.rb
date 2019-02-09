@@ -1,6 +1,6 @@
-module FFMPEG
+module ScreenRecorder
   # @since 1.0.0-beta5
-  module RecorderErrors
+  module Errors
     # @since 1.0.0-beta3
     class ApplicationNotFound < StandardError; end
 

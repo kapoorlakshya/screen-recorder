@@ -92,10 +92,10 @@ require 'watir'
 
 browser = Watir::Browser.new :firefox
 
-FFMPEG::WindowTitles.fetch('firefox') # Name of exe
+FFMPEG::Titles.fetch('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 
-opts      = { input:     FFMPEG::WindowTitles.fetch('firefox').first,
+opts      = { input:     FFMPEG::Titles.fetch('firefox').first,
               output:    'recording.mp4' }
 @recorder = FFMPEG::ScreenRecorder.new(opts)
 @recorder.start
