@@ -14,13 +14,17 @@ module ScreenRecorder
 
     private
 
+    #
+    # Returns FFmpeg expected parameter based on current OS
+    #
     def determine_input(val)
-      return DEFAULT_INPUT_LINUX if val == 'desktop' && OS.linux? # Default
-      return val if OS.linux? # Custom $DISPLAY number in Linux
-      return DEFAULT_INPUT_WIN if val == 'desktop' # Microsoft Windows
+      if OS.linux?
+        return DEFAULT_INPUT_LINUX if val == 'desktop'
+        return val # Custom $DISPLAY number in Linux
+      end
+      return DEFAULT_INPUT_WIN if OS.windows?
 
       raise ArgumentError, "Unsupported input type: '#{val}'. Expected: 'desktop'"
     end
-
   end
 end

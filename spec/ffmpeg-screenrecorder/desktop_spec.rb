@@ -18,6 +18,10 @@ RSpec.describe ScreenRecorder::Desktop do
       expect { ScreenRecorder::Desktop.new(input: input, output: output) }.to_not raise_exception
     end
 
+    it "defaults input as 'desktop' if none is given" do
+      expect(ScreenRecorder::Desktop.new(output: output).options.input).to eq(input)
+    end
+
     it 'accepts output: as a parameter' do
       expect { ScreenRecorder::Desktop.new(output: output) }.to_not raise_exception
     end
