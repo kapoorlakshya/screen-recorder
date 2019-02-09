@@ -5,7 +5,9 @@ module ScreenRecorder
     attr_reader :options, :video
 
     def initialize(input:, output:, advanced: {})
-      @options = Options.new(input: input, output: output, advanced: advanced)
+      @options = Options.new(input:     input,
+                             output:    output,
+                             advanced:  advanced)
       @video   = nil
       @process = nil
       initialize_logger(@options.log_level)
@@ -32,7 +34,7 @@ module ScreenRecorder
       elapsed = kill_ffmpeg
       FFMPEG.logger.debug "Stopped ffmpeg.exe in #{elapsed}s"
       FFMPEG.logger.info 'Recording complete.'
-      @video = Movie.new(options.output)
+      @video = FFMPEG::Movie.new(options.output)
     end
 
     #

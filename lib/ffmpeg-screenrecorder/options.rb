@@ -73,11 +73,11 @@ module ScreenRecorder
     #
     def parsed
       vals = "-f #{determine_capture_device} "
-      vals << "-r #{@options[:framerate]} "
-      vals << advanced_options if @options[:advanced]
-      vals << "-i #{determine_input} "
-      vals << @options[:output]
-      vals << ffmpeg_log_to(@options[:log]) # If provided
+      vals << "-r #{framerate} "
+      vals << advanced_options unless advanced.empty?
+      vals << "-i #{input} "
+      vals << output
+      vals << ffmpeg_log_to(log) # If provided
     end
 
     private
@@ -106,9 +106,6 @@ module ScreenRecorder
     # Returns advanced options parsed and ready for ffmpeg to receive.
     #
     def advanced_options
-      return nil unless @options[:advanced]
-      raise(ArgumentError, ':advanced cannot be empty.') if @options[:advanced].empty?
-
       arr = []
       @options[:advanced].each do |k, v|
         arr.push "-#{k} #{v}"
