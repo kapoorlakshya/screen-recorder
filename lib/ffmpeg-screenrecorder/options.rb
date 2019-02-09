@@ -12,24 +12,17 @@ module ScreenRecorder
     end
 
     #
-    # Returns given recording format
-    #
-    def input_device
-      determine_input_device
-    end
-
-    #
-    # Returns given framerate
-    #
-    def framerate
-      @options[:framerate] || DEFAULT_FPS
-    end
-
-    #
     # Returns given input file or input
     #
     def input
       @options[:input]
+    end
+
+    #
+    # Returns given recording format
+    #
+    def input_device
+      determine_input_device
     end
 
     #
@@ -44,6 +37,13 @@ module ScreenRecorder
     #
     def advanced
       @options[:advanced]
+    end
+
+    #
+    # Returns given framerate
+    #
+    def framerate
+      advanced[:framerate] || DEFAULT_FPS
     end
 
     #

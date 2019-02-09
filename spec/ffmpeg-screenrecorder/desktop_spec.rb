@@ -2,33 +2,66 @@ RSpec.describe ScreenRecorder::Desktop do
   let(:input) {
     if OS.linux?
       number = `echo $DISPLAY`.strip
-      number ? number : ':0.0' # If $DISPLAY is not set, use default of 0.0
+      number ? number : ':0.0' # If $DISPLAY is not set, use default of :0.0
     else
       'desktop'
     end
   }
-  let(:out) { 'recorded-file.mp4' }
+  let(:output) { 'recorded-file.mp4' }
   let(:fps) { 30.0 } # @todo Make FPS part of advanced parameters
   let(:log_file) { 'recorder.log' }
-  let(:recorder) { ScreenRecorder::Desktop.new(output: out) }
 
   describe '#new' do
+    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+
+    it 'accepts input: as a parameter' do
+      expect { ScreenRecorder::Desktop.new(input: input, output: output) }.to_not raise_exception
+    end
+
+    it 'accepts output: as a parameter' do
+      expect { ScreenRecorder::Desktop.new(output: output) }.to_not raise_exception
+    end
+
     it 'wants output as required parameter' do
       expect { ScreenRecorder::Desktop.new() }.to raise_exception(ArgumentError)
     end
-
-    it 'accepts output as a parameter' do
-      expect { ScreenRecorder::Desktop.new(output: out) }.to_not raise_exception
-    end
   end # describe #new
 
+  describe '#new with advanced parameters' do
+    let(:advanced) {
+      { framerate: 30.0,
+        loglevel:  'level+debug', # For FFmpeg
+        video_size:  '640x480',
+        show_region: '1' }
+    }
+    let(:recorder) { ScreenRecorder::Desktop.new(output: output, advanced: advanced) }
+
+    it 'expects advanced: as a Hash' do
+      expect { ScreenRecorder::Desktop.new(output: output, advanced: []) }.to raise_exception(ArgumentError)
+    end
+
+    it 'accepts advanced: as a parameter' do
+      expect { ScreenRecorder::Desktop.new(output: output, advanced: advanced) }.to_not raise_exception
+    end
+
+    it 'sets advanced parameters' do
+      expect(recorder.options.advanced).to eq(advanced)
+    end
+
+    it 'uses user given framerate' do
+      expect(recorder.options.framerate).to eq(advanced[:framerate])
+    end
+  end
+
   describe '#options' do
+    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+
     it 'returns a FFMPEG::Options object' do
       expect(recorder.options).to be_a(ScreenRecorder::Options)
     end
 
     it 'stores output value' do
-      expect(recorder.options.output).to be(out)
+      expect(recorder.options.output).to be(output)
     end
 
     it 'stores input value' do
@@ -41,6 +74,8 @@ RSpec.describe ScreenRecorder::Desktop do
   end
 
   describe '#start' do
+    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+
     before do
       recorder.start
       sleep(1.0)
@@ -63,6 +98,8 @@ RSpec.describe ScreenRecorder::Desktop do
   end # context
 
   context 'the user is ready to stop the recording' do
+    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+
     before do
       recorder.start
       sleep(1.0)
@@ -92,6 +129,8 @@ RSpec.describe ScreenRecorder::Desktop do
   end # context
 
   context 'user wants to discard the video' do
+    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+
     before do
       recorder.start
       sleep(1.0)
@@ -122,6 +161,7 @@ RSpec.describe ScreenRecorder::Desktop do
       Webdrivers.install_dir = 'webdrivers_bin'
       Watir::Browser.new :firefox
     }
+    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
 
     it 'can record the desktop' do
       # Note: browser is lazily loaded with let
@@ -163,7 +203,7 @@ RSpec.describe ScreenRecorder::Desktop do
 #         log:       'ffmpeg-log.txt',
 #         log_level: Logger::DEBUG }
 #     end
-#     let(:recorder) { ScreenRecorder::Desktop.new(output: out) }
+#     let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
 #
 #     it 'can record a specific firefox window with given title' do
 #       # Note: browser is lazily loaded with let
