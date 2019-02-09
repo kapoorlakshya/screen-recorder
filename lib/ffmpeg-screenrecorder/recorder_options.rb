@@ -98,7 +98,7 @@ module FFMPEG
     # Returns Array of required options sa Symbols
     #
     def required_options
-      %i[input output]
+      %i[output]
     end
 
     #
@@ -122,25 +122,6 @@ module FFMPEG
     def ffmpeg_log_to(file)
       file ||= DEFAULT_LOG_FILE
       " 2> #{file}"
-    end
-
-    #
-    # Returns final input parameter.
-    # Adds title= qualifier to input parameter
-    # unless the user is recording the desktop.
-    #
-    def determine_input
-      # x11grab doesn't support window capture
-      if OS.linux?
-        return ':0.0' if @options[:input] == 'desktop'
-
-        return @options[:input] # User given display number
-      end
-
-      return @options[:input] if @options[:input] == 'desktop'
-
-      # Windows only
-      %("title=#{@options[:input]}")
     end
 
     #
