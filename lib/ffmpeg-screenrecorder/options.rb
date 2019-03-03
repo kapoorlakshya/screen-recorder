@@ -19,10 +19,10 @@ module ScreenRecorder
     end
 
     #
-    # Returns given recording format
+    # Returns capture device in use
     #
-    def input_device
-      determine_input_device
+    def capture_device
+      determine_capture_device
     end
 
     #
@@ -43,7 +43,9 @@ module ScreenRecorder
     # Returns given framerate
     #
     def framerate
-      advanced[:framerate] || DEFAULT_FPS
+      return DEFAULT_FPS unless advanced
+
+      advanced.fetch(:framerate, DEFAULT_FPS)
     end
 
     #
@@ -65,8 +67,7 @@ module ScreenRecorder
     # ready for the ffmpeg process to use
     #
     def parsed
-      vals = "-f #{determine_input_device} "
-      vals << "-r #{framerate} "
+      vals = "-f #{capture_device} "
       vals << advanced_options unless advanced.empty?
       vals << "-i #{input} "
       vals << output
@@ -118,7 +119,7 @@ module ScreenRecorder
     #
     # Returns input capture device based on user given value or the current OS.
     #
-    def determine_input_device
+    def determine_capture_device
       return advanced[:input_device] if advanced[:input_device]
 
       if OS.windows?
