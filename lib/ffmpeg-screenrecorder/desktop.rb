@@ -15,7 +15,7 @@ module ScreenRecorder
     private
 
     #
-    # Returns FFmpeg expected parameter based on current OS
+    # Returns FFmpeg expected input value based on current OS
     #
     def determine_input(val)
       if OS.linux?
