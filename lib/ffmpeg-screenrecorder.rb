@@ -5,6 +5,16 @@ require 'logger'
 # @since 1.0.0.beta11
 module ScreenRecorder
   #
+  # Uses user given FFMPEG binary
+  #
+  # @example
+  #   ScreenRecorder.ffmpeg_binary = 'C:\ffmpeg.exe'
+  #
+  def ffmpeg_binary=(bin)
+    FFMPEG.ffmpeg_binary = bin
+  end
+
+  #
   # Set external logger if you want.
   #
   def self.logger=(log)
