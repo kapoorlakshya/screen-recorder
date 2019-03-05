@@ -8,8 +8,13 @@ RSpec.describe ScreenRecorder::Desktop do
     end
   }
   let(:output) { 'recorded-file.mp4' }
-  let(:fps) { 30.0 } # @todo Make FPS part of advanced parameters
   let(:log_file) { 'recorder.log' }
+  let(:advanced) {
+    { framerate: 30.0,
+      loglevel:  'level+debug', # For FFmpeg
+      video_size:  '640x480',
+      show_region: '1' }
+  }
 
   describe '#new' do
     let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
@@ -32,12 +37,6 @@ RSpec.describe ScreenRecorder::Desktop do
   end # describe #new
 
   describe '#new with advanced parameters' do
-    let(:advanced) {
-      { framerate: 30.0,
-        loglevel:  'level+debug', # For FFmpeg
-        video_size:  '640x480',
-        show_region: '1' }
-    }
     let(:recorder) { ScreenRecorder::Desktop.new(output: output, advanced: advanced) }
 
     it 'expects advanced: as a Hash' do
@@ -116,7 +115,7 @@ RSpec.describe ScreenRecorder::Desktop do
       end
 
       it 'outputs video at default FPS' do
-        expect(recorder.video.frame_rate).to equal(recorder.options.framerate)
+        expect(recorder.video.frame_rate).to eq(recorder.options.framerate)
       end
     end
 
