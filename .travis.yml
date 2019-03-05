@@ -30,4 +30,4 @@ before_script:
   - sudo apt-get install wmctrl
   - "export DISPLAY=:0.0"
 
-script: xvfb-run --server-args=":99 -ac -screen 0 1024x768x24" bundle exec rake spec
+script: xvfb-run -n :0.0 --server-args="-ac -screen 0 1024x768x24" bundle exec rake spec
