@@ -9,6 +9,10 @@ module ScreenRecorder
       TypeChecker.check options, Hash
       TypeChecker.check options[:advanced], Hash if options[:advanced]
       @options = verify_options options
+
+      unless advanced[:framerate]
+        @options[:advanced][:framerate] = DEFAULT_FPS
+      end
     end
 
     #
@@ -43,9 +47,7 @@ module ScreenRecorder
     # Returns given framerate
     #
     def framerate
-      return DEFAULT_FPS unless advanced
-
-      advanced.fetch(:framerate, DEFAULT_FPS)
+      advanced[:framerate]
     end
 
     #
