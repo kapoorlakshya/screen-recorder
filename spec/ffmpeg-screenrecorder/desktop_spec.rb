@@ -2,7 +2,6 @@ RSpec.describe ScreenRecorder::Desktop do
   let(:input) {
     if OS.linux?
       number = `echo $DISPLAY`.strip
-      puts "!!!!!!!!!!!! DISPLAY: #{number}"
       number ? number : ':0.0' # If $DISPLAY is not set, use default of :0.0
     else
       'desktop'
