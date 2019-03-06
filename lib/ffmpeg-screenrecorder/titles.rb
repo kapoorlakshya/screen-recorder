@@ -35,7 +35,6 @@ module ScreenRecorder
       #
       def windows_os_window(application)
         titles = `tasklist /v /fi "imagename eq #{application}.exe" /fo list | findstr  Window`
-                   .force_encoding('UTF-8')
                    .split("\n")
                    .map { |i| i.gsub(FILTERED_TITLES, '') }
                    .reject(&:empty?)
