@@ -7,9 +7,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/a176dc755e06a23e5db8/maintainability)](https://codeclimate.com/github/kapoorlakshya/ffmpeg-screenrecorder/maintainability)
 
 Ruby gem to record your computer screen - desktop or specific
-application/window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
+window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
 geared towards recording automated UI test executions for easy
 debugging and documentation.
+
+## Demo
+
+You can find example video recordings [here](https://kapoorlakshya.github.io/introducing-ffmpeg-screenrecorder).
 
 ## Compatibility
 
@@ -19,14 +23,14 @@ Supports Windows and Linux as of version `1.0.0-beta5`. macOS support will be ad
 
 #### 1. Setup FFmpeg
 
-| OS                | Download                                                                       |
-|-------------------|--------------------------------------------------------------------------------|
-| Microsoft Windows | [ffmpeg.org#build-windows](https://www.ffmpeg.org/download.html#build-windows) or [libx264 enabled build](https://ffmpeg.zeranoe.com/builds/) |
-| Linux             | [ffmpeg.org#build-linux](https://ffmpeg.org/download.html#build-linux) |
-| macOS             | [ffmpeg.org#build-mac](https://www.ffmpeg.org/download.html#build-mac) |
+Linux and macOS instructions are [here](https://www.ffmpeg.org/download.html). 
 
-Add location of the `ffmpeg/bin` folder to `PATH` environment variable if using Microsoft Windows ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
-Alternatively, you can define the location using `FFMPEG.ffmpeg_binary='/path/to/binary'` in your project.
+For Microsoft Windows, download the *libx264* enabled binary from [here](https://ffmpeg.zeranoe.com/builds/).
+Once downloaded, add location of the `ffmpeg/bin` folder to `PATH` environment variable 
+([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
+
+The gem also allows you to define the location using 
+`ScreenRecorder.ffmpeg_binary = '/path/to/binary'` in your project.
 
 #### 2. Install gem
 
@@ -59,16 +63,55 @@ require 'ffmpeg-screenrecorder'
 ## Record Desktop
 
 ```ruby
-opts      = { input:     'desktop',
-              output:    'recording.mp4' }
-@recorder = FFMPEG::ScreenRecorder.new(opts)
+@recorder = ScreenRecorder::Desktop.new(output: 'recording.mp4')
 @recorder.start
 
 # ... Run tests or whatever you want to record
 
 @recorder.stop
+```
 
-# Recorded file metadata
+## Record Application Window
+
+```ruby
+require 'watir'
+
+browser   = Watir::Browser.new :firefox
+@recorder = FFMPEG::ScreenRecorder.new(title: 'Mozilla Firefox', output: 'recording.mp4')
+@recorder.start
+
+# Run tests or whatever you want to record
+
+@recorder.stop
+browser.quit 
+```
+
+<b>Fetch Title</b>
+
+The gem provides a helper method to fetch the title of the active window
+from a application (process name).
+
+```ruby
+FFMPEG::Titles.fetch('firefox') # Name of exe
+#=> ["Mozilla Firefox"]
+```
+
+<b>Limitations</b>
+- Only works on Microsoft Windows (gdigrab).
+- `#fetch` only returns titles from currently active (visible) windows.
+- `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
+for a window title with non `UTF-8` characters.
+See [#38](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/38)
+for workaround.
+- Always stop the recording before closing the application. Otherwise,
+ffmpeg will force exit as soon as the window disappears and may produce
+an invalid video file.
+- If you're launching multiple applications or testing an application
+at different window sizes, recording the `desktop` is a better option.
+
+## Output
+
+```ruby
 @recorder.video
 #=> #<FFMPEG::Movie:0x00000000067e0a08
     @path="recording.mp4",
@@ -85,76 +128,46 @@ opts      = { input:     'desktop',
     @resolution="2560x1440">
 ```
 
-## Record Application Window
+## Advanced Options
+
+You can provide additional parameters to *ffmpeg* using the `advanced` 
+parameter. This feature is yet to be fully tested, so please feel free 
+to report any bugs or request a feature.
 
 ```ruby
-require 'watir'
-
-browser = Watir::Browser.new :firefox
-
-FFMPEG::Titles.fetch('firefox') # Name of exe
-#=> ["Mozilla Firefox"]
-
-opts      = { input:     FFMPEG::Titles.fetch('firefox').first,
-              output:    'recording.mp4' }
-@recorder = FFMPEG::ScreenRecorder.new(opts)
-@recorder.start
-
-# Run tests or whatever you want to record
-
-@recorder.stop
-browser.quit 
+  advanced = { framerate: 30,
+               log:       'recorder.log',
+               loglevel:  'level+debug', # For FFmpeg
+               video_size:  '640x480',
+               show_region: '1' }
+  ScreenRecorder::Desktop.new(output:   'recording.mp4',
+                              advanced: advanced)
 ```
 
-<b>Limitations</b>
-- Only works on Microsoft Windows (gdigrab).
-- `#fetch` only returns titles from currently active (visible) windows.
-- `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
-for a window title with non `UTF-8` characters.
-See [#38](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/38)
-for workaround.
-- Always stop the recording before closing the application. Otherwise,
-ffmpeg will force exit as soon as the window disappears and may produce
-an invalid video file.
-- If you're launching multiple applications or testing an application
-at different window sizes, recording the `desktop` is a better option.
+This will be parsed as:
 
-## Options
+```bash
+ffmpeg -y -f gdigrab -framerate 30 -loglevel level+debug -video_size 640x480 -show_region 1 -i desktop recording.mp4 2> recorder.log
+```
 
-- `:input` - `'desktop'` or application window name
-- `:output` - Output file location/name
-- `:framerate` - Capture FPS
-- `:log`  - Defaults to `ffmpeg.log`
-- `:log_level` for this gem. Default: ERROR
+## Logging
 
-All other FFmpeg options can be passed through the `advanced` key. This feature is yet to be fully tested, so please feel free to report any bugs or request a feature.
+You can also configure the logging level of the gem:
 
 ```ruby
-opts = { input:     'desktop',
-         output:    'recorder-test.mp4',
-         framerate: 30.0,
-         log:       'recorder.log',
-         log_level: Logger::DEBUG, # For gem
-         advanced: { loglevel: 'level+debug', # For FFmpeg
-                     video_size:  '640x480',
-                     show_region: '1' }
-}
-
-#
-# Command to FFmpeg:
-#
-# ffmpeg -y -f gdigrab -r 15 -loglevel level+debug -video_size 640x480
-#   -show_region 1 -i desktop recorder-test.mp4 2> recorder.log
+ScreenRecorder.logger.level = Logger::DEBUG
 ```
 
-## Demo
+## Use with Cucumber
 
-You can find example video recordings [here](https://kapoorlakshya.github.io/introducing-ffmpeg-screenrecorder).
-Cucumber + Watir based example is [here](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example).
+A Cucumber + Watir based example is available 
+[here](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example).
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. 
+Then, run `bundle exec rake spec` to run the tests. You can also run 
+`bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. 
 
@@ -179,4 +192,6 @@ This gem is based on the [streamio-ffmpeg](https://github.com/streamio/streamio-
 
 ![SauceLabs Logo](https://saucelabs.com/content/images/logo.png)
 
-Thanks to [SauceLabs](https://saucelabs.com) for providing me with a free account. If you manage an open source project, you can apply for a free account [here](https://saucelabs.com/open-source).
+Thanks to [SauceLabs](https://saucelabs.com) for providing me with a 
+free account. If you manage an open source project, you can apply for 
+a free account [here](https://saucelabs.com/open-source).
