@@ -30,7 +30,7 @@ For Microsoft Windows, download the *libx264* enabled binary from [here](https:/
 Once downloaded, add location of the `ffmpeg/bin` folder to `PATH` environment variable 
 ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
 
-The gem also allows you to define the location using 
+TAlternatively, you can provide the location using 
 `ScreenRecorder.ffmpeg_binary = '/path/to/binary'` in your project.
 
 #### 2. Install gem
@@ -90,7 +90,7 @@ browser.quit
 <b>Fetch Title</b>
 
 A helper method is available to fetch the title of the active window
-from a visible application window (process name).
+for the given process name.
 
 ```ruby
 ScreenRecorder::Titles.fetch('firefox') # Name of exe
@@ -98,8 +98,10 @@ ScreenRecorder::Titles.fetch('firefox') # Name of exe
 ```
 
 <b>Limitations</b>
-- Only works on Microsoft Windows (gdigrab).
-- `#fetch` only returns titles from currently active (visible) windows.
+- Only available for Microsoft Windows (*gdigrab*). Linux (*x11grab*) and macOS 
+(*avfoundation*) capture devices do not provide this feature.
+- `#fetch` only returns the title from a currently active (visible) window
+for the given process.
 - `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
 for a window title with non `UTF-8` characters.
 See [#38](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/38)
