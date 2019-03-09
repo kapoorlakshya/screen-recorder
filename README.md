@@ -1,4 +1,4 @@
-# FFMPEG::ScreenRecorder
+# FFmpeg ScreenRecorder
 
 [![Gem Version](https://badge.fury.io/rb/ffmpeg-screenrecorder.svg)](https://badge.fury.io/rb/ffmpeg-screenrecorder)
 ![https://rubygems.org/gems/ffmpeg-screenrecorder](https://ruby-gem-downloads-badge.herokuapp.com/ffmpeg-screenrecorder?type=total)
@@ -77,7 +77,7 @@ require 'ffmpeg-screenrecorder'
 require 'watir'
 
 browser   = Watir::Browser.new :firefox
-@recorder = FFMPEG::ScreenRecorder.new(title: 'Mozilla Firefox', output: 'recording.mp4')
+@recorder = ScreenRecorder::Window.new(title: 'Mozilla Firefox', output: 'recording.mp4')
 @recorder.start
 
 # Run tests or whatever you want to record
@@ -92,7 +92,7 @@ The gem provides a helper method to fetch the title of the active window
 from a application (process name).
 
 ```ruby
-FFMPEG::Titles.fetch('firefox') # Name of exe
+ScreenRecorder::Titles.fetch('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 ```
 
