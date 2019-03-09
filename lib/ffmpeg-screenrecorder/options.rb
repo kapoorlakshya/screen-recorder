@@ -122,7 +122,10 @@ module ScreenRecorder
     # Returns input capture device based on user given value or the current OS.
     #
     def determine_capture_device
-      return advanced[:input_device] if advanced[:input_device]
+      # User given capture device or format
+      # @see https://www.ffmpeg.org/ffmpeg.html#Main-options
+      return advanced[:f] if advanced[:f]
+      return advanced[:fmt] if advanced[:fmt]
 
       if OS.windows?
         'gdigrab'
