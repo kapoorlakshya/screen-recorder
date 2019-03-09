@@ -88,8 +88,8 @@ browser.quit
 
 <b>Fetch Title</b>
 
-The gem provides a helper method to fetch the title of the active window
-from a application (process name).
+A helper method is available to fetch the title of the active window
+from a visible application window (process name).
 
 ```ruby
 ScreenRecorder::Titles.fetch('firefox') # Name of exe
