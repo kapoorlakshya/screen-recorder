@@ -92,10 +92,10 @@ module ScreenRecorder
     end
 
     #
-    # Returns Array of required options sa Symbols
+    # Returns Array of required options as Symbols
     #
     def required_options
-      %i[output]
+      %i[input output]
     end
 
     #
