@@ -17,7 +17,8 @@ You can find example video recordings [here](https://kapoorlakshya.github.io/int
 
 ## Compatibility
 
-Supports Windows and Linux as of version `1.0.0-beta5`. macOS support will be added before the final release of `v1.0.0`.
+Supports Windows and Linux as of version `1.0.0-beta5`. macOS support 
+will be added before the final release of `v1.0.0`.
 
 ## Installation
 
@@ -71,7 +72,7 @@ require 'ffmpeg-screenrecorder'
 @recorder.stop
 ```
 
-## Record Application Window
+## Record Application Window (Microsoft Windows only)
 
 ```ruby
 require 'watir'
