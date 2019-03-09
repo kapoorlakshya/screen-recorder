@@ -11,7 +11,11 @@ module ScreenRecorder
       @options = verify_options options
 
       unless advanced[:framerate]
-        @options[:advanced][:framerate] = DEFAULT_FPS
+        advanced[:framerate] = DEFAULT_FPS
+      end
+
+      unless advanced[:log]
+        advanced[:log] = DEFAULT_LOG_FILE
       end
     end
 
@@ -40,7 +44,7 @@ module ScreenRecorder
     # Returns given values that are optional
     #
     def advanced
-      @options[:advanced]
+      @options[:advanced] ||= {}
     end
 
     #
@@ -54,7 +58,7 @@ module ScreenRecorder
     # Returns given log filename
     #
     def log
-      @options[:log] || DEFAULT_LOG_FILE
+      advanced[:log]
     end
 
     #
@@ -103,7 +107,10 @@ module ScreenRecorder
     #
     def advanced_options
       arr = []
-      @options[:advanced].each do |k, v|
+
+      # Log file is handled separately at the end of the command
+      advanced.select { |k, _| k != :log }
+        .each do |k, v|
         arr.push "-#{k} #{v}"
       end
       arr.join(' ') + ' '

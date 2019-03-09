@@ -95,6 +95,33 @@ RSpec.describe ScreenRecorder::Options do
     end
   end
 
+  describe '#log' do
+    context 'user given log filename' do
+      let(:opts) do
+        { input:    display,
+          output:   'recorder-output.mkv',
+          advanced: { log: 'recorder.log' }
+        }
+      end
+
+      it 'returns user given log filename' do
+        expect(ScreenRecorder::Options.new(opts).log).to eql(opts[:advanced][:log])
+      end
+    end
+
+    context 'default log filename' do
+      let(:opts) do
+        { input:    display,
+          output:   'recorder-output.mkv',
+        }
+      end
+
+      it 'returns user given log filename' do
+        expect(ScreenRecorder::Options.new(opts).log).to eql(ScreenRecorder::Options::DEFAULT_LOG_FILE)
+      end
+    end
+  end
+
   describe '#all' do
     it 'returns Hash of all user given options' do
       expect(recorder_options.all).to eql(opts)
