@@ -21,9 +21,14 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry-byebug', '~> 3.6'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'rubocop', '~> 0.59'
   spec.add_development_dependency 'watir', '~> 6.0'
   spec.add_development_dependency 'webdrivers', '~> 3.0'
 
   spec.add_runtime_dependency 'os', '~> 0.9.0'
   spec.add_runtime_dependency 'streamio-ffmpeg', '~> 1.0'
+
+  spec.post_install_message = 'PLEASE NOTE: ffmpeg-screenrecorder will soon be renamed to screen_recorder. ' \
+  'Please refer to Issue #45 on GitHub for more information ' \
+  '(https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/45). Thank you!'
 end
