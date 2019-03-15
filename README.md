@@ -18,7 +18,7 @@ Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](ht
 Supports Windows and Linux as of version `1.0.0`. macOS support 
 is coming very soon.
 
-<b>Note</b>: Requires MRI 2.0.0 or higher.
+<b>Note</b>: This gem is tested with MRI 2.3.8, 2.4.5, 2.5.3, and 2.6.1.
 
 ## Installation
 
