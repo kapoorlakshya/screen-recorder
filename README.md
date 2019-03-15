@@ -72,6 +72,9 @@ require 'screen-recorder'
 @recorder.stop
 ```
 
+Linux users can optionally provide a `$DISPLAY` number as 
+`input: ':99.0'`. Default is `:0.0`.
+
 ## Record Application Window (Microsoft Windows only)
 
 ```ruby
