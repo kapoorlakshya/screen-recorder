@@ -15,7 +15,7 @@ Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](ht
 
 ## Compatibility
 
-Supports Windows and Linux as of version `0.1.0`. macOS support 
+Supports Windows and Linux as of version `1.0.0`. macOS support 
 is coming very soon.
 
 <b>Note</b>: Requires MRI 2.0.0 or higher.
@@ -139,8 +139,8 @@ the video file.
 ## Advanced Options
 
 You can provide additional parameters to *ffmpeg* using the `advanced` 
-parameter. This feature is yet to be fully tested, so please feel free 
-to report any bugs or request a feature.
+parameter. These parameters are prefixed with `-` and included
+in the final command.
 
 ```ruby
   advanced = { framerate: 30,
@@ -157,6 +157,9 @@ This will be parsed as:
 ```bash
 ffmpeg -y -f gdigrab -framerate 30 -loglevel level+debug -video_size 640x480 -show_region 1 -i desktop recording.mp4 2> recorder.log
 ```
+
+This feature is yet to be fully tested, so please feel free 
+to report any bugs or request a feature.
 
 ## Logging
 
