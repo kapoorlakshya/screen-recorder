@@ -18,6 +18,8 @@ Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](ht
 Supports Windows and Linux as of version `0.1.0`. macOS support 
 is coming very soon.
 
+<b>Note</b>: Requires MRI 2.0.0 or higher.
+
 ## Installation
 
 #### 1. Setup FFmpeg
