@@ -5,7 +5,6 @@ require 'screen-recorder/version'
 Gem::Specification.new do |spec|
   spec.name                  = 'screen-recorder'
   spec.version               = ScreenRecorder::VERSION
-  spec.required_ruby_version = '>= 2.0.0'
   spec.authors               = ['Lakshya Kapoor']
   spec.email                 = ['kapoorlakshya@gmail.com']
   spec.homepage              = 'http://github.com/kapoorlakshya/screen-recorder'
