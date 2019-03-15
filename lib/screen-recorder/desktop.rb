@@ -20,6 +20,7 @@ module ScreenRecorder
     def determine_input(val)
       if OS.linux?
         return DEFAULT_INPUT_LINUX if val == 'desktop'
+
         return val # Custom $DISPLAY number in Linux
       end
       return DEFAULT_INPUT_WIN if OS.windows?
