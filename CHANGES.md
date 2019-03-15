@@ -1,9 +1,14 @@
+### 1.0.0.beta13 (2019-03-15)
+* Gem will now be renamed to `screen-recorder`. Please refer to Issue 
+[#45](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/45)
+for more information.
+
 ### 1.0.0.beta12 (2019-03-12)
 * Reverted post install message as `screen_recorder` is already taken.
 
 ### 1.0.0.beta11 (2019-03-12)
 * Recording FPS (`framerate`) is defaulted to 15.0.
-* Gem will soo be renamed to `screen_recorder`. Please refer to Issue 
+* Gem will soon be renamed to `screen_recorder`. Please refer to Issue 
 [#45](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/45)
 for more information.
 
