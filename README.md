@@ -129,6 +129,10 @@ at different window sizes, recording the `desktop` is a better option.
     @resolution="2560x1440">
 ```
 
+If your test fails or you do not want the record for any reason,
+simply call `@recorder.discard` or `@recorder.delete` to delete
+the video file. 
+
 ## Advanced Options
 
 You can provide additional parameters to *ffmpeg* using the `advanced` 
