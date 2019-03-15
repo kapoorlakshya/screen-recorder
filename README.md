@@ -1,24 +1,22 @@
-# FFmpeg ScreenRecorder
+# ScreenRecorder
 
-[![Gem Version](https://badge.fury.io/rb/ffmpeg-screenrecorder.svg)](https://badge.fury.io/rb/ffmpeg-screenrecorder)
-![https://rubygems.org/gems/ffmpeg-screenrecorder](https://ruby-gem-downloads-badge.herokuapp.com/ffmpeg-screenrecorder?type=total)
-[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/github/kapoorlakshya/ffmpeg-screenrecorder/master)
-[![Build Status](https://travis-ci.org/kapoorlakshya/ffmpeg-screenrecorder.svg?branch=master)](https://travis-ci.org/kapoorlakshya/ffmpeg-screenrecorder)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a176dc755e06a23e5db8/maintainability)](https://codeclimate.com/github/kapoorlakshya/ffmpeg-screenrecorder/maintainability)
+[![Gem Version](https://badge.fury.io/rb/screen-recorder.svg)](https://badge.fury.io/rb/screen-recorder)
+![https://rubygems.org/gems/screen-recorder](https://ruby-gem-downloads-badge.herokuapp.com/screen-recorder?type=total)
+[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/github/kapoorlakshya/screen-recorder/master)
+[![Build Status](https://travis-ci.org/kapoorlakshya/screen-recorder.svg?branch=master)](https://travis-ci.org/kapoorlakshya/screen-recorder)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/maintainability)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/maintainability)
 
-Ruby gem to record your computer screen - desktop or specific
+A Ruby gem to record your computer screen - desktop or specific
 window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
-geared towards recording automated UI test executions for easy
-debugging and documentation.
+geared towards recording automated UI test executions for debugging
+and documentation.
 
-## Demo
-
-You can find example video recordings [here](https://kapoorlakshya.github.io/introducing-ffmpeg-screenrecorder).
+Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem).
 
 ## Compatibility
 
-Supports Windows and Linux as of version `1.0.0-beta5`. macOS support 
-will be added before the final release of `v1.0.0`.
+Supports Windows and Linux as of version `0.1.0`. macOS support 
+is coming very soon.
 
 ## Installation
 
@@ -30,7 +28,7 @@ For Microsoft Windows, download the *libx264* enabled binary from [here](https:/
 Once downloaded, add location of the `ffmpeg/bin` folder to `PATH` environment variable 
 ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
 
-TAlternatively, you can provide the location using 
+Alternatively, you can provide the location using 
 `ScreenRecorder.ffmpeg_binary = '/path/to/binary'` in your project.
 
 #### 2. Install gem
@@ -38,7 +36,7 @@ TAlternatively, you can provide the location using
 Next, add this line to your application's Gemfile:
 
 ```ruby
-gem 'ffmpeg-screenrecorder'
+gem 'screen-recorder'
 ```
 
 And then execute:
@@ -50,7 +48,7 @@ $ bundle
 Or install it yourself as:
 
 ```bash
-$ gem install ffmpeg-screenrecorder --pre
+$ gem install screen-recorder
 ```
 
 #### 3. Require gem
@@ -58,7 +56,7 @@ $ gem install ffmpeg-screenrecorder --pre
 Require this gem in your project and start using the gem:
 
 ```ruby
-require 'ffmpeg-screenrecorder'
+require 'screen-recorder'
 ```
 
 ## Record Desktop
@@ -67,7 +65,7 @@ require 'ffmpeg-screenrecorder'
 @recorder = ScreenRecorder::Desktop.new(output: 'recording.mp4')
 @recorder.start
 
-# ... Run tests or whatever you want to record
+# Run tests or whatever you want to record
 
 @recorder.stop
 ```
@@ -104,7 +102,7 @@ ScreenRecorder::Titles.fetch('firefox') # Name of exe
 for the given process.
 - `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
 for a window title with non `UTF-8` characters.
-See [#38](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/38)
+See [#38](https://github.com/kapoorlakshya/screen-recorder/issues/38)
 for workaround.
 - Always stop the recording before closing the application. Otherwise,
 ffmpeg will force exit as soon as the window disappears and may produce
@@ -130,6 +128,10 @@ at different window sizes, recording the `desktop` is a better option.
     @video_bitrate=1048,
     @resolution="2560x1440">
 ```
+
+If your test fails or you do not want the record for any reason,
+simply call `@recorder.discard` or `@recorder.delete` to delete
+the video file. 
 
 ## Advanced Options
 
