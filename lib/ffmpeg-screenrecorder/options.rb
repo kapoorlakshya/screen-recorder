@@ -1,6 +1,7 @@
-module FFMPEG
-  # @since 1.0.0-beta2
-  class RecorderOptions
+# @since 1.0.0-beta11
+module ScreenRecorder
+  # @since 1.0.0-beta11
+  class Options
     DEFAULT_LOG_FILE = 'ffmpeg.log'.freeze
     DEFAULT_FPS      = 15.0
 
@@ -8,20 +9,14 @@ module FFMPEG
       TypeChecker.check options, Hash
       TypeChecker.check options[:advanced], Hash if options[:advanced]
       @options = verify_options options
-    end
 
-    #
-    # Returns given recording format
-    #
-    def format
-      determine_capture_device
-    end
+      unless advanced[:framerate]
+        advanced[:framerate] = DEFAULT_FPS
+      end
 
-    #
-    # Returns given framerate
-    #
-    def framerate
-      @options[:framerate] || DEFAULT_FPS
+      unless advanced[:log]
+        advanced[:log] = DEFAULT_LOG_FILE
+      end
     end
 
     #
@@ -29,6 +24,13 @@ module FFMPEG
     #
     def input
       @options[:input]
+    end
+
+    #
+    # Returns capture device in use
+    #
+    def capture_device
+      determine_capture_device
     end
 
     #
@@ -42,21 +44,21 @@ module FFMPEG
     # Returns given values that are optional
     #
     def advanced
-      @options[:advanced]
+      @options[:advanced] ||= {}
+    end
+
+    #
+    # Returns given framerate
+    #
+    def framerate
+      advanced[:framerate]
     end
 
     #
     # Returns given log filename
     #
     def log
-      @options[:log] || DEFAULT_LOG_FILE
-    end
-
-    #
-    # Returns given log_level
-    #
-    def log_level
-      @options[:log_level]
+      advanced[:log]
     end
 
     #
@@ -71,12 +73,11 @@ module FFMPEG
     # ready for the ffmpeg process to use
     #
     def parsed
-      vals = "-f #{determine_capture_device} "
-      vals << "-r #{@options[:framerate]} "
-      vals << advanced_options if @options[:advanced]
-      vals << "-i #{determine_input} "
-      vals << @options[:output]
-      vals << ffmpeg_log_to(@options[:log]) # If provided
+      vals = "-f #{capture_device} "
+      vals << advanced_options unless advanced.empty?
+      vals << "-i #{input} "
+      vals << output
+      vals << ffmpeg_log_to(log) # If provided
     end
 
     private
@@ -95,7 +96,7 @@ module FFMPEG
     end
 
     #
-    # Returns Array of required options sa Symbols
+    # Returns Array of required options as Symbols
     #
     def required_options
       %i[input output]
@@ -105,11 +106,11 @@ module FFMPEG
     # Returns advanced options parsed and ready for ffmpeg to receive.
     #
     def advanced_options
-      return nil unless @options[:advanced]
-      raise(ArgumentError, ':advanced cannot be empty.') if @options[:advanced].empty?
-
       arr = []
-      @options[:advanced].each do |k, v|
+
+      # Log file is handled separately at the end of the command
+      advanced.select { |k, _| k != :log }
+        .each do |k, v|
         arr.push "-#{k} #{v}"
       end
       arr.join(' ') + ' '
@@ -125,29 +126,13 @@ module FFMPEG
     end
 
     #
-    # Returns final input parameter.
-    # Adds title= qualifier to input parameter
-    # unless the user is recording the desktop.
-    #
-    def determine_input
-      # x11grab doesn't support window capture
-      if OS.linux?
-        return ':0.0' if @options[:input] == 'desktop'
-
-        return @options[:input] # User given display number
-      end
-
-      return @options[:input] if @options[:input] == 'desktop'
-
-      # Windows only
-      %("title=#{@options[:input]}")
-    end
-
-    #
-    # Returns capture device based on user given value or the current OS.
+    # Returns input capture device based on user given value or the current OS.
     #
     def determine_capture_device
-      return @options[:format] if @options[:format]
+      # User given capture device or format
+      # @see https://www.ffmpeg.org/ffmpeg.html#Main-options
+      return advanced[:f] if advanced[:f]
+      return advanced[:fmt] if advanced[:fmt]
 
       if OS.windows?
         'gdigrab'

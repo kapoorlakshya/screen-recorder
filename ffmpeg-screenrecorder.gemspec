@@ -1,10 +1,10 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'ffmpeg/version'
+require 'ffmpeg-screenrecorder/version'
 
 Gem::Specification.new do |spec|
   spec.name        = 'ffmpeg-screenrecorder'
-  spec.version     = FFMPEG::ScreenRecorder::VERSION
+  spec.version     = ScreenRecorder::VERSION
   spec.authors     = ['Lakshya Kapoor']
   spec.email       = ['kapoorlakshya@gmail.com']
   spec.homepage    = 'http://github.com/kapoorlakshya/ffmpeg-screenrecorder'
@@ -26,9 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webdrivers', '~> 3.0'
 
   spec.add_runtime_dependency 'os', '~> 0.9.0'
-  spec.add_runtime_dependency 'streamio-ffmpeg', '~> 1.0'
-
-  spec.post_install_message = 'PLEASE NOTE: ffmpeg-screenrecorder will soon be renamed to screen-recorder.\n' \
-  'Please refer to Issue #45 on GitHub for more information ' \
-  '(https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/45). Thank you!'
+  spec.add_runtime_dependency 'streamio-ffmpeg', '~> 3.0'
 end
