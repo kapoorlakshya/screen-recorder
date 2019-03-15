@@ -6,19 +6,17 @@
 [![Build Status](https://travis-ci.org/kapoorlakshya/screen-recorder.svg?branch=master)](https://travis-ci.org/kapoorlakshya/screen-recorder)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/maintainability)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/maintainability)
 
-Ruby gem to record your computer screen - desktop or specific
+A Ruby gem to record your computer screen - desktop or specific
 window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
 geared towards recording automated UI test executions for debugging
 and documentation.
 
-## Demo
-
-You can find example video recordings [here](https://kapoorlakshya.github.io/introducing-screen-recorder-gem).
+Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem).
 
 ## Compatibility
 
 Supports Windows and Linux as of version `0.1.0`. macOS support 
-will be added before the final release of `v1.0.0`.
+is coming very soon.
 
 ## Installation
 
@@ -30,7 +28,7 @@ For Microsoft Windows, download the *libx264* enabled binary from [here](https:/
 Once downloaded, add location of the `ffmpeg/bin` folder to `PATH` environment variable 
 ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
 
-TAlternatively, you can provide the location using 
+Alternatively, you can provide the location using 
 `ScreenRecorder.ffmpeg_binary = '/path/to/binary'` in your project.
 
 #### 2. Install gem
@@ -50,7 +48,7 @@ $ bundle
 Or install it yourself as:
 
 ```bash
-$ gem install screen-recorder --pre
+$ gem install screen-recorder
 ```
 
 #### 3. Require gem
@@ -67,7 +65,7 @@ require 'screen-recorder'
 @recorder = ScreenRecorder::Desktop.new(output: 'recording.mp4')
 @recorder.start
 
-# ... Run tests or whatever you want to record
+# Run tests or whatever you want to record
 
 @recorder.stop
 ```
