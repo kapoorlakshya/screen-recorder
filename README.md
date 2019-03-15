@@ -107,8 +107,7 @@ is a workaround documented in the [wiki](https://github.com/kapoorlakshya/screen
 - `#fetch` only returns the title from a currently active (visible) window
 for the given process.
 - `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
-for a window title with non `UTF-8` characters.
-See [#38](https://github.com/kapoorlakshya/screen-recorder/issues/38)
+for a window title with non `UTF-8` characters. See [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki/Invalid-byte-sequence-in-UTF-8)
 for workaround.
 - Always stop the recording before closing the application. Otherwise,
 ffmpeg will force exit as soon as the window disappears and may produce
@@ -135,15 +134,15 @@ at different window sizes, recording the `desktop` is a better option.
     @resolution="2560x1440">
 ```
 
-If your test fails or you do not want the record for any reason,
+If your test passes or you do not want the record for any reason,
 simply call `@recorder.discard` or `@recorder.delete` to delete
 the video file. 
 
 ## Advanced Options
 
-You can provide additional parameters to *ffmpeg* using the `advanced` 
-parameter. These parameters are prefixed with `-` and included
-in the final command.
+You can provide additional parameters to FFmpeg using the `advanced` 
+parameter. The keys in the Hash are prefixed with `-` and paired with the
+values in the final command.
 
 ```ruby
   advanced = { framerate: 30,
