@@ -32,7 +32,8 @@ RSpec.describe ScreenRecorder::Desktop do
     end
 
     it 'wants output as required parameter' do
-      expect { ScreenRecorder::Desktop.new() }.to raise_exception(ArgumentError)
+      # noinspection RubyArgCount
+      expect { ScreenRecorder::Desktop.new }.to raise_exception(ArgumentError)
     end
   end # describe #new
 

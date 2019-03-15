@@ -2,8 +2,8 @@
 module ScreenRecorder
   # @since 1.0.0-beta11
   class Desktop < Common
-    DEFAULT_INPUT_LINUX = ':0.0'
-    DEFAULT_INPUT_WIN   = 'desktop'
+    DEFAULT_INPUT_LINUX = ':0.0'.freeze
+    DEFAULT_INPUT_WIN   = 'desktop'.freeze
 
     #
     # Desktop recording specific initializer.
@@ -20,6 +20,7 @@ module ScreenRecorder
     def determine_input(val)
       if OS.linux?
         return DEFAULT_INPUT_LINUX if val == 'desktop'
+
         return val # Custom $DISPLAY number in Linux
       end
       return DEFAULT_INPUT_WIN if OS.windows?

@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors               = ['Lakshya Kapoor']
   spec.email                 = ['kapoorlakshya@gmail.com']
   spec.homepage              = 'http://github.com/kapoorlakshya/screen-recorder'
-  spec.summary               = 'Record your computer screen using ffmpeg via Ruby.'
-  spec.description           = 'Record your computer screen - desktop or specific application/window - using FFmpeg (https://www.ffmpeg.org).'
+  spec.summary               = 'Record your computer screen using FFmpeg via Ruby.'
+  spec.description           = 'Record your computer screen - desktop or specific window - using FFmpeg (https://www.ffmpeg.org).'
   spec.license               = 'MIT'
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do

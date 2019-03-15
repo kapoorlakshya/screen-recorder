@@ -15,8 +15,11 @@ Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](ht
 
 ## Compatibility
 
-Supports Windows and Linux as of version `0.1.0`. macOS support 
+Supports Windows and Linux as of version 1.0.0. macOS support 
 is coming very soon.
+
+Requires Ruby 2.0.0 (MRI) or higher, and is tested 
+with versions 2.3.8, 2.4.5, 2.5.3, and 2.6.1.
 
 ## Installation
 
@@ -70,6 +73,9 @@ require 'screen-recorder'
 @recorder.stop
 ```
 
+Linux users can optionally provide a `$DISPLAY` number as 
+`input: ':99.0'`. Default is `:0.0`.
+
 ## Record Application Window (Microsoft Windows only)
 
 ```ruby
@@ -97,12 +103,12 @@ ScreenRecorder::Titles.fetch('firefox') # Name of exe
 
 <b>Limitations</b>
 - Only available for Microsoft Windows (*gdigrab*). Linux (*x11grab*) and macOS 
-(*avfoundation*) capture devices do not provide this feature.
+(*avfoundation*) capture devices do not provide this feature. However, there
+is a workaround documented in the [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki/Window-recording-in-Linux-and-Mac).
 - `#fetch` only returns the title from a currently active (visible) window
 for the given process.
 - `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
-for a window title with non `UTF-8` characters.
-See [#38](https://github.com/kapoorlakshya/screen-recorder/issues/38)
+for a window title with non `UTF-8` characters. See [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki/Invalid-byte-sequence-in-UTF-8)
 for workaround.
 - Always stop the recording before closing the application. Otherwise,
 ffmpeg will force exit as soon as the window disappears and may produce
@@ -129,15 +135,15 @@ at different window sizes, recording the `desktop` is a better option.
     @resolution="2560x1440">
 ```
 
-If your test fails or you do not want the record for any reason,
+If your test passes or you do not want the record for any reason,
 simply call `@recorder.discard` or `@recorder.delete` to delete
 the video file. 
 
 ## Advanced Options
 
-You can provide additional parameters to *ffmpeg* using the `advanced` 
-parameter. This feature is yet to be fully tested, so please feel free 
-to report any bugs or request a feature.
+You can provide additional parameters to FFmpeg using the `advanced` 
+parameter. The keys in the Hash are prefixed with `-` and paired with the
+values in the final command.
 
 ```ruby
   advanced = { framerate: 30,
@@ -154,6 +160,9 @@ This will be parsed as:
 ```bash
 ffmpeg -y -f gdigrab -framerate 30 -loglevel level+debug -video_size 640x480 -show_region 1 -i desktop recording.mp4 2> recorder.log
 ```
+
+This feature is yet to be fully tested, so please feel free 
+to report any bugs or request a feature.
 
 ## Logging
 
