@@ -189,46 +189,4 @@ RSpec.describe ScreenRecorder::Desktop do
       FileUtils.rm recorder.options.log
     end
   end
-
-#
-# Windows Only
-#
-# if OS.windows? # Only gdigrab supports window capture
-#   describe '#start with opts[:input] as "Mozilla Firefox"' do
-#     let(:browser) do
-#       Webdrivers.install_dir = 'webdrivers_bin'
-#       Watir::Browser.new :firefox
-#     end
-#     let(:opts) do
-#       { output:    'firefox-recorder.mp4',
-#         input:     'Mozilla Firefox',
-#         framerate: 15,
-#         log:       'ffmpeg-log.txt',
-#         log_level: Logger::DEBUG }
-#     end
-#     let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
-#
-#     it 'can record a specific firefox window with given title' do
-#       # Note: browser is lazily loaded with let
-#       browser.window.resize_to 1280, 720
-#       recorder.start
-#       browser.goto 'watir.com'
-#       browser.link(text: 'News').wait_until(&:present?).click
-#       browser.wait
-#       recorder.stop
-#       browser.quit
-#
-#       expect(File).to exist(recorder.options.output)
-#       expect(recorder.video.valid?).to be(true)
-#     end
-#
-#     #
-#     # Clean up
-#     #
-#     after do
-#       FileUtils.rm recorder.options.output
-#       FileUtils.rm recorder.options.log
-#     end
-#   end # describe
-# end # Os.windows?
 end # RSpec.describe
