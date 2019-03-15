@@ -1,23 +1,23 @@
-# FFmpeg ScreenRecorder
+# ScreenRecorder
 
 [![Gem Version](https://badge.fury.io/rb/ffmpeg-screenrecorder.svg)](https://badge.fury.io/rb/ffmpeg-screenrecorder)
 ![https://rubygems.org/gems/ffmpeg-screenrecorder](https://ruby-gem-downloads-badge.herokuapp.com/ffmpeg-screenrecorder?type=total)
 [![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/github/kapoorlakshya/ffmpeg-screenrecorder/master)
-[![Build Status](https://travis-ci.org/kapoorlakshya/ffmpeg-screenrecorder.svg?branch=master)](https://travis-ci.org/kapoorlakshya/ffmpeg-screenrecorder)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a176dc755e06a23e5db8/maintainability)](https://codeclimate.com/github/kapoorlakshya/ffmpeg-screenrecorder/maintainability)
+[![Build Status](https://travis-ci.org/kapoorlakshya/screen-recorder.svg?branch=master)](https://travis-ci.org/kapoorlakshya/ffmpeg-screenrecorder)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/maintainability)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/maintainability)
 
 Ruby gem to record your computer screen - desktop or specific
 window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
-geared towards recording automated UI test executions for easy
-debugging and documentation.
+geared towards recording automated UI test executions for debugging
+and documentation.
 
 ## Demo
 
-You can find example video recordings [here](https://kapoorlakshya.github.io/introducing-ffmpeg-screenrecorder).
+You can find example video recordings [here](https://kapoorlakshya.github.io/introducing-screen-recorder-gem).
 
 ## Compatibility
 
-Supports Windows and Linux as of version `1.0.0-beta5`. macOS support 
+Supports Windows and Linux as of version `0.1.0`. macOS support 
 will be added before the final release of `v1.0.0`.
 
 ## Installation
@@ -38,7 +38,7 @@ TAlternatively, you can provide the location using
 Next, add this line to your application's Gemfile:
 
 ```ruby
-gem 'ffmpeg-screenrecorder'
+gem 'screen-recorder'
 ```
 
 And then execute:
@@ -50,7 +50,7 @@ $ bundle
 Or install it yourself as:
 
 ```bash
-$ gem install ffmpeg-screenrecorder --pre
+$ gem install screen-recorder --pre
 ```
 
 #### 3. Require gem
@@ -58,7 +58,7 @@ $ gem install ffmpeg-screenrecorder --pre
 Require this gem in your project and start using the gem:
 
 ```ruby
-require 'ffmpeg-screenrecorder'
+require 'screen-recorder'
 ```
 
 ## Record Desktop
@@ -104,7 +104,7 @@ ScreenRecorder::Titles.fetch('firefox') # Name of exe
 for the given process.
 - `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
 for a window title with non `UTF-8` characters.
-See [#38](https://github.com/kapoorlakshya/ffmpeg-screenrecorder/issues/38)
+See [#38](https://github.com/kapoorlakshya/screen-recorder/issues/38)
 for workaround.
 - Always stop the recording before closing the application. Otherwise,
 ffmpeg will force exit as soon as the window disappears and may produce

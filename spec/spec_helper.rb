@@ -1,5 +1,5 @@
 require 'bundler/setup'
-require 'ffmpeg-screenrecorder'
+require 'screen-recorder'
 require 'watir'
 require 'webdrivers'
 require 'pry-byebug'

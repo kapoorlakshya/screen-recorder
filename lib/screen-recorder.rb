@@ -37,10 +37,10 @@ module ScreenRecorder
   end
 end
 
-require 'ffmpeg-screenrecorder/type_checker'
-require 'ffmpeg-screenrecorder/errors'
-require 'ffmpeg-screenrecorder/options'
-require 'ffmpeg-screenrecorder/titles'
-require 'ffmpeg-screenrecorder/common'
-require 'ffmpeg-screenrecorder/desktop'
-require 'ffmpeg-screenrecorder/window'
+require 'screen-recorder/type_checker'
+require 'screen-recorder/errors'
+require 'screen-recorder/options'
+require 'screen-recorder/titles'
+require 'screen-recorder/common'
+require 'screen-recorder/desktop'
+require 'screen-recorder/window'
