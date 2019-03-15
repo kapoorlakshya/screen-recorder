@@ -3,14 +3,15 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'screen-recorder/version'
 
 Gem::Specification.new do |spec|
-  spec.name        = 'screen-recorder'
-  spec.version     = ScreenRecorder::VERSION
-  spec.authors     = ['Lakshya Kapoor']
-  spec.email       = ['kapoorlakshya@gmail.com']
-  spec.homepage    = 'http://github.com/kapoorlakshya/screen-recorder'
-  spec.summary     = 'Record your computer screen using ffmpeg via Ruby.'
-  spec.description = 'Record your computer screen - desktop or specific application/window - using FFmpeg (https://www.ffmpeg.org).'
-  spec.license     = 'MIT'
+  spec.name                  = 'screen-recorder'
+  spec.version               = ScreenRecorder::VERSION
+  spec.required_ruby_version = '>= 2.0.0'
+  spec.authors               = ['Lakshya Kapoor']
+  spec.email                 = ['kapoorlakshya@gmail.com']
+  spec.homepage              = 'http://github.com/kapoorlakshya/screen-recorder'
+  spec.summary               = 'Record your computer screen using ffmpeg via Ruby.'
+  spec.description           = 'Record your computer screen - desktop or specific application/window - using FFmpeg (https://www.ffmpeg.org).'
+  spec.license               = 'MIT'
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
