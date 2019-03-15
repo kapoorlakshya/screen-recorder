@@ -99,7 +99,8 @@ ScreenRecorder::Titles.fetch('firefox') # Name of exe
 
 <b>Limitations</b>
 - Only available for Microsoft Windows (*gdigrab*). Linux (*x11grab*) and macOS 
-(*avfoundation*) capture devices do not provide this feature.
+(*avfoundation*) capture devices do not provide this feature. However, there
+is a workaround documented in the [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki/Window-recording-in-Linux-and-Mac).
 - `#fetch` only returns the title from a currently active (visible) window
 for the given process.
 - `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
