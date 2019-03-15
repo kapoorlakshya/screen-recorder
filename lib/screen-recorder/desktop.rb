@@ -8,8 +8,12 @@ module ScreenRecorder
     #
     # Desktop recording specific initializer.
     #
-    def initialize(input: 'desktop', output:, advanced: {})
-      super(input: determine_input(input), output: output, advanced: advanced)
+    def initialize(args)
+      raise ArgumentError unless args[:output]
+
+      input    = args[:input] || 'desktop'
+      advanced = args[:advanced] || {}
+      super(input: determine_input(input), output: args[:output], advanced: advanced)
     end
 
     private

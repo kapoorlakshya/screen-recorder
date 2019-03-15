@@ -5,12 +5,15 @@ module ScreenRecorder
     #
     # Window recording specific initializer.
     #
-    def initialize(title:, output:, advanced: {})
-      unless OS.windows?
-        raise NotImplementedError, "Window recording is only supported on Microsoft Windows."
-      end
+    def initialize(args)
+      raise ArgumentError unless args[:title]
+      raise ArgumentError unless args[:output]
 
-      super(input: format_input(title), output: output, advanced: advanced)
+      title    = args[:title]
+      advanced = args[:advanced] || {}
+      raise NotImplementedError, 'Window recording is only supported on Microsoft Windows.' unless OS.windows?
+
+      super(input: format_input(title), output: args[:output], advanced: advanced)
     end
 
     private
