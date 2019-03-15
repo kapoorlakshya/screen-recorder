@@ -1,6 +1,6 @@
 ### 1.0.0.beta13 (2019-03-15)
 * Gem will now be renamed to `screen-recorder`. Please refer to Issue 
-[#45](https://github.com/kapoorlakshya/screenrecorder/issues/45)
+[#45](https://github.com/kapoorlakshya/screen-recorder/issues/45)
 for more information.
 
 ### 1.0.0.beta12 (2019-03-12)
@@ -9,14 +9,14 @@ for more information.
 ### 1.0.0.beta11 (2019-03-12)
 * Recording FPS (`framerate`) is defaulted to 15.0.
 * Gem will soon be renamed to `screen_recorder`. Please refer to Issue 
-[#45](https://github.com/kapoorlakshya/screenrecorder/issues/45)
+[#45](https://github.com/kapoorlakshya/screen-recorder/issues/45)
 for more information.
 
 ### 1.0.0.beta10 (2019-02-05)
 * Fixed an edge case in Microsoft Windows specific implementation of
 `WindowTitles#fetch` where processes with mismatching names and window
 titles, such as process `"Calculator.exe"` with window title `"CicMarshalWnd"`,
-were omitted ([#35](https://github.com/kapoorlakshya/screenrecorder/issues/35)).
+were omitted ([#35](https://github.com/kapoorlakshya/screen-recorder/issues/35)).
 This fix also prints a warning when this mismatch occurs.
 * Fixed bug in Linux specific `WindowTitles#fetch` implementation where
 the filter by application name logic was removed. This filter is required
