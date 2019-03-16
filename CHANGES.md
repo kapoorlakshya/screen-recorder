@@ -1,3 +1,13 @@
+### 1.0.0 (2019-03-15)
+* Released first major version.
+* Now uses `ScreenRecorder` as top level module. `FFMPEG` is not directly 
+exposed anymore.
+* The recording modes are now available through `ScreenRecorder::Desktop` 
+and `ScreenRecorder::Window` classes to make the usage (parameters) simpler.
+* Method parameters are now keywords instead of an `opts` Hash. This means
+at least Ruby 2.0.0 is required.
+* `framerate:` is now to be passed through the `advanced` Hash. 
+
 ### 1.0.0.beta13 (2019-03-15)
 * Gem will now be renamed to `screen-recorder`. Please refer to Issue 
 [#45](https://github.com/kapoorlakshya/screen-recorder/issues/45)
