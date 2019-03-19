@@ -1,10 +1,13 @@
 RSpec.describe ScreenRecorder::Desktop do
   let(:input) {
     if OS.linux?
-      number = `echo $DISPLAY`.strip
-      number ? number : ':0.0' # If $DISPLAY is not set, use default of :0.0
-    else
+      `echo $DISPLAY`.strip || ':0.0' # If $DISPLAY is not set, use default of :0.0
+    elsif OS.mac?
+      '1'
+    elsif OS.windows?
       'desktop'
+    else
+      raise NotImplementedError, 'Your OS is not supported.'
     end
   }
   let(:output) { 'recorded-file.mp4' }
@@ -23,7 +26,7 @@ RSpec.describe ScreenRecorder::Desktop do
       expect { ScreenRecorder::Desktop.new(input: input, output: output) }.to_not raise_exception
     end
 
-    it "defaults to OS specific input if none is given" do
+    it 'defaults to OS specific input if none is given' do
       expect(ScreenRecorder::Desktop.new(output: output).options.input).to eq(input)
     end
 

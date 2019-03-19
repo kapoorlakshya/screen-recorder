@@ -3,10 +3,13 @@ require_relative '../spec_helper'
 RSpec.describe ScreenRecorder::Options do
   let(:display) {
     if OS.linux?
-      number = `echo $DISPLAY`.strip
-      number ? number : ':0.0' # If $DISPLAY is not set, use default of 0.0
-    else
+      `echo $DISPLAY`.strip || ':0.0' # If $DISPLAY is not set, use default of :0.0
+    elsif OS.mac?
+      '1'
+    elsif OS.windows?
       'desktop'
+    else
+      raise NotImplementedError, 'Your OS is not supported.'
     end
   }
 

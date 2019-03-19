@@ -4,6 +4,7 @@ module ScreenRecorder
   class Desktop < Common
     DEFAULT_INPUT_LINUX = ':0.0'.freeze
     DEFAULT_INPUT_WIN   = 'desktop'.freeze
+    DEFAULT_INPUT_MAC   = '1'.freeze
 
     #
     # Desktop recording specific initializer.
@@ -15,17 +16,19 @@ module ScreenRecorder
     private
 
     #
-    # Returns FFmpeg expected input value based on current OS
+    # Returns FFmpeg expected input based on user given value or
+    # default for the current OS.
     #
     def determine_input(val)
-      if OS.linux?
-        return DEFAULT_INPUT_LINUX if val == 'desktop'
+      return val if val # Custom value
 
-        return val # Custom $DISPLAY number in Linux
-      end
       return DEFAULT_INPUT_WIN if OS.windows?
 
-      raise ArgumentError, "Unsupported input type: '#{val}'. Expected: 'desktop'"
+      return DEFAULT_INPUT_LINUX if OS.linux?
+
+      return DEFAULT_INPUT_MAC if OS.mac?
+
+      raise NotImplementedError, 'Your OS is not supported. Feel free to create an Issue on GitHub.'
     end
   end
 end
