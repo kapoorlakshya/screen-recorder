@@ -1,3 +1,7 @@
+### 1.1.0 (TBD)
+* `Titles#fetch` will now raise a `NotImplementedError` when used in a 
+Linux or a macOS environment.
+
 ### 1.0.0 (2019-03-15)
 * Released first major version.
 * Now uses `ScreenRecorder` as top level module. `FFMPEG` is not directly 
