@@ -56,8 +56,6 @@ $ gem install screen-recorder
 
 #### 3. Require gem
 
-Require this gem in your project and start using the gem:
-
 ```ruby
 require 'screen-recorder'
 ```

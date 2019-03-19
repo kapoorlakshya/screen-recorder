@@ -6,6 +6,15 @@ require_relative '../spec_helper'
 if OS.windows? # Only gdigrab supports window capture
   RSpec.describe ScreenRecorder::Titles do
     describe '.fetch' do
+
+      if OS.linux? || OS.mac?
+        context 'we are using Linux or MacOS' do
+          it 'raises error when OS is not Microsoft Windows' do
+            expect { ScreenRecorder::Titles.fetch('firefox') }.to raise_error(NotImplementedError)
+          end
+        end
+      end
+
       context 'given application is Firefox' do
         let(:browser_process) { :firefox }
         let(:url) { 'https://google.com' }
