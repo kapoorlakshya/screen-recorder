@@ -95,11 +95,6 @@ module ScreenRecorder
       end
       ScreenRecorder.logger.debug "IO#eof? #{@process.eof?}"
       Time.now - start
-
-    rescue Timeout::Error
-      ScreenRecorder.logger.error 'FFmpeg failed to stop. Force killing it...'
-      pid = (@process.pid + 1) # Parent process + 1
-      Process.kill 'TERM', pid
     end
 
     #
