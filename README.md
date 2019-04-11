@@ -120,6 +120,9 @@ for workaround.
 
 #### Output
 
+Once the recorder is stopped, you can view the video metadata or transcode
+it if desired. See the `streamio-ffmpeg` [repo](https://github.com/streamio/streamio-ffmpeg) for more details.
+
 ```ruby
 @recorder.video
 #=> #<FFMPEG::Movie:0x00000000067e0a08
