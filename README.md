@@ -63,7 +63,7 @@ require 'screen-recorder'
 #### Record Desktop
 
 ```ruby
-@recorder = ScreenRecorder::Desktop.new(output: 'recording.mp4')
+@recorder = ScreenRecorder::Desktop.new(output: 'recording.mkv')
 @recorder.start
 
 # Run tests or whatever you want to record
@@ -83,7 +83,7 @@ inputs.
 require 'watir'
 
 browser   = Watir::Browser.new :firefox
-@recorder = ScreenRecorder::Window.new(title: 'Mozilla Firefox', output: 'recording.mp4')
+@recorder = ScreenRecorder::Window.new(title: 'Mozilla Firefox', output: 'recording.mkv')
 @recorder.start
 
 # Run tests or whatever you want to record
@@ -125,19 +125,19 @@ it if desired. See the `streamio-ffmpeg` [repo](https://github.com/streamio/stre
 
 ```ruby
 @recorder.video
-#=> #<FFMPEG::Movie:0x00000000067e0a08
-    @path="recording.mp4",
-    @container="mov,mp4,m4a,3gp,3g2,mj2",
-    @duration=5.0,
-    @time=0.0,
-    @creation_time=nil,
-    @bitrate=1051,
-    @rotation=nil,
-    @video_stream="h264 (High 4:4:4 Predictive) (avc1 / 0x31637661), yuv444p, 2560x1440, 1048 kb/s, 15 fps, 15 tbr, 15360 tbn, 30 tbc (default)",
-    @audio_stream=nil,
-    @video_codec="h264 (High 4:4:4 Predictive) (avc1 / 0x31637661)", @colorspace="yuv444p",
-    @video_bitrate=1048,
-    @resolution="2560x1440">
+=> #<FFMPEG::Movie:0x0000000004327900 
+        @path="recording.mkv", 
+        @metadata={:streams=>[{:index=>0, :codec_name=>"h264", :codec_long_name=>"H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10", 
+        :profile=>"High", 
+        :codec_type=>"video", 
+        ...
+        @bitrate=264198,
+        @video_codec="h264", 
+        @colorspace="yuv420p", 
+        @width=1920, 
+        @height=1080, 
+        @video_bitrate=0,
+        ... >
 ```
 
 If your test passes or you do not want the record for any reason,
@@ -156,14 +156,14 @@ values in the final command.
                loglevel:  'level+debug', # For FFmpeg
                video_size:  '640x480',
                show_region: '1' }
-  ScreenRecorder::Desktop.new(output:   'recording.mp4',
+  ScreenRecorder::Desktop.new(output:   'recording.mkv',
                               advanced: advanced)
 ```
 
 This will be parsed as:
 
 ```bash
-ffmpeg -y -f gdigrab -framerate 30 -loglevel level+debug -video_size 640x480 -show_region 1 -i desktop recording.mp4 2> recorder.log
+ffmpeg -y -f gdigrab -framerate 30 -loglevel level+debug -video_size 640x480 -show_region 1 -i desktop recording.mkv 2> recorder.log
 ```
 
 This feature is yet to be fully tested, so please feel free 

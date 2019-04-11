@@ -173,7 +173,7 @@ RSpec.describe ScreenRecorder::Options do
         end
 
         it 'prevents Ffmpeg to raising a warning about unsupported input pixel format' do
-          recorder = ScreenRecorder::Desktop.new(input: input, output: 'recording.mp4')
+          recorder = ScreenRecorder::Desktop.new(input: input, output: 'recording.mkv')
           recorder.start
           sleep(1.0)
           recorder.stop

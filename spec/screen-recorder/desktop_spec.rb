@@ -1,5 +1,5 @@
 RSpec.describe ScreenRecorder::Desktop do
-  let(:output) { 'recorded-file.mp4' }
+  let(:output) { 'recorded-file.mkv' }
   let(:log_file) { 'recorder.log' }
   let(:advanced) {
     { framerate: 30.0,
