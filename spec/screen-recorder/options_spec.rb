@@ -10,27 +10,27 @@ RSpec.describe ScreenRecorder::Options do
                    show_region: '1' } }
   end
 
-  let(:os_specific_format) {
+  let(:os_specific_format) do
     return 'gdigrab' if OS.windows?
     return 'x11grab' if OS.linux?
     return 'avfoundation' if OS.mac?
-  }
+  end
 
-  let(:recorder_options) {
-    ScreenRecorder::Options.new(opts)
-  }
+  let(:recorder_options) do
+    described_class.new(opts)
+  end
 
   describe 'new' do
     it '#accepts a Hash' do
-      expect { ScreenRecorder::Options.new(opts) }.to_not raise_exception # ArgumentError
+      expect { described_class.new(opts) }.not_to raise_exception # ArgumentError
     end
 
     it 'raise ArgumentError if user provides an object other than a Hash' do
-      expect { ScreenRecorder::Options.new([]) }.to raise_exception(ArgumentError)
+      expect { described_class.new([]) }.to raise_exception(ArgumentError)
     end
 
     it 'raises an error when a required option (ex: output) is not provided' do
-      expect { ScreenRecorder::Options.new({ input: os_specific_input, }) }.to raise_exception(ArgumentError)
+      expect { described_class.new(input: os_specific_input) }.to raise_exception(ArgumentError)
     end
   end
 
@@ -67,8 +67,8 @@ RSpec.describe ScreenRecorder::Options do
       it 'raise ArgumentError if user provides an object other than a Hash' do
         bad_opts = { output:   'recorder-output.mkv',
                      input:    os_specific_input,
-                     advanced: %w(let me fool you) }
-        expect { ScreenRecorder::Options.new(bad_opts) }.to raise_exception(ArgumentError)
+                     advanced: %w[let me fool you] }
+        expect { described_class.new(bad_opts) }.to raise_exception(ArgumentError)
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe ScreenRecorder::Options do
       end
 
       it 'returns user given framerate value' do
-        expect(ScreenRecorder::Options.new(opts).framerate).to eql(opts[:advanced][:framerate])
+        expect(described_class.new(opts).framerate).to eql(opts[:advanced][:framerate])
       end
     end
   end
@@ -94,18 +94,18 @@ RSpec.describe ScreenRecorder::Options do
       end
 
       it 'returns user given log filename' do
-        expect(ScreenRecorder::Options.new(opts).log).to eql(opts[:advanced][:log])
+        expect(described_class.new(opts).log).to eql(opts[:advanced][:log])
       end
     end
 
     context 'default log filename' do
       let(:opts) do
         { input:  os_specific_input,
-          output: 'recorder-output.mkv',  }
+          output: 'recorder-output.mkv' }
       end
 
       it 'returns user given log filename' do
-        expect(ScreenRecorder::Options.new(opts).log).to eql(ScreenRecorder::Options::DEFAULT_LOG_FILE)
+        expect(described_class.new(opts).log).to eql(ScreenRecorder::Options::DEFAULT_LOG_FILE)
       end
     end
   end
@@ -117,7 +117,7 @@ RSpec.describe ScreenRecorder::Options do
   end
 
   describe '#parsed' do
-    let(:input) {
+    let(:input) do
       if OS.linux?
         `echo $DISPLAY`.strip || ':0.0' # If $DISPLAY is not set, use default of :0.0
       elsif OS.mac?
@@ -127,7 +127,7 @@ RSpec.describe ScreenRecorder::Options do
       else
         raise NotImplementedError, 'Your OS is not supported.'
       end
-    }
+    end
     let(:opts) do
       { input:     os_specific_input,
         output:    'recorder-output.mkv',
@@ -149,7 +149,7 @@ RSpec.describe ScreenRecorder::Options do
         end
 
         it 'returns parsed options for FFmpeg' do
-          expect(ScreenRecorder::Options.new(opts).parsed).to eql(expected_parsed_value)
+          expect(described_class.new(opts).parsed).to eql(expected_parsed_value)
         end
       end
     end
@@ -166,7 +166,7 @@ RSpec.describe ScreenRecorder::Options do
         end
 
         it 'includes input -pix_fmt in parsed options for FFmpeg' do
-          expect(ScreenRecorder::Options.new(opts).parsed).to eql(expected_parsed_value)
+          expect(described_class.new(opts).parsed).to eql(expected_parsed_value)
         end
 
         it 'prevents Ffmpeg to raising a warning about unsupported input pixel format' do

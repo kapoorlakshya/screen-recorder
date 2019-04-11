@@ -29,6 +29,10 @@ if OS.windows? # Only gdigrab supports window capture
           browser.wait
         end
 
+        after do
+          browser.quit
+        end
+
         it 'returns a list of available windows from firefox' do
           browser.wait
           expect(ScreenRecorder::Titles.fetch('firefox')).to be_a_kind_of(Array)
@@ -41,10 +45,6 @@ if OS.windows? # Only gdigrab supports window capture
 
         it 'returns window title from Mozilla Firefox' do
           expect(ScreenRecorder::Titles.fetch(browser_process).first).to eql(expected_title)
-        end
-
-        after do
-          browser.quit
         end
       end
 
@@ -69,12 +69,12 @@ if OS.windows? # Only gdigrab supports window capture
           browser.wait
         end
 
-        it 'excludes titles from extensions' do
-          expect(ScreenRecorder::Titles.fetch(browser_process)).to eql(expected_titles)
-        end
-
         after do
           browser.quit
+        end
+
+        it 'excludes titles from extensions' do
+          expect(ScreenRecorder::Titles.fetch(browser_process)).to eql(expected_titles)
         end
       end
     end # describe

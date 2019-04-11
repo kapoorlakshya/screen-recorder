@@ -1,46 +1,46 @@
 RSpec.describe ScreenRecorder::Desktop do
   let(:output) { 'recorded-file.mkv' }
   let(:log_file) { 'recorder.log' }
-  let(:advanced) {
+  let(:advanced) do
     { framerate:   30.0,
       loglevel:    'level+debug', # For FFmpeg
       video_size:  '640x480',
       show_region: '1' }
-  }
+  end
 
   describe '#new' do
-    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+    let(:recorder) { described_class.new(output: output) }
 
     it 'accepts input: as a parameter' do
-      expect { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }.to_not raise_exception
+      expect { described_class.new(input: os_specific_input, output: output) }.not_to raise_exception
     end
 
     # @todo Figure out how to test this on Travis since default is 1 and Travis uses 0.
     unless OS.mac?
       it 'defaults to OS specific input if none is given' do
-        expect(ScreenRecorder::Desktop.new(output: output).options.input).to eq(os_specific_input)
+        expect(described_class.new(output: output).options.input).to eq(os_specific_input)
       end
     end
 
     it 'accepts output: as a parameter' do
-      expect { ScreenRecorder::Desktop.new(output: output) }.to_not raise_exception
+      expect { described_class.new(output: output) }.not_to raise_exception
     end
 
     it 'wants output as required parameter' do
       # noinspection RubyArgCount
-      expect { ScreenRecorder::Desktop.new }.to raise_exception(ArgumentError)
+      expect { described_class.new }.to raise_exception(ArgumentError)
     end
   end # describe #new
 
   describe '#new with advanced parameters' do
-    let(:recorder) { ScreenRecorder::Desktop.new(output: output, advanced: advanced) }
+    let(:recorder) { described_class.new(output: output, advanced: advanced) }
 
     it 'expects advanced: as a Hash' do
-      expect { ScreenRecorder::Desktop.new(output: output, advanced: []) }.to raise_exception(ArgumentError)
+      expect { described_class.new(output: output, advanced: []) }.to raise_exception(ArgumentError)
     end
 
     it 'accepts advanced: as a parameter' do
-      expect { ScreenRecorder::Desktop.new(output: output, advanced: advanced) }.to_not raise_exception
+      expect { described_class.new(output: output, advanced: advanced) }.not_to raise_exception
     end
 
     it 'sets advanced parameters' do
@@ -53,7 +53,7 @@ RSpec.describe ScreenRecorder::Desktop do
   end
 
   describe '#options' do
-    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
+    let(:recorder) { described_class.new(input: os_specific_input, output: output) }
 
     it 'returns a FFMPEG::Options object' do
       expect(recorder.options).to be_a(ScreenRecorder::Options)
@@ -73,11 +73,17 @@ RSpec.describe ScreenRecorder::Desktop do
   end
 
   describe '#start' do
-    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
+    let(:recorder) { described_class.new(input: os_specific_input, output: output) }
 
     before do
       recorder.start
       sleep(1.0)
+    end
+
+    after do
+      recorder.stop
+      FileUtils.rm recorder.options.output
+      FileUtils.rm recorder.options.log
     end
 
     it 'sets @video to nil' do
@@ -89,20 +95,19 @@ RSpec.describe ScreenRecorder::Desktop do
     end
 
     # Clean up
-    after do
-      recorder.stop
-      FileUtils.rm recorder.options.output
-      FileUtils.rm recorder.options.log
-    end
   end # context
 
   context 'the user is ready to stop the recording' do
-    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
+    let(:recorder) { described_class.new(input: os_specific_input, output: output) }
 
     before do
       recorder.start
       sleep(1.0)
       recorder.stop
+    end
+
+    after do
+      FileUtils.rm recorder.options.output
     end
 
     describe '#stop' do
@@ -122,13 +127,10 @@ RSpec.describe ScreenRecorder::Desktop do
     end
 
     # Clean up
-    after do
-      FileUtils.rm recorder.options.output
-    end
   end # context
 
   context 'user wants to discard the video' do
-    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
+    let(:recorder) { described_class.new(input: os_specific_input, output: output) }
 
     before do
       recorder.start
@@ -136,10 +138,14 @@ RSpec.describe ScreenRecorder::Desktop do
       recorder.stop
     end
 
+    after do
+      FileUtils.rm recorder.options.log
+    end
+
     describe '#discard' do
       it 'discards the recorded video' do
         recorder.discard
-        expect(File).to_not exist(recorder.options.output)
+        expect(File).not_to exist(recorder.options.output)
       end
 
       it 'also works as #delete' do
@@ -150,17 +156,19 @@ RSpec.describe ScreenRecorder::Desktop do
     #
     # Clean up
     #
-    after do
-      FileUtils.rm recorder.options.log
-    end
   end
 
   describe 'user wants to record the desktop' do
-    let(:browser) {
+    let(:browser) do
       Webdrivers.install_dir = 'webdrivers_bin'
       Watir::Browser.new :firefox
-    }
-    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
+    end
+    let(:recorder) { described_class.new(input: os_specific_input, output: output) }
+
+    after do
+      FileUtils.rm recorder.options.output
+      FileUtils.rm recorder.options.log
+    end
 
     it 'can record the desktop' do
       # Note: browser is lazily loaded with let
@@ -180,9 +188,5 @@ RSpec.describe ScreenRecorder::Desktop do
     #
     # Clean up
     #
-    after do
-      FileUtils.rm recorder.options.output
-      FileUtils.rm recorder.options.log
-    end
   end
 end # RSpec.describe

@@ -17,7 +17,7 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.after(:each) do |example|
+  config.after do |example|
     if example.exception
       # Print error from ffmpeg.log
       log_file = `ls | grep *.log`.strip
