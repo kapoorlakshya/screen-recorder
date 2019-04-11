@@ -10,8 +10,15 @@ module ScreenRecorder
   # @example
   #   ScreenRecorder.ffmpeg_binary = 'C:\ffmpeg.exe'
   #
-  def ffmpeg_binary=(bin)
+  def self.ffmpeg_binary=(bin)
     FFMPEG.ffmpeg_binary = bin
+  end
+
+  #
+  # Returns path to ffmpeg binary
+  #
+  def self.ffmpeg_binary
+    FFMPEG.ffmpeg_binary
   end
 
   #
@@ -26,6 +33,7 @@ module ScreenRecorder
   #
   def self.logger
     return @logger if @logger
+
     logger           = Logger.new(STDOUT)
     logger.level     = Logger::ERROR
     logger.progname  = 'ScreenRecorder'
