@@ -2,21 +2,18 @@
 module ScreenRecorder
   # @since 1.0.0-beta11
   class Options
-    DEFAULT_LOG_FILE = 'ffmpeg.log'.freeze
-    DEFAULT_FPS      = 15.0
+    DEFAULT_LOG_FILE       = 'ffmpeg.log'.freeze
+    DEFAULT_FPS            = 15.0
+    DEFAULT_INPUT_PIX_FMT  = 'uyvy422'.freeze # For macOS / avfoundation
+    DEFAULT_OUTPUT_PIX_FMT = 'yuv420p'.freeze
 
     def initialize(options)
       TypeChecker.check options, Hash
       TypeChecker.check options[:advanced], Hash if options[:advanced]
-      @options = verify_options options
-
-      unless advanced[:framerate]
-        advanced[:framerate] = DEFAULT_FPS
-      end
-
-      unless advanced[:log]
-        advanced[:log] = DEFAULT_LOG_FILE
-      end
+      @options             = verify_options options
+      advanced[:framerate] ||= DEFAULT_FPS
+      advanced[:log]       ||= DEFAULT_LOG_FILE
+      advanced[:pix_fmt]   ||= DEFAULT_OUTPUT_PIX_FMT
     end
 
     #
@@ -74,10 +71,15 @@ module ScreenRecorder
     #
     def parsed
       vals = "-f #{capture_device} "
+      vals << "-pix_fmt #{DEFAULT_INPUT_PIX_FMT} " if OS.mac? # Input pixel format
       vals << advanced_options unless advanced.empty?
       vals << "-i #{input} "
+      vals << "-pix_fmt #{advanced[:pix_fmt]} " if advanced[:pix_fmt] # Output pixel format
+      # Fix for using yuv420p
+      # @see https://www.reck.dk/ffmpeg-libx264-height-not-divisible-by-2/
+      vals << '-vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ' if advanced[:pix_fmt] == 'yuv420p'
       vals << output
-      vals << ffmpeg_log_to(log) # If provided
+      vals << ffmpeg_log_to(log)
     end
 
     private
@@ -108,8 +110,9 @@ module ScreenRecorder
     def advanced_options
       arr = []
 
-      # Log file is handled separately at the end of the command
-      advanced.select { |k, _| k != :log }
+      # Log file and output pixel format is handled separately
+      # at the end of the command
+      advanced.reject { |k, _| %i[log pix_fmt].include? k }
         .each do |k, v|
         arr.push "-#{k} #{v}"
       end
