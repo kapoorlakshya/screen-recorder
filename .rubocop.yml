@@ -1,8 +1,52 @@
-Style/EndOfLine:
-  EnforcedStyle: crlf
+require: rubocop-rspec
+# Please keep AllCops, Bundler, Layout, Style, Metrics groups and then order cops
+# alphabetically
+#
+# References:
+#   * https://github.com/bbatsov/ruby-style-guide
+#   * https://rubocop.readthedocs.io/
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  ExtraDetails: false
+  TargetRubyVersion: 2.5
 
 Metrics/LineLength:
   Max: 120
+
+Metrics/MethodLength:
+  Max: 18
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Metrics/CyclomaticComplexity:
+  Max: 5
+
+Metrics/AbcSize:
+  Max: 20
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+  EnforcedStyle: indented_relative_to_receiver
+
+Layout/EndOfLine:
+  EnforcedStyle: crlf
+
+Layout/AlignArray:
+  Enabled: true
+
+Layout/AlignHash:
+  Enabled: true
+  EnforcedHashRocketStyle: key
+  EnforcedColonStyle: table
+
+Layout/AlignParameters:
+  Enabled: true
+  EnforcedStyle: with_first_parameter
+
+Layout/IndentHash:
+  Enabled: true
 
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, IgnoredMethods.
@@ -19,18 +63,6 @@ Style/CommentedKeyword:
 Style/DoubleNegation:
   Enabled: false
 
-Metrics/MethodLength:
-  Max: 18
-
-Metrics/PerceivedComplexity:
-  Max: 10
-
-Metrics/CyclomaticComplexity:
-  Max: 8
-
-Metrics/AbcSize:
-  Max: 20
-
 Style/MethodCallWithoutArgsParentheses:
   Enabled: false
 
@@ -44,7 +76,4 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 
 TrailingBlankLines:
-  Enabled: false
-
-Layout/MultilineMethodCallIndentation:
   Enabled: false
