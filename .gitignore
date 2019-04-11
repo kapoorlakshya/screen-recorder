@@ -104,5 +104,6 @@ modules.xml
 .idea/misc.xml
 *.ipr
 
+.DS_Store # On mac
 
 # End of https://www.gitignore.io/api/rubymine+all
