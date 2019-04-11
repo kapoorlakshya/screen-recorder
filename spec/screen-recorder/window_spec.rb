@@ -7,11 +7,11 @@ if OS.windows? # Only gdigrab supports window capture
       Watir::Browser.new :firefox
     end
 
-    let(:recorder) { ScreenRecorder::Window.new(title: 'Mozilla Firefox', output: 'recording.mp4') }
+    let(:recorder) { ScreenRecorder::Window.new(title: 'Mozilla Firefox', output: 'recording.mkv') }
 
     it 'raises an error when a title is not given' do
       # noinspection RubyArgCount
-      expect { ScreenRecorder::Window.new(output: 'recording.mp4') }.to raise_error(ArgumentError)
+      expect { ScreenRecorder::Window.new(output: 'recording.mkv') }.to raise_error(ArgumentError)
     end
 
     it 'can record a specific firefox window with given title' do

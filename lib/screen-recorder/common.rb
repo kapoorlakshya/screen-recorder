@@ -28,7 +28,7 @@ module ScreenRecorder
     #
     def stop
       ScreenRecorder.logger.debug 'Stopping ffmpeg.exe...'
-      elapsed = kill_ffmpeg
+      elapsed = stop_ffmpeg
       ScreenRecorder.logger.debug "Stopped ffmpeg.exe in #{elapsed}s"
       ScreenRecorder.logger.info 'Recording complete.'
       @video = FFMPEG::Movie.new(options.output)
@@ -62,10 +62,11 @@ module ScreenRecorder
 
     #
     # Sends 'q' to the ffmpeg binary to gracefully stop the process.
+    # Forcefully terminates it if it takes more than 10s.
     #
-    def kill_ffmpeg
+    def stop_ffmpeg
       @process.puts 'q' # Gracefully exit ffmpeg
-      elapsed = wait_for_io_eof(5)
+      elapsed = wait_for_io_eof(10)
       @process.close_write # Close IO
       elapsed
     rescue Errno::EPIPE
@@ -79,7 +80,7 @@ module ScreenRecorder
     # options.
     #
     def command
-      cmd = "#{FFMPEG.ffmpeg_binary} -y "
+      cmd = "#{ScreenRecorder.ffmpeg_binary} -y "
       cmd << @options.parsed
     end
 
@@ -104,10 +105,10 @@ module ScreenRecorder
 
       return !`where ffmpeg`.empty? if OS.windows?
 
-      # If the user does not use FFMPEG#ffmpeg_binary=() to set the binary path,
-      # FFMPEG#ffmpeg_binary returns 'ffmpeg' assuming it must be in ENV. However,
+      # If the user does not use ScreenRecorder.ffmpeg_binary=() to set the binary path,
+      # ScreenRecorder.ffmpeg_binary returns 'ffmpeg' assuming it must be in ENV. However,
       # if the above two checks fail, it is not in the ENV either.
-      return false if FFMPEG.ffmpeg_binary == 'ffmpeg'
+      return false if ScreenRecorder.ffmpeg_binary == 'ffmpeg'
 
       true
     end

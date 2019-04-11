@@ -1,17 +1,8 @@
 require_relative '../spec_helper'
 
 RSpec.describe ScreenRecorder::Options do
-  let(:display) {
-    if OS.linux?
-      number = `echo $DISPLAY`.strip
-      number ? number : ':0.0' # If $DISPLAY is not set, use default of 0.0
-    else
-      'desktop'
-    end
-  }
-
   let(:opts) do
-    { input:     display,
+    { input:     os_specific_input,
       output:    'recorder-output.mkv',
       log_level: Logger::INFO,
       advanced:  { loglevel: 'level+debug', # For FFmpeg
@@ -39,7 +30,7 @@ RSpec.describe ScreenRecorder::Options do
     end
 
     it 'raises an error when a required option (ex: output) is not provided' do
-      expect { ScreenRecorder::Options.new({ input: display, }) }.to raise_exception(ArgumentError)
+      expect { ScreenRecorder::Options.new({ input: os_specific_input, }) }.to raise_exception(ArgumentError)
     end
   end
 
@@ -75,7 +66,7 @@ RSpec.describe ScreenRecorder::Options do
 
       it 'raise ArgumentError if user provides an object other than a Hash' do
         bad_opts = { output:   'recorder-output.mkv',
-                     input:    display,
+                     input:    os_specific_input,
                      advanced: %w(let me fool you) }
         expect { ScreenRecorder::Options.new(bad_opts) }.to raise_exception(ArgumentError)
       end
@@ -83,7 +74,7 @@ RSpec.describe ScreenRecorder::Options do
 
     describe '#framerate' do
       let(:opts) do
-        { input:    display,
+        { input:    os_specific_input,
           output:   'recorder-output.mkv',
           advanced: { framerate: 30.0 }
         }
@@ -98,7 +89,7 @@ RSpec.describe ScreenRecorder::Options do
   describe '#log' do
     context 'user given log filename' do
       let(:opts) do
-        { input:    display,
+        { input:    os_specific_input,
           output:   'recorder-output.mkv',
           advanced: { log: 'recorder.log' }
         }
@@ -111,8 +102,8 @@ RSpec.describe ScreenRecorder::Options do
 
     context 'default log filename' do
       let(:opts) do
-        { input:    display,
-          output:   'recorder-output.mkv',
+        { input:  os_specific_input,
+          output: 'recorder-output.mkv',
         }
       end
 
@@ -129,8 +120,19 @@ RSpec.describe ScreenRecorder::Options do
   end
 
   describe '#parsed' do
+    let(:input) {
+      if OS.linux?
+        `echo $DISPLAY`.strip || ':0.0' # If $DISPLAY is not set, use default of :0.0
+      elsif OS.mac?
+        ENV['TRAVIS'] ? '0' : '1' # Local display indexis 1, Travis is 0
+      elsif OS.windows?
+        'desktop'
+      else
+        raise NotImplementedError, 'Your OS is not supported.'
+      end
+    }
     let(:opts) do
-      { input:     display,
+      { input:     os_specific_input,
         output:    'recorder-output.mkv',
         log_level: Logger::INFO,
         advanced:  { framerate: 30.0,
@@ -139,14 +141,50 @@ RSpec.describe ScreenRecorder::Options do
                      show_region: '1' } }
     end
 
-    let(:expected_parsed_valued) {
-      "-f #{os_specific_format} -framerate #{opts[:advanced][:framerate]} -loglevel #{opts[:advanced][:loglevel]}" + \
-      " -video_size #{opts[:advanced][:video_size]} -show_region #{opts[:advanced][:show_region]}" + \
-      " -i #{opts[:input]} #{opts[:output]} 2> ffmpeg.log"
-    }
+    unless OS.mac?
+      context 'environment is Windows or Linux' do
+        let(:expected_parsed_value) do
+          "-f #{os_specific_format} -framerate #{opts[:advanced][:framerate]} -loglevel #{opts[:advanced][:loglevel]}" \
+          " -video_size #{opts[:advanced][:video_size]} -show_region #{opts[:advanced][:show_region]}" \
+          " -i #{opts[:input]} -pix_fmt #{opts[:advanced][:pix_fmt]}" \
+          ' -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2"' \
+          " #{opts[:output]} 2> ffmpeg.log"
+        end
 
-    it 'returns parsed options ready for FFmpeg to receive' do
-      expect(ScreenRecorder::Options.new(opts).parsed).to eql(expected_parsed_valued)
+        it 'returns parsed options for FFmpeg' do
+          expect(ScreenRecorder::Options.new(opts).parsed).to eql(expected_parsed_value)
+        end
+      end
     end
-  end
-end
+
+    if OS.mac?
+      context 'environment is macOS' do
+        let(:expected_parsed_value) do
+          "-f #{os_specific_format} -pix_fmt uyvy422 -framerate #{opts[:advanced][:framerate]}" \
+          " -loglevel #{opts[:advanced][:loglevel]} -video_size #{opts[:advanced][:video_size]}" \
+          " -show_region #{opts[:advanced][:show_region]} " \
+          "-i #{opts[:input]} -pix_fmt #{opts[:advanced][:pix_fmt]}" \
+          ' -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2"' \
+          " #{opts[:output]} 2> ffmpeg.log"
+        end
+
+        it 'includes input -pix_fmt in parsed options for FFmpeg' do
+          expect(ScreenRecorder::Options.new(opts).parsed).to eql(expected_parsed_value)
+        end
+
+        it 'prevents Ffmpeg to raising a warning about unsupported input pixel format' do
+          recorder = ScreenRecorder::Desktop.new(input: input, output: 'recording.mkv')
+          recorder.start
+          sleep(1.0)
+          recorder.stop
+          no_warning = File.readlines(recorder.options.log)
+                         .grep(/Selected pixel format (.+) is not supported/)
+                         .empty?
+          expect(no_warning).to be true
+
+          FileUtils.rm recorder.options.log
+        end
+      end # context
+    end # if OS.mac?
+  end # #parsed
+end # Rspec.describe
