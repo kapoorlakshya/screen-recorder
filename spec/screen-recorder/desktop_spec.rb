@@ -1,15 +1,4 @@
 RSpec.describe ScreenRecorder::Desktop do
-  let(:input) {
-    if OS.linux?
-      `echo $DISPLAY`.strip || ':0.0' # If $DISPLAY is not set, use default of :0.0
-    elsif OS.mac?
-      '1'
-    elsif OS.windows?
-      'desktop'
-    else
-      raise NotImplementedError, 'Your OS is not supported.'
-    end
-  }
   let(:output) { 'recorded-file.mp4' }
   let(:log_file) { 'recorder.log' }
   let(:advanced) {
@@ -23,11 +12,14 @@ RSpec.describe ScreenRecorder::Desktop do
     let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
 
     it 'accepts input: as a parameter' do
-      expect { ScreenRecorder::Desktop.new(input: input, output: output) }.to_not raise_exception
+      expect { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }.to_not raise_exception
     end
 
-    it 'defaults to OS specific input if none is given' do
-      expect(ScreenRecorder::Desktop.new(output: output).options.input).to eq(input)
+    # @todo Figure out how to test this on Travis since default is 1 and Travis uses 0.
+    unless OS.mac?
+      it 'defaults to OS specific input if none is given' do
+        expect(ScreenRecorder::Desktop.new(output: output).options.input).to eq(os_specific_input)
+      end
     end
 
     it 'accepts output: as a parameter' do
@@ -61,7 +53,7 @@ RSpec.describe ScreenRecorder::Desktop do
   end
 
   describe '#options' do
-    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
 
     it 'returns a FFMPEG::Options object' do
       expect(recorder.options).to be_a(ScreenRecorder::Options)
@@ -72,7 +64,7 @@ RSpec.describe ScreenRecorder::Desktop do
     end
 
     it 'stores input value' do
-      expect(recorder.options.input).to eq(input)
+      expect(recorder.options.input).to eq(os_specific_input)
     end
 
     it 'stores log file name' do
@@ -81,7 +73,7 @@ RSpec.describe ScreenRecorder::Desktop do
   end
 
   describe '#start' do
-    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
 
     before do
       recorder.start
@@ -105,7 +97,7 @@ RSpec.describe ScreenRecorder::Desktop do
   end # context
 
   context 'the user is ready to stop the recording' do
-    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
 
     before do
       recorder.start
@@ -136,7 +128,7 @@ RSpec.describe ScreenRecorder::Desktop do
   end # context
 
   context 'user wants to discard the video' do
-    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
 
     before do
       recorder.start
@@ -168,7 +160,7 @@ RSpec.describe ScreenRecorder::Desktop do
       Webdrivers.install_dir = 'webdrivers_bin'
       Watir::Browser.new :firefox
     }
-    let(:recorder) { ScreenRecorder::Desktop.new(output: output) }
+    let(:recorder) { ScreenRecorder::Desktop.new(input: os_specific_input, output: output) }
 
     it 'can record the desktop' do
       # Note: browser is lazily loaded with let
