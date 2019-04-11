@@ -1,4 +1,7 @@
 require 'bundler/setup'
+require 'simplecov'
+SimpleCov.start
+
 require 'screen-recorder'
 require 'watir'
 require 'webdrivers'
