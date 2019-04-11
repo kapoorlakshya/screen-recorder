@@ -21,7 +21,7 @@ with versions 2.3.8, 2.4.5, 2.5.3, and 2.6.1.
 
 ## Installation
 
-###### 1. Setup FFmpeg
+##### 1. Setup FFmpeg
 
 Linux and macOS instructions are [here](https://www.ffmpeg.org/download.html). 
 
@@ -32,7 +32,7 @@ Once downloaded, add location of the `ffmpeg/bin` folder to `PATH` environment v
 Alternatively, you can provide the location using 
 `ScreenRecorder.ffmpeg_binary = '/path/to/binary'` in your project.
 
-###### 2. Install gem
+##### 2. Install gem
 
 Next, add this line to your application's Gemfile:
 
@@ -52,7 +52,7 @@ Or install it yourself as:
 $ gem install screen-recorder
 ```
 
-###### 3. Require gem
+##### 3. Require gem
 
 ```ruby
 require 'screen-recorder'
@@ -92,7 +92,7 @@ browser   = Watir::Browser.new :firefox
 browser.quit 
 ```
 
-###### Fetch Title
+##### Fetch Title
 
 A helper method is available to fetch the title of the active window
 for the given process name.
@@ -102,7 +102,7 @@ ScreenRecorder::Titles.fetch('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 ```
 
-###### Limitations
+##### Limitations
 
 - Only available for Microsoft Windows (*gdigrab*). Linux (*x11grab*) and macOS 
 (*avfoundation*) capture devices do not provide this feature. However, there
