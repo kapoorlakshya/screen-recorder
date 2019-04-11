@@ -9,7 +9,7 @@ AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
   ExtraDetails: false
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.2
 
 Metrics/LineLength:
   Max: 120
