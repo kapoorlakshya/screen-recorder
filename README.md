@@ -1,12 +1,11 @@
 # ScreenRecorder
 
 [![Gem Version](https://badge.fury.io/rb/screen-recorder.svg)](https://badge.fury.io/rb/screen-recorder)
-![https://rubygems.org/gems/screen-recorder](https://ruby-gem-downloads-badge.herokuapp.com/screen-recorder?type=total)
 [![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/github/kapoorlakshya/screen-recorder/master)
 [![Build Status](https://travis-ci.org/kapoorlakshya/screen-recorder.svg?branch=master)](https://travis-ci.org/kapoorlakshya/screen-recorder)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/maintainability)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/maintainability)
 
-A Ruby gem to record your computer screen - desktop or specific
+A Ruby gem to video record your computer screen - desktop or specific
 window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
 geared towards recording automated UI test executions for debugging
 and documentation.
@@ -15,15 +14,14 @@ Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](ht
 
 ## Compatibility
 
-Supports Windows and Linux as of version 1.0.0. macOS support 
-is coming very soon.
+Supports Windows, Linux and macOS as of v1.1.0.
 
 Requires Ruby 2.0.0 (MRI) or higher, and is tested 
 with versions 2.3.8, 2.4.5, 2.5.3, and 2.6.1.
 
 ## Installation
 
-#### 1. Setup FFmpeg
+###### 1. Setup FFmpeg
 
 Linux and macOS instructions are [here](https://www.ffmpeg.org/download.html). 
 
@@ -34,7 +32,7 @@ Once downloaded, add location of the `ffmpeg/bin` folder to `PATH` environment v
 Alternatively, you can provide the location using 
 `ScreenRecorder.ffmpeg_binary = '/path/to/binary'` in your project.
 
-#### 2. Install gem
+###### 2. Install gem
 
 Next, add this line to your application's Gemfile:
 
@@ -54,13 +52,15 @@ Or install it yourself as:
 $ gem install screen-recorder
 ```
 
-#### 3. Require gem
+###### 3. Require gem
 
 ```ruby
 require 'screen-recorder'
 ```
 
-## Record Desktop
+## Usage
+
+#### Record Desktop
 
 ```ruby
 @recorder = ScreenRecorder::Desktop.new(output: 'recording.mp4')
@@ -71,10 +71,13 @@ require 'screen-recorder'
 @recorder.stop
 ```
 
-Linux users can optionally provide a `$DISPLAY` number as 
-`input: ':99.0'`. Default is `:0.0`.
+Linux and macOS users can optionally provide a display or input device number as 
+`input: ':99.0'`. Default is `:0.0` on Linux and `1` on macOS. 
 
-## Record Application Window (Microsoft Windows only)
+Run command `$DISPLAY` on Linux and `ffmpeg -f avfoundation -list_devices true -i ""` on macOS to get a list of available
+inputs.
+
+#### Record Application Window (Microsoft Windows only)
 
 ```ruby
 require 'watir'
@@ -89,7 +92,7 @@ browser   = Watir::Browser.new :firefox
 browser.quit 
 ```
 
-<b>Fetch Title</b>
+###### Fetch Title
 
 A helper method is available to fetch the title of the active window
 for the given process name.
@@ -99,22 +102,23 @@ ScreenRecorder::Titles.fetch('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 ```
 
-<b>Limitations</b>
+###### Limitations
+
 - Only available for Microsoft Windows (*gdigrab*). Linux (*x11grab*) and macOS 
 (*avfoundation*) capture devices do not provide this feature. However, there
 is a workaround documented in the [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki/Window-recording-in-Linux-and-Mac).
-- `#fetch` only returns the title from a currently active (visible) window
-for the given process.
-- `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
-for a window title with non `UTF-8` characters. See [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki/Invalid-byte-sequence-in-UTF-8)
-for workaround.
 - Always stop the recording before closing the application. Otherwise,
 ffmpeg will force exit as soon as the window disappears and may produce
 an invalid video file.
 - If you're launching multiple applications or testing an application
 at different window sizes, recording the `desktop` is a better option.
+- `#fetch` only returns the title from a currently active (visible) window
+for the given process.
+- `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
+for a window title with non `UTF-8` characters. See [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki/Invalid-byte-sequence-in-UTF-8)
+for workaround.
 
-## Output
+#### Output
 
 ```ruby
 @recorder.video
@@ -137,7 +141,7 @@ If your test passes or you do not want the record for any reason,
 simply call `@recorder.discard` or `@recorder.delete` to delete
 the video file. 
 
-## Advanced Options
+#### Advanced Options
 
 You can provide additional parameters to FFmpeg using the `advanced` 
 parameter. The keys in the Hash are prefixed with `-` and paired with the
@@ -162,18 +166,24 @@ ffmpeg -y -f gdigrab -framerate 30 -loglevel level+debug -video_size 640x480 -sh
 This feature is yet to be fully tested, so please feel free 
 to report any bugs or request a feature.
 
-## Logging
+#### Logging
 
-You can also configure the logging level of the gem:
+You can configure the logging level of the gem to troubleshoot problems:
 
 ```ruby
-ScreenRecorder.logger.level = Logger::DEBUG
+ScreenRecorder.logger.level = :DEBUG
 ```
 
-## Use with Cucumber
+Also refer to the `ffmpeg.log` file for details.
+
+#### Use with Cucumber
 
 A Cucumber + Watir based example is available 
 [here](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example).
+
+## Wiki
+
+Please see the [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki) for solutions to commonly reported issues.
 
 ## Development
 
@@ -183,18 +193,18 @@ Then, run `bundle exec rake spec` to run the tests. You can also run
 
 To install this gem onto your local machine, run `bundle exec rake install`. 
 
-## Contributing
+### Contributing
 
 Bug reports and pull requests are welcome. 
 
 - Please update the specs for your code changes and run them locally with `bundle exec rake spec`.
-- Follow the Ruby style guide and format your code - https://github.com/rubocop-hq/ruby-style-guide
+- Follow the Ruby style guide and format your code - <https://github.com/rubocop-hq/ruby-style-guide>
 
-## License
+### License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
-## Credits
+### Credits
 
 [![Streamio](http://d253c4ja9jigvu.cloudfront.net/assets/small-logo.png)](http://streamio.com)
 
