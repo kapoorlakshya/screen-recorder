@@ -1,5 +1,8 @@
 ### 1.1.0 (TBD)
-* `Titles#fetch` will now raise a `NotImplementedError` when used in a 
+* <b>Now supports macOS</b>. Please [raise an Issue](https://github.com/kapoorlakshya/screen-recorder/issues/new) if you run into problems.
+* Force kill `ffmpeg` if it takes more than 10s to quit.
+* Fix a bug where `ScreenRecorder.ffmpeg_binary=()` was not properly defined.
+* `ScreenRecorder::Titles#fetch` will now raise a `NotImplementedError` when used in a 
 Linux or a macOS environment.
 
 ### 1.0.0 (2019-03-15)
