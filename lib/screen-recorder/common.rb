@@ -28,7 +28,7 @@ module ScreenRecorder
     #
     def stop
       ScreenRecorder.logger.debug 'Stopping ffmpeg.exe...'
-      elapsed = kill_ffmpeg
+      elapsed = stop_ffmpeg
       ScreenRecorder.logger.debug "Stopped ffmpeg.exe in #{elapsed}s"
       ScreenRecorder.logger.info 'Recording complete.'
       @video = FFMPEG::Movie.new(options.output)
@@ -62,8 +62,9 @@ module ScreenRecorder
 
     #
     # Sends 'q' to the ffmpeg binary to gracefully stop the process.
+    # Forcefully terminates it if it takes more than 10s.
     #
-    def kill_ffmpeg
+    def stop_ffmpeg
       @process.puts 'q' # Gracefully exit ffmpeg
       elapsed = wait_for_io_eof(10)
       @process.close_write # Close IO
