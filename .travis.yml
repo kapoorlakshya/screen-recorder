@@ -1,5 +1,7 @@
 ---
-sudo: required
+os:
+  - linux
+  - osx
 dist: xenial
 language: ruby
 cache: bundler
@@ -11,20 +13,23 @@ branches:
 rvm:
   - 2.3.8
   - 2.4.5
-  - 2.5.3
-  - 2.6.1
+  - 2.5.5
+  - 2.6.2
 
 env:
   - DISPLAY=":0.0"
 
 addons:
   firefox: latest
-  chrome: stable
+  apt:
+    packages:
+      - ffmpeg
+  homebrew:
+    packages:
+      - ffmpeg
 
 before_install:
   - gem update --system --no-document
 
 before_script:
-  - sudo apt-get install -y ffmpeg
-  - ffmpeg -hwaccels
-script: xvfb-run --server-num=0.0 --server-args="-ac -screen 0 1024x768x24" bundle exec rake spec
+  - nohup Xvfb :0.0 -screen 0 1024x768x24 &
