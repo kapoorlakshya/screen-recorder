@@ -2,8 +2,8 @@ RSpec.describe ScreenRecorder::Desktop do
   let(:output) { 'recorded-file.mkv' }
   let(:log_file) { 'recorder.log' }
   let(:advanced) {
-    { framerate: 30.0,
-      loglevel:  'level+debug', # For FFmpeg
+    { framerate:   30.0,
+      loglevel:    'level+debug', # For FFmpeg
       video_size:  '640x480',
       show_region: '1' }
   }

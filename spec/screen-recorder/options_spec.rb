@@ -5,7 +5,7 @@ RSpec.describe ScreenRecorder::Options do
     { input:     os_specific_input,
       output:    'recorder-output.mkv',
       log_level: Logger::INFO,
-      advanced:  { loglevel: 'level+debug', # For FFmpeg
+      advanced:  { loglevel:    'level+debug', # For FFmpeg
                    video_size:  '640x480',
                    show_region: '1' } }
   end
@@ -76,8 +76,7 @@ RSpec.describe ScreenRecorder::Options do
       let(:opts) do
         { input:    os_specific_input,
           output:   'recorder-output.mkv',
-          advanced: { framerate: 30.0 }
-        }
+          advanced: { framerate: 30.0 } }
       end
 
       it 'returns user given framerate value' do
@@ -91,8 +90,7 @@ RSpec.describe ScreenRecorder::Options do
       let(:opts) do
         { input:    os_specific_input,
           output:   'recorder-output.mkv',
-          advanced: { log: 'recorder.log' }
-        }
+          advanced: { log: 'recorder.log' } }
       end
 
       it 'returns user given log filename' do
@@ -103,8 +101,7 @@ RSpec.describe ScreenRecorder::Options do
     context 'default log filename' do
       let(:opts) do
         { input:  os_specific_input,
-          output: 'recorder-output.mkv',
-        }
+          output: 'recorder-output.mkv',  }
       end
 
       it 'returns user given log filename' do
@@ -135,8 +132,8 @@ RSpec.describe ScreenRecorder::Options do
       { input:     os_specific_input,
         output:    'recorder-output.mkv',
         log_level: Logger::INFO,
-        advanced:  { framerate: 30.0,
-                     loglevel:  'level+debug', # For FFmpeg
+        advanced:  { framerate:   30.0,
+                     loglevel:    'level+debug', # For FFmpeg
                      video_size:  '640x480',
                      show_region: '1' } }
     end
