@@ -1,4 +1,7 @@
 require 'bundler/setup'
+require 'simplecov'
+SimpleCov.start
+
 require 'screen-recorder'
 require 'watir'
 require 'webdrivers'
@@ -14,7 +17,7 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.after(:each) do |example|
+  config.after do |example|
     if example.exception
       # Print error from ffmpeg.log
       log_file = `ls | grep *.log`.strip
@@ -29,7 +32,7 @@ end
 
 def os_specific_input
   if OS.linux?
-    `echo $DISPLAY`.strip || ':0.0' # If $DISPLAY is not set, use default of :0.0
+    `echo $DISPLAY`.strip || ':0' # If $DISPLAY is not set, use default of :0.0
   elsif OS.mac?
     ENV['TRAVIS'] ? '0' : '1'
   elsif OS.windows?

@@ -6,16 +6,15 @@ require_relative '../spec_helper'
 if OS.windows? # Only gdigrab supports window capture
   RSpec.describe ScreenRecorder::Titles do
     describe '.fetch' do
-
       if OS.linux? || OS.mac?
-        context 'we are using Linux or MacOS' do
+        context 'when the user is using Linux or MacOS' do
           it 'raises error when OS is not Microsoft Windows' do
             expect { ScreenRecorder::Titles.fetch('firefox') }.to raise_error(NotImplementedError)
           end
         end
       end
 
-      context 'given application is Firefox' do
+      context 'when the given application is Firefox' do
         let(:browser_process) { :firefox }
         let(:url) { 'https://google.com' }
         let(:expected_title) { 'Google - Mozilla Firefox' }
@@ -28,6 +27,10 @@ if OS.windows? # Only gdigrab supports window capture
           # Note: browser is lazily loaded with let
           browser.goto url
           browser.wait
+        end
+
+        after do
+          browser.quit
         end
 
         it 'returns a list of available windows from firefox' do
@@ -43,19 +46,15 @@ if OS.windows? # Only gdigrab supports window capture
         it 'returns window title from Mozilla Firefox' do
           expect(ScreenRecorder::Titles.fetch(browser_process).first).to eql(expected_title)
         end
-
-        after do
-          browser.quit
-        end
       end
 
-      context 'given a firefox window is not open' do
+      context 'when a firefox window is not open' do
         it 'raises an exception' do
           expect { ScreenRecorder::Titles.fetch('firefox') }.to raise_exception(ScreenRecorder::Errors::ApplicationNotFound)
         end
       end
 
-      context 'given application is Chrome with extensions as individual processes' do
+      context 'when application is Chrome with extensions as individual processes' do
         let(:browser_process) { :chrome }
         let(:url) { 'https://google.com' }
         let(:expected_titles) { ['Google - Google Chrome'] }
@@ -70,12 +69,12 @@ if OS.windows? # Only gdigrab supports window capture
           browser.wait
         end
 
-        it 'excludes titles from extensions' do
-          expect(ScreenRecorder::Titles.fetch(browser_process)).to eql(expected_titles)
-        end
-
         after do
           browser.quit
+        end
+
+        it 'excludes titles from extensions' do
+          expect(ScreenRecorder::Titles.fetch(browser_process)).to eql(expected_titles)
         end
       end
     end # describe

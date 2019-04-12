@@ -72,9 +72,9 @@ require 'screen-recorder'
 ```
 
 Linux and macOS users can optionally provide a display or input device number as 
-`input: ':99.0'`. Default is `:0.0` on Linux and `1` on macOS. 
+`input: ':99'`. Default is `:0` on Linux and `1` on macOS. 
 
-Run command `$DISPLAY` on Linux and `ffmpeg -f avfoundation -list_devices true -i ""` on macOS to get a list of available
+Run command `echo $DISPLAY` on Linux and `ffmpeg -f avfoundation -list_devices true -i ""` on macOS to get a list of available
 inputs.
 
 #### Record Application Window (Microsoft Windows only)
@@ -121,7 +121,7 @@ for workaround.
 #### Output
 
 Once the recorder is stopped, you can view the video metadata or transcode
-it if desired. See the `streamio-ffmpeg` [repo](https://github.com/streamio/streamio-ffmpeg) for more details.
+it if desired. See [`streamio-ffmpeg`](https://github.com/streamio/streamio-ffmpeg) for more details.
 
 ```ruby
 @recorder.video
@@ -140,7 +140,7 @@ it if desired. See the `streamio-ffmpeg` [repo](https://github.com/streamio/stre
         ... >
 ```
 
-If your test passes or you do not want the record for any reason,
+If your test passes or you do not want the recording for any reason,
 simply call `@recorder.discard` or `@recorder.delete` to delete
 the video file. 
 
