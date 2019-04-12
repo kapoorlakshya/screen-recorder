@@ -1,50 +1,58 @@
-Style/EndOfLine:
-  EnforcedStyle: crlf
-
+require: rubocop-rspec
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  ExtraDetails: false
+  TargetRubyVersion: 2.2
+Gemspec/RequiredRubyVersion:
+  Enabled: false
 Metrics/LineLength:
-  Max: 120
-
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, IgnoredMethods.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# IgnoredMethods: lambda, proc, it
-Style/BlockDelimiters:
-  EnforcedStyle: braces_for_chaining
-
-Style/CommentedKeyword:
   Enabled: false
-
-Style/DoubleNegation:
-  Enabled: false
-
 Metrics/MethodLength:
-  Max: 18
-
-Metrics/PerceivedComplexity:
-  Max: 10
-
-Metrics/CyclomaticComplexity:
-  Max: 8
-
-Metrics/AbcSize:
-  Max: 20
-
-Style/MethodCallWithoutArgsParentheses:
   Enabled: false
-
+Metrics/BlockLength:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
 Style/Documentation:
   Enabled: false
-
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: when_needed, always, never
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+  EnforcedStyle: indented_relative_to_receiver
+Layout/AlignArray:
+  Enabled: true
+Layout/AlignHash:
+  Enabled: true
+  EnforcedHashRocketStyle: key
+  EnforcedColonStyle: table
+Layout/AlignParameters:
+  Enabled: true
+  EnforcedStyle: with_first_parameter
+Layout/EndOfLine:
+  Enabled: false
+Layout/IndentHash:
+  Enabled: true
+Naming/FileName:
+  Enabled: false
+RSpec/FilePath:
+  Enabled: false
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
+Style/CommentedKeyword:
+  Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
-
 TrailingBlankLines:
-  Enabled: false
-
-Layout/MultilineMethodCallIndentation:
   Enabled: false

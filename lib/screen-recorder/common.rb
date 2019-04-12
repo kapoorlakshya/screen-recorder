@@ -43,7 +43,7 @@ module ScreenRecorder
       FileUtils.rm options.output
     end
 
-    alias_method :delete, :discard
+    alias delete discard
 
     private
 

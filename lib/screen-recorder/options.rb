@@ -10,7 +10,7 @@ module ScreenRecorder
     def initialize(options)
       TypeChecker.check options, Hash
       TypeChecker.check options[:advanced], Hash if options[:advanced]
-      @options             = verify_options options
+      @options = verify_options options
       advanced[:framerate] ||= DEFAULT_FPS
       advanced[:log]       ||= DEFAULT_LOG_FILE
       advanced[:pix_fmt]   ||= DEFAULT_OUTPUT_PIX_FMT

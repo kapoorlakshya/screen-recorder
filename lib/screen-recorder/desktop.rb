@@ -3,7 +3,7 @@ module ScreenRecorder
   # @since 1.0.0-beta11
   class Desktop < Common
     DEFAULT_INPUT_WIN   = 'desktop'.freeze
-    DEFAULT_INPUT_LINUX = ':0.0'.freeze
+    DEFAULT_INPUT_LINUX = ':0'.freeze
     DEFAULT_INPUT_MAC   = '1'.freeze
 
     #

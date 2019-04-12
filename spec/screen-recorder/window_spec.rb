@@ -9,6 +9,11 @@ if OS.windows? # Only gdigrab supports window capture
 
     let(:recorder) { ScreenRecorder::Window.new(title: 'Mozilla Firefox', output: 'recording.mkv') }
 
+    after do
+      FileUtils.rm recorder.options.output if File.exist? recorder.options.output
+      FileUtils.rm recorder.options.log if File.exist? recorder.options.log
+    end
+
     it 'raises an error when a title is not given' do
       # noinspection RubyArgCount
       expect { ScreenRecorder::Window.new(output: 'recording.mkv') }.to raise_error(ArgumentError)
@@ -31,9 +36,5 @@ if OS.windows? # Only gdigrab supports window capture
     #
     # Clean up
     #
-    after do
-      FileUtils.rm recorder.options.output if File.exist? recorder.options.output
-      FileUtils.rm recorder.options.log if File.exist? recorder.options.log
-    end
   end # describe
 end # Os.windows?
