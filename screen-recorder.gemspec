@@ -12,6 +12,13 @@ Gem::Specification.new do |spec|
   spec.summary               = 'Record your computer screen using FFmpeg via Ruby.'
   spec.description           = 'Record your computer screen - desktop or specific window - using FFmpeg (https://www.ffmpeg.org).'
   spec.license               = 'MIT'
+  # noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
+  spec.metadata              = {
+    'changelog_uri' => 'https://github.com/kapoorlakshya/screen-recorder/blob/master/CHANGES.md',
+    'source_code_uri' => 'https://github.com/kapoorlakshya/screen-recorder/',
+    'bug_tracker_uri' => 'https://github.com/kapoorlakshya/screen-recorder/issues',
+    'wiki_uri' => 'https://github.com/kapoorlakshya/screen-recorder/wiki'
+  }
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
