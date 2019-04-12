@@ -58,7 +58,7 @@ RSpec.describe ScreenRecorder::Options do
     end
   end
 
-  context 'user wants to provide advanced options' do
+  context 'when the user wants to provide advanced options' do
     describe '#advanced' do
       it 'returns Hash of advanced options' do
         expect(recorder_options.advanced).to eql(opts[:advanced])
@@ -86,7 +86,7 @@ RSpec.describe ScreenRecorder::Options do
   end
 
   describe '#log' do
-    context 'user given log filename' do
+    context 'when the user given log filename' do
       let(:opts) do
         { input:    os_specific_input,
           output:   'recorder-output.mkv',
@@ -98,13 +98,13 @@ RSpec.describe ScreenRecorder::Options do
       end
     end
 
-    context 'default log filename' do
+    context 'when user does not provide a log filename' do
       let(:opts) do
         { input:  os_specific_input,
           output: 'recorder-output.mkv' }
       end
 
-      it 'returns user given log filename' do
+      it 'returns default log filename' do
         expect(described_class.new(opts).log).to eql(ScreenRecorder::Options::DEFAULT_LOG_FILE)
       end
     end
@@ -139,7 +139,7 @@ RSpec.describe ScreenRecorder::Options do
     end
 
     unless OS.mac?
-      context 'environment is Windows or Linux' do
+      context 'when the environment is Windows or Linux' do
         let(:expected_parsed_value) do
           "-f #{os_specific_format} -framerate #{opts[:advanced][:framerate]} -loglevel #{opts[:advanced][:loglevel]}" \
           " -video_size #{opts[:advanced][:video_size]} -show_region #{opts[:advanced][:show_region]}" \
@@ -155,7 +155,7 @@ RSpec.describe ScreenRecorder::Options do
     end
 
     if OS.mac?
-      context 'environment is macOS' do
+      context 'when the environment is macOS' do
         let(:expected_parsed_value) do
           "-f #{os_specific_format} -pix_fmt uyvy422 -framerate #{opts[:advanced][:framerate]}" \
           " -loglevel #{opts[:advanced][:loglevel]} -video_size #{opts[:advanced][:video_size]}" \

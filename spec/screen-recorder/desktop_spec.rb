@@ -97,7 +97,7 @@ RSpec.describe ScreenRecorder::Desktop do
     # Clean up
   end # context
 
-  context 'the user is ready to stop the recording' do
+  context 'when the user is ready to stop the recording' do
     let(:recorder) { described_class.new(input: os_specific_input, output: output) }
 
     before do
@@ -129,7 +129,7 @@ RSpec.describe ScreenRecorder::Desktop do
     # Clean up
   end # context
 
-  context 'user wants to discard the video' do
+  context 'when the guser wants to discard the video' do
     let(:recorder) { described_class.new(input: os_specific_input, output: output) }
 
     before do
