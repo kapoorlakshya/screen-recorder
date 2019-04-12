@@ -119,7 +119,7 @@ RSpec.describe ScreenRecorder::Options do
   describe '#parsed' do
     let(:input) do
       if OS.linux?
-        `echo $DISPLAY`.strip || ':0.0' # If $DISPLAY is not set, use default of :0.0
+        `echo $DISPLAY`.strip || ':0' # If $DISPLAY is not set, use default of :0
       elsif OS.mac?
         ENV['TRAVIS'] ? '0' : '1' # Local display indexis 1, Travis is 0
       elsif OS.windows?
