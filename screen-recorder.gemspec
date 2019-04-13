@@ -9,9 +9,16 @@ Gem::Specification.new do |spec|
   spec.authors               = ['Lakshya Kapoor']
   spec.email                 = ['kapoorlakshya@gmail.com']
   spec.homepage              = 'http://github.com/kapoorlakshya/screen-recorder'
-  spec.summary               = 'Record your computer screen using FFmpeg via Ruby.'
-  spec.description           = 'Record your computer screen - desktop or specific window - using FFmpeg (https://www.ffmpeg.org).'
+  spec.summary               = 'Video record your computer screen using FFmpeg via Ruby.'
+  spec.description           = 'Video record your computer screen - desktop or specific window - using FFmpeg via Ruby on Windows, Linux, and macOS.'
   spec.license               = 'MIT'
+  # noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
+  spec.metadata              = {
+    'changelog_uri' => 'https://github.com/kapoorlakshya/screen-recorder/blob/master/CHANGES.md',
+    'source_code_uri' => 'https://github.com/kapoorlakshya/screen-recorder/',
+    'bug_tracker_uri' => 'https://github.com/kapoorlakshya/screen-recorder/issues',
+    'wiki_uri' => 'https://github.com/kapoorlakshya/screen-recorder/wiki'
+  }
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -19,12 +26,12 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop', '~> 0.59'
   spec.add_development_dependency 'rubocop-performance', '~> 1.1.0'
-  spec.add_development_dependency 'rubocop-rspec', '~>1.32'
-  spec.add_development_dependency 'simplecov', '~>0.16'
+  spec.add_development_dependency 'rubocop-rspec', '~> 1.32'
+  spec.add_development_dependency 'simplecov', '~> 0.16'
   spec.add_development_dependency 'watir', '~> 6.0'
   spec.add_development_dependency 'webdrivers', '~> 3.0'
 
