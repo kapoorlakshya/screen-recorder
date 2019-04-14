@@ -72,7 +72,7 @@ module ScreenRecorder
     rescue Timeout::Error
       ScreenRecorder.logger.error 'FFmpeg failed to stop. Force killing it...'
       force_kill_ffmpeg
-      ScreenRecorder.logger.error 'Check the log file for more information.'
+      ScreenRecorder.logger.error "Check '#{@options.log}' for more information."
     rescue Errno::EPIPE
       # Gets last line from log file
       err_line = get_lines_from_log(:last, 2)
