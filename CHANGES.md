@@ -1,9 +1,10 @@
 ### 1.1.0 (TBD)
-* <b>Now supports macOS</b>. Please [raise an Issue](https://github.com/kapoorlakshya/screen-recorder/issues/new) if you run into problems.
-* Force kill `ffmpeg` if it takes more than 10s to quit.
+* <b>Add support for macOS</b> ([#55](https://github.com/kapoorlakshya/screen-recorder/issues/55)). Please [raise an Issue](https://github.com/kapoorlakshya/screen-recorder/issues/new) if you run into problems.
+* Force kill `ffmpeg` if it takes more than 10s to quit ([#60](https://github.com/kapoorlakshya/screen-recorder/issues/60)).
 * Fix a bug where `ScreenRecorder.ffmpeg_binary=()` was not properly defined.
-* `ScreenRecorder::Titles#fetch` will now raise a `NotImplementedError` when used in a 
-Linux or a macOS environment.
+* `ScreenRecorder::Titles#fetch` will now raise `NotImplementedError` when used in a 
+Linux or a macOS environment. Only works on Windows.
+* Default `input` value on Linux is now `:0`.
 
 ### 1.0.0 (2019-03-15)
 * Released first major version.
