@@ -69,6 +69,11 @@ module ScreenRecorder
       elapsed = wait_for_io_eof(10)
       @process.close_write # Close IO
       elapsed
+    rescue Timeout::Error
+      ScreenRecorder.logger.error 'FFmpeg failed to stop. Force killing it...'
+      force_kill_ffmpeg
+      ScreenRecorder.logger.error 'Check the log file for more information.'
+
     rescue Errno::EPIPE
       # Gets last line from log file
       err_line = get_lines_from_log(:last, 2)
@@ -124,6 +129,20 @@ module ScreenRecorder
       f.close
 
       lines.join(' ')
+    end
+
+    #
+    # Force kills the ffmpeg process.
+    #
+    def force_kill_ffmpeg
+      `taskkill /f /pid #{process_pid}` if OS.windows?
+    end
+
+    #
+    # Returns pid for the ffmpeg process.
+    #
+    def process_pid
+      `powershell (Get-Process -name 'ffmpeg').Id`.strip.to_i if OS.windows?
     end
   end
 end
