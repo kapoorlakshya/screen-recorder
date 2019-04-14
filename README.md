@@ -14,10 +14,7 @@ Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](ht
 
 ## Compatibility
 
-Supports Windows, Linux and macOS as of v1.1.0.
-
-Requires Ruby 2.0.0 (MRI) or higher, and is tested 
-with versions 2.3.8, 2.4.5, 2.5.3, and 2.6.1.
+Works on Windows, Linux, and macOS. Requires Ruby 2.0.0 or higher.
 
 ## Installation
 
