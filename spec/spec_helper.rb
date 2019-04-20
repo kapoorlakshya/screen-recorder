@@ -2,9 +2,6 @@ require 'bundler/setup'
 require 'simplecov'
 
 SimpleCov.start do
-  minimum_coverage 75
-  minimum_coverage_by_file 75
-  refuse_coverage_drop
   add_filter %r{/spec/}
 end
 
