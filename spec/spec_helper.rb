@@ -1,6 +1,12 @@
 require 'bundler/setup'
 require 'simplecov'
-SimpleCov.start
+
+SimpleCov.start do
+  minimum_coverage 85
+  minimum_coverage_by_file 80
+  refuse_coverage_drop
+  add_filter %r{/spec/}
+end
 
 require 'screen-recorder'
 require 'watir'
