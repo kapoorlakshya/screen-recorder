@@ -1,6 +1,9 @@
 require 'bundler/setup'
 require 'simplecov'
-SimpleCov.start
+
+SimpleCov.start do
+  add_filter %r{/spec/}
+end
 
 require 'screen-recorder'
 require 'watir'
