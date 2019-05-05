@@ -1,34 +1,49 @@
 ---
-os:
-  - linux
-  - osx
-dist: xenial
 language: ruby
 cache: bundler
 branches:
   only:
     - /.*/
-rvm:
-  - 2.3
-  - 2.4
-  - 2.5
-  - 2.6
 env:
-  - DISPLAY=":0"
+  global:
+    - DISPLAY=":0"
+matrix:
+  include:
+    - rvm: 2.4.6
+      dist: xenial
+      env: RAKE_TASK=spec
+    - rvm: 2.4.6
+      dist: xenial
+      env: RAKE_TASK=rubocop
+    - rvm: 2.6.3
+      dist: xenial
+      env: RAKE_TASK=spec REPORT_COVERAGE=true
+    - rvm: 2.4.6
+      os: osx
+      env: RAKE_TASK=spec
+    - rvm: 2.6.3
+      os: osx
+      env: RAKE_TASK=spec
 addons:
   firefox: latest
+  chrome: stable
   apt:
     packages:
       - ffmpeg
   homebrew:
     packages:
       - ffmpeg
-before_install:
-  - gem update --system --no-document
 before_script:
-  - nohup Xvfb :0 -screen 0 1024x768x24 &
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then chmod +x ./cc-test-reporter; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./cc-test-reporter before-build; fi
+  - if [[ "$RAKE_TASK" == "spec" ]]; then
+      nohup Xvfb :0 -screen 0 1024x768x24 &
+    fi
+  - if [[ "$REPORT_COVERAGE" == "true" ]] && [[ "$TRAVIS_BRANCH" == "master" ]]; then
+      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter;
+      chmod +x ./cc-test-reporter;
+      ./cc-test-reporter before-build;
+    fi
+script: bundle exec rake $RAKE_TASK
 after_script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
+  - if [[ "$REPORT_COVERAGE" == "true" ]] && [[ "$TRAVIS_BRANCH" == "master" ]]; then
+      ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT;
+    fi
