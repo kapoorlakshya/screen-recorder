@@ -1,28 +1,9 @@
-require_relative '../spec_helper'
-
 RSpec.describe ScreenRecorder::Options do
-  let(:opts) do
-    { input:     os_specific_input,
-      output:    'recorder-output.mkv',
-      log_level: Logger::INFO,
-      advanced:  { loglevel:    'level+debug', # For FFmpeg
-                   video_size:  '640x480',
-                   show_region: '1' } }
-  end
-
-  let(:os_specific_format) do
-    return 'gdigrab' if OS.windows?
-    return 'x11grab' if OS.linux?
-    return 'avfoundation' if OS.mac?
-  end
-
-  let(:recorder_options) do
-    described_class.new(opts)
-  end
+  let(:recorder) { described_class.new(test_options) }
 
   describe 'new' do
     it '#accepts a Hash' do
-      expect { described_class.new(opts) }.not_to raise_exception # ArgumentError
+      expect { described_class.new(test_options) }.not_to raise_exception # ArgumentError
     end
 
     it 'raise ArgumentError if user provides an object other than a Hash' do
@@ -30,158 +11,123 @@ RSpec.describe ScreenRecorder::Options do
     end
 
     it 'raises an error when a required option (ex: output) is not provided' do
-      expect { described_class.new(input: os_specific_input) }.to raise_exception(ArgumentError)
+      expect { described_class.new(input: test_input) }.to raise_exception(ArgumentError)
     end
   end
 
   describe '#capture_device' do
     it 'returns capture device based on current OS' do
-      expect(recorder_options.capture_device).to eql(os_specific_format)
+      expect(recorder.capture_device).to eql(test_capture_device)
     end
   end
 
   describe '#framerate' do
-    it 'returns default framerate value' do
-      expect(recorder_options.framerate).to eql(ScreenRecorder::Options::DEFAULT_FPS)
+    let(:recorder) { described_class.new(input: test_input, output: test_output) }
+
+    it 'returns default framerate value if none given' do
+      expect(recorder.framerate).to eql(ScreenRecorder::Options::DEFAULT_FPS)
     end
   end
 
   describe '#input' do
     it 'returns user given input value' do
-      expect(recorder_options.input).to eql(opts[:input])
+      expect(recorder.input).to eql(test_options[:input])
     end
   end
 
   describe '#output' do
     it 'returns user given output value' do
-      expect(recorder_options.output).to eql(opts[:output])
+      expect(recorder.output).to eql(test_options[:output])
     end
   end
 
   context 'when the user wants to provide advanced options' do
     describe '#advanced' do
       it 'returns Hash of advanced options' do
-        expect(recorder_options.advanced).to eql(opts[:advanced])
+        expect(recorder.advanced).to eql(test_options[:advanced])
       end
 
       it 'raise ArgumentError if user provides an object other than a Hash' do
-        bad_opts = { output:   'recorder-output.mkv',
-                     input:    os_specific_input,
-                     advanced: %w[let me fool you] }
-        expect { described_class.new(bad_opts) }.to raise_exception(ArgumentError)
+        bad_test_options = { output:   test_output,
+                             input:    test_input,
+                             advanced: %w[let me fool you] }
+        expect { described_class.new(bad_test_options) }.to raise_exception(ArgumentError)
       end
     end
 
     describe '#framerate' do
-      let(:opts) do
-        { input:    os_specific_input,
-          output:   'recorder-output.mkv',
-          advanced: { framerate: 30.0 } }
-      end
-
       it 'returns user given framerate value' do
-        expect(described_class.new(opts).framerate).to eql(opts[:advanced][:framerate])
+        expect(described_class.new(test_options).framerate).to eql(test_options[:advanced][:framerate])
       end
     end
   end
 
   describe '#log' do
     context 'when the user given log filename' do
-      let(:opts) do
-        { input:    os_specific_input,
-          output:   'recorder-output.mkv',
-          advanced: { log: 'recorder.log' } }
-      end
-
       it 'returns user given log filename' do
-        expect(described_class.new(opts).log).to eql(opts[:advanced][:log])
+        expect(described_class.new(test_options).log).to eql(test_options[:advanced][:log])
       end
     end
 
     context 'when user does not provide a log filename' do
-      let(:opts) do
-        { input:  os_specific_input,
-          output: 'recorder-output.mkv' }
+      let(:test_options) do
+        { input:  test_input,
+          output: test_output }
       end
 
       it 'returns default log filename' do
-        expect(described_class.new(opts).log).to eql(ScreenRecorder::Options::DEFAULT_LOG_FILE)
+        expect(described_class.new(test_options).log).to eql(ScreenRecorder::Options::DEFAULT_LOG_FILE)
       end
     end
   end
 
   describe '#all' do
     it 'returns Hash of all user given options' do
-      expect(recorder_options.all).to eql(opts)
+      expect(recorder.all).to eql(test_options)
     end
   end
 
   describe '#parsed' do
-    let(:input) do
-      if OS.linux?
-        `echo $DISPLAY`.strip || ':0' # If $DISPLAY is not set, use default of :0
-      elsif OS.mac?
-        ENV['TRAVIS'] ? '0' : '1' # Local display indexis 1, Travis is 0
-      elsif OS.windows?
-        'desktop'
-      else
-        raise NotImplementedError, 'Your OS is not supported.'
-      end
-    end
-    let(:opts) do
-      { input:     os_specific_input,
-        output:    'recorder-output.mkv',
-        log_level: Logger::INFO,
-        advanced:  { framerate:   30.0,
-                     loglevel:    'level+debug', # For FFmpeg
-                     video_size:  '640x480',
-                     show_region: '1' } }
-    end
-
-    unless OS.mac?
-      context 'when the environment is Windows or Linux' do
-        let(:expected_parsed_value) do
-          "-f #{os_specific_format} -framerate #{opts[:advanced][:framerate]} -loglevel #{opts[:advanced][:loglevel]}" \
-          " -video_size #{opts[:advanced][:video_size]} -show_region #{opts[:advanced][:show_region]}" \
-          " -i #{opts[:input]} -pix_fmt #{opts[:advanced][:pix_fmt]}" \
+    context 'when the environment is Windows or Linux', if: !OS.mac? do
+      let(:expected_parsed_value) do
+        "-f #{test_capture_device} -framerate #{test_options[:advanced][:framerate]} -loglevel #{test_options[:advanced][:loglevel]}" \
+          " -video_size #{test_options[:advanced][:video_size]} -show_region #{test_options[:advanced][:show_region]}" \
+          " -i #{test_options[:input]} -pix_fmt #{test_options[:advanced][:pix_fmt]}" \
           ' -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2"' \
-          " #{opts[:output]} 2> ffmpeg.log"
-        end
+          " #{test_options[:output]} 2> #{test_options[:advanced][:log]}"
+      end
 
-        it 'returns parsed options for FFmpeg' do
-          expect(described_class.new(opts).parsed).to eql(expected_parsed_value)
-        end
+      it 'returns parsed options for FFmpeg' do
+        expect(described_class.new(test_options).parsed).to eql(expected_parsed_value)
       end
     end
 
-    if OS.mac?
-      context 'when the environment is macOS' do
-        let(:expected_parsed_value) do
-          "-f #{os_specific_format} -pix_fmt uyvy422 -framerate #{opts[:advanced][:framerate]}" \
-          " -loglevel #{opts[:advanced][:loglevel]} -video_size #{opts[:advanced][:video_size]}" \
-          " -show_region #{opts[:advanced][:show_region]} " \
-          "-i #{opts[:input]} -pix_fmt #{opts[:advanced][:pix_fmt]}" \
+    context 'when the environment is macOS', if: OS.mac? do
+      let(:expected_parsed_value) do
+        "-f #{test_capture_device} -pix_fmt uyvy422 -framerate #{test_options[:advanced][:framerate]}" \
+          " -loglevel #{test_options[:advanced][:loglevel]} -video_size #{test_options[:advanced][:video_size]}" \
+          " -show_region #{test_options[:advanced][:show_region]} " \
+          "-i #{test_options[:input]} -pix_fmt #{test_options[:advanced][:pix_fmt]}" \
           ' -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2"' \
-          " #{opts[:output]} 2> ffmpeg.log"
-        end
+          " #{test_options[:output]} 2> #{test_options[:advanced][:log]}"
+      end
 
-        it 'includes input -pix_fmt in parsed options for FFmpeg' do
-          expect(described_class.new(opts).parsed).to eql(expected_parsed_value)
-        end
+      it 'includes input -pix_fmt in parsed options for FFmpeg' do
+        expect(described_class.new(test_options).parsed).to eql(expected_parsed_value)
+      end
 
-        it 'prevents Ffmpeg to raising a warning about unsupported input pixel format' do
-          recorder = ScreenRecorder::Desktop.new(input: input, output: 'recording.mkv')
-          recorder.start
-          sleep(1.0)
-          recorder.stop
-          no_warning = File.readlines(recorder.options.log)
-                         .grep(/Selected pixel format (.+) is not supported/)
-                         .empty?
-          expect(no_warning).to be true
+      it 'prevents Ffmpeg from raising a warning about unsupported input pixel format' do
+        recorder = ScreenRecorder::Desktop.new(input: test_input, output: test_output)
+        recorder.start
+        sleep(1.0)
+        recorder.stop
+        no_warning = File.readlines(recorder.options.log)
+                       .grep(/Selected pixel format (.+) is not supported/)
+                       .empty?
+        expect(no_warning).to be true
 
-          FileUtils.rm recorder.options.log
-        end
-      end # context
-    end # if OS.mac?
+        delete_file recorder.options.log
+      end
+    end # context
   end # #parsed
 end # Rspec.describe
