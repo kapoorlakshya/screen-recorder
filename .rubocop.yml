@@ -38,7 +38,7 @@ Layout/AlignParameters:
   EnforcedStyle: with_first_parameter
 Layout/EndOfLine:
   Enabled: false
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   Enabled: true
 Naming/FileName:
   Enabled: false
