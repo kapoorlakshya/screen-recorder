@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/screen-recorder.svg)](https://badge.fury.io/rb/screen-recorder)
 [![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/github/kapoorlakshya/screen-recorder/master)
 [![Build Status](https://travis-ci.org/kapoorlakshya/screen-recorder.svg?branch=master)](https://travis-ci.org/kapoorlakshya/screen-recorder)
-[![AppVeyor status](https://ci.appveyor.com/api/projects/status/github/kapoorlakshya/screen-recorder/branch/master?svg=true)](https://ci.appveyor.com/project/kapoorlakshya/screen-recorder/branch/master)
+[![AppVeyor status](https://ci.appveyor.com/api/projects/status/u1qashueuw82r235/branch/master?svg=true)](https://ci.appveyor.com/project/kapoorlakshya/screen-recorder/branch/master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/maintainability)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/maintainability)
 
 A Ruby gem to video record your computer screen - desktop or specific
