@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.org/kapoorlakshya/screen-recorder.svg?branch=master)](https://travis-ci.org/kapoorlakshya/screen-recorder)
 [![AppVeyor status](https://ci.appveyor.com/api/projects/status/u1qashueuw82r235/branch/master?svg=true)](https://ci.appveyor.com/project/kapoorlakshya/screen-recorder/branch/master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/maintainability)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/test_coverage)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/test_coverage)
 
 A Ruby gem to video record your computer screen - desktop or specific
 window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
@@ -15,7 +16,7 @@ Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](ht
 
 ## Compatibility
 
-Works on Windows, Linux, and macOS. Requires Ruby 2.0.0 or higher.
+Works on Windows, Linux, and macOS. Requires Ruby 2.0 or higher.
 
 ## Installation
 
@@ -27,8 +28,8 @@ For Microsoft Windows, download the *libx264* enabled binary from [here](https:/
 Once downloaded, add location of the `ffmpeg/bin` folder to `PATH` environment variable 
 ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
 
-Alternatively, you can provide the location using 
-`ScreenRecorder.ffmpeg_binary = '/path/to/binary'` in your project.
+Alternatively, you can point to the binary file using 
+`ScreenRecorder.ffmpeg_binary = '/path/to/ffmpeg'` in your project.
 
 ##### 2. Install gem
 
@@ -121,20 +122,15 @@ for workaround.
 Once the recorder is stopped, you can view the video metadata or transcode
 it if desired. See [`streamio-ffmpeg`](https://github.com/streamio/streamio-ffmpeg) for more details.
 
-```ruby
+```
 @recorder.video
 => #<FFMPEG::Movie:0x0000000004327900 
         @path="recording.mkv", 
         @metadata={:streams=>[{:index=>0, :codec_name=>"h264", :codec_long_name=>"H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10", 
         :profile=>"High", 
-        :codec_type=>"video", 
-        ...
-        @bitrate=264198,
+        :codec_type=>"video"} 
         @video_codec="h264", 
         @colorspace="yuv420p", 
-        @width=1920, 
-        @height=1080, 
-        @video_bitrate=0,
         ... >
 ```
 
@@ -145,27 +141,34 @@ the video file.
 #### Advanced Options
 
 You can provide additional parameters to FFmpeg using the `advanced` 
-parameter. The keys in the Hash are prefixed with `-` and paired with the
+parameter. You can specify input/output specific parameters using the `input: {}`
+and `output: {}` within the `advanced` Hash.
+
+The keys in the Hash are prefixed with `-` and paired with the
 values in the final command.
 
 ```ruby
-  advanced = { framerate: 30,
-               log:       'recorder.log',
-               loglevel:  'level+debug', # For FFmpeg
-               video_size:  '640x480',
-               show_region: '1' }
-  ScreenRecorder::Desktop.new(output:   'recording.mkv',
-                              advanced: advanced)
+advanced = {
+  input:  {
+    framerate:   30,
+    pix_fmt:     'yuv420p',
+    video_size:  '1280x720'
+  },
+  output: {
+    r: 15,
+    pix_fmt:   'yuv420p'
+  },
+  log:    'recorder.log',
+  loglevel: 'level+debug', # For FFmpeg
+}
+ScreenRecorder::Desktop.new(output: 'recording.mkv', advanced: advanced)
 ```
 
 This will be parsed as:
 
 ```bash
-ffmpeg -y -f gdigrab -framerate 30 -loglevel level+debug -video_size 640x480 -show_region 1 -i desktop recording.mkv 2> recorder.log
+ffmpeg -y -f gdigrab -framerate 30 -pix_fmt yuv420p -video_size 1280x720 -i desktop -r 15 pix_fmt yuv420p -loglevel level+debug recording.mkv 2> recorder.log
 ```
-
-This feature is yet to be fully tested, so please feel free 
-to report any bugs or request a feature.
 
 #### Logging
 
