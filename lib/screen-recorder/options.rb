@@ -12,10 +12,10 @@ module ScreenRecorder
 
     def initialize(options)
       # @todo Consider using OpenStruct
-      @all               = verify_options options
-      advanced[:input]   = default_advanced_input.merge(advanced_input)
-      advanced[:output]  = default_advanced_output.merge(advanced_output)
-      advanced[:log]     ||= DEFAULT_LOG_FILE
+      @all                 = verify_options options
+      advanced[:input]     = default_advanced_input.merge(advanced_input)
+      advanced[:output]    = default_advanced_output.merge(advanced_output)
+      advanced[:log] ||= DEFAULT_LOG_FILE
 
       # Fix for using yuv420p pixel format for output
       # @see https://www.reck.dk/ffmpeg-libx264-height-not-divisible-by-2/
@@ -88,11 +88,7 @@ module ScreenRecorder
     #
     def verify_options(options)
       TypeChecker.check options, Hash
-      if options[:advanced]
-        TypeChecker.check options[:advanced], Hash
-        TypeChecker.check options[:advanced][:input], Hash if options[:advanced][:input]
-        TypeChecker.check options[:advanced][:output], Hash if options[:advanced][:output]
-      end
+      TypeChecker.check options[:advanced], Hash if options[:advanced]
       missing_options = required_options.select { |req| options[req].nil? }
       err             = "Required options are missing: #{missing_options}"
       raise(ArgumentError, err) unless missing_options.empty?
@@ -158,17 +154,23 @@ module ScreenRecorder
       # User given capture device or format
       # @see https://www.ffmpeg.org/ffmpeg.html#Main-options
       return advanced[:f] if advanced[:f]
+
       return advanced[:fmt] if advanced[:fmt]
 
-      if OS.windows?
-        'gdigrab'
-      elsif OS.linux?
-        'x11grab'
-      elsif OS.mac?
-        'avfoundation'
-      else
-        raise NotImplementedError, 'Your OS is not supported.'
-      end
+      os_specific_capture_device
+    end
+
+    #
+    # Returns input capture device for current OS.
+    #
+    def os_specific_capture_device
+      return 'gdigrab' if OS.windows?
+
+      return 'x11grab' if OS.linux?
+
+      return 'avfoundation' if OS.mac?
+
+      raise NotImplementedError, 'Your OS is not supported.'
     end
   end
 end
