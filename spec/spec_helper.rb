@@ -71,12 +71,15 @@ end
 #
 def test_advanced
   {
-    framerate:   30.0,
-    loglevel:    'level+debug', # For FFmpeg
-    video_size:  '640x480',
-    show_region: '1',
-    pix_fmt:     'yuv420p',
-    log:         test_log_file
+    input:    {
+      video_size:  '640x480',
+      show_region: '1'
+    },
+    output:   {
+      framerate: 30.0
+    },
+    loglevel: 'level+debug', # For FFmpeg
+    log:      test_log_file
   }
 end
 

@@ -2,25 +2,31 @@
 module ScreenRecorder
   # @since 1.0.0-beta11
   class Options
-    DEFAULT_LOG_FILE       = 'ffmpeg.log'.freeze
-    DEFAULT_FPS            = 15.0
-    DEFAULT_INPUT_PIX_FMT  = 'uyvy422'.freeze # For macOS / avfoundation
-    DEFAULT_OUTPUT_PIX_FMT = 'yuv420p'.freeze
+    attr_reader :all
+
+    DEFAULT_LOG_FILE          = 'ffmpeg.log'.freeze
+    DEFAULT_FPS               = 15.0
+    DEFAULT_MAC_INPUT_PIX_FMT = 'uyvy422'.freeze # For avfoundation
+    DEFAULT_PIX_FMT           = 'yuv420p'.freeze
+    YUV420P_SCALING           = '"scale=trunc(iw/2)*2:trunc(ih/2)*2"'.freeze
 
     def initialize(options)
-      TypeChecker.check options, Hash
-      TypeChecker.check options[:advanced], Hash if options[:advanced]
-      @options = verify_options options
-      advanced[:framerate] ||= DEFAULT_FPS
-      advanced[:log]       ||= DEFAULT_LOG_FILE
-      advanced[:pix_fmt]   ||= DEFAULT_OUTPUT_PIX_FMT
+      # @todo Consider using OpenStruct
+      @all                 = verify_options options
+      advanced[:input]     = default_advanced_input.merge(advanced_input)
+      advanced[:output]    = default_advanced_output.merge(advanced_output)
+      advanced[:log] ||= DEFAULT_LOG_FILE
+
+      # Fix for using yuv420p pixel format for output
+      # @see https://www.reck.dk/ffmpeg-libx264-height-not-divisible-by-2/
+      advanced_output[:vf] = YUV420P_SCALING if advanced_output[:pix_fmt] == 'yuv420p'
     end
 
     #
     # Returns given input file or input
     #
     def input
-      @options[:input]
+      @all[:input]
     end
 
     #
@@ -34,21 +40,22 @@ module ScreenRecorder
     # Returns given output filepath
     #
     def output
-      @options[:output]
+      @all[:output]
     end
 
     #
     # Returns given values that are optional
     #
     def advanced
-      @options[:advanced] ||= {}
+      @all[:advanced] ||= {}
     end
 
     #
     # Returns given framerate
     #
     def framerate
-      advanced[:framerate]
+      ScreenRecorder.logger.warn '#framerate will not be available in the next release. Use #advanced instead.'
+      advanced[:output][:framerate]
     end
 
     #
@@ -59,25 +66,15 @@ module ScreenRecorder
     end
 
     #
-    # Returns all given options
-    #
-    def all
-      @options
-    end
-
-    #
     # Returns a String with all options parsed and
     # ready for the ffmpeg process to use
     #
     def parsed
       vals = "-f #{capture_device} "
-      vals << "-pix_fmt #{DEFAULT_INPUT_PIX_FMT} " if OS.mac? # Input pixel format
-      vals << advanced_options unless advanced.empty?
+      vals << parse_advanced(advanced_input)
       vals << "-i #{input} "
-      vals << "-pix_fmt #{advanced[:pix_fmt]} " if advanced[:pix_fmt] # Output pixel format
-      # Fix for using yuv420p
-      # @see https://www.reck.dk/ffmpeg-libx264-height-not-divisible-by-2/
-      vals << '-vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ' if advanced[:pix_fmt] == 'yuv420p'
+      vals << parse_advanced(advanced_output)
+      vals << parse_advanced(advanced)
       vals << output
       vals << ffmpeg_log_to(log)
     end
@@ -90,11 +87,34 @@ module ScreenRecorder
     # options are not present in the given Hash.
     #
     def verify_options(options)
+      TypeChecker.check options, Hash
+      TypeChecker.check options[:advanced], Hash if options[:advanced]
       missing_options = required_options.select { |req| options[req].nil? }
       err             = "Required options are missing: #{missing_options}"
       raise(ArgumentError, err) unless missing_options.empty?
 
       options
+    end
+
+    def advanced_input
+      advanced[:input] ||= {}
+    end
+
+    def advanced_output
+      advanced[:output] ||= {}
+    end
+
+    def default_advanced_input
+      {
+        pix_fmt: OS.mac? ? DEFAULT_MAC_INPUT_PIX_FMT : nil
+      }
+    end
+
+    def default_advanced_output
+      {
+        pix_fmt:   DEFAULT_PIX_FMT,
+        framerate: advanced[:framerate] || DEFAULT_FPS
+      }
     end
 
     #
@@ -105,16 +125,15 @@ module ScreenRecorder
     end
 
     #
-    # Returns advanced options parsed and ready for ffmpeg to receive.
+    # Returns given Hash parsed and ready for ffmpeg to receive.
     #
-    def advanced_options
+    def parse_advanced(opts)
+      # @todo Replace arr with opts.each_with_object([])
       arr = []
-
-      # Log file and output pixel format is handled separately
-      # at the end of the command
-      advanced.reject { |k, _| %i[log pix_fmt].include? k }
+      # Do not parse input/output and log as they're placed separately in #parsed
+      opts.reject { |k, _| %i[input output log].include? k }
         .each do |k, v|
-        arr.push "-#{k} #{v}"
+        arr.push "-#{k} #{v}" unless v.nil? # Ignore blank params
       end
       arr.join(' ') + ' '
     end
@@ -135,17 +154,23 @@ module ScreenRecorder
       # User given capture device or format
       # @see https://www.ffmpeg.org/ffmpeg.html#Main-options
       return advanced[:f] if advanced[:f]
+
       return advanced[:fmt] if advanced[:fmt]
 
-      if OS.windows?
-        'gdigrab'
-      elsif OS.linux?
-        'x11grab'
-      elsif OS.mac?
-        'avfoundation'
-      else
-        raise NotImplementedError, 'Your OS is not supported.'
-      end
+      os_specific_capture_device
+    end
+
+    #
+    # Returns input capture device for current OS.
+    #
+    def os_specific_capture_device
+      return 'gdigrab' if OS.windows?
+
+      return 'x11grab' if OS.linux?
+
+      return 'avfoundation' if OS.mac?
+
+      raise NotImplementedError, 'Your OS is not supported.'
     end
   end
 end

@@ -29,10 +29,6 @@ RSpec.describe ScreenRecorder::Desktop do
     it 'expects advanced: as a Hash' do
       expect { described_class.new(output: output, advanced: []) }.to raise_exception(ArgumentError)
     end
-
-    it 'sets advanced parameters' do
-      expect(recorder.options.advanced).to eq(test_advanced)
-    end
   end
 
   describe '#options' do
@@ -82,10 +78,6 @@ RSpec.describe ScreenRecorder::Desktop do
     describe '#stop' do
       it 'outputs a video file' do
         expect(File).to exist(recorder.options.output)
-      end
-
-      it 'outputs video at default FPS' do
-        expect(recorder.video.frame_rate).to eq(recorder.options.framerate)
       end
     end
 
