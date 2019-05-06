@@ -79,7 +79,7 @@ def test_advanced
       framerate: 30.0
     },
     loglevel: 'level+debug', # For FFmpeg
-    log: test_log_file
+    log:      test_log_file
   }
 end
 
