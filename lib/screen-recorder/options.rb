@@ -76,7 +76,6 @@ module ScreenRecorder
       vals << parse_advanced(advanced_output)
       vals << parse_advanced(advanced)
       vals << output
-      vals << ffmpeg_log_to(log)
     end
 
     private
@@ -136,15 +135,6 @@ module ScreenRecorder
         arr.push "-#{k} #{v}" unless v.nil? # Ignore blank params
       end
       arr.join(' ') + ' '
-    end
-
-    #
-    # Returns logging command with user given log file
-    # from options or the default file.
-    #
-    def ffmpeg_log_to(file)
-      file ||= DEFAULT_LOG_FILE
-      " 2> #{file}"
     end
 
     #
