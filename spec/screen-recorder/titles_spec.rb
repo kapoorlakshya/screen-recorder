@@ -14,7 +14,6 @@ RSpec.describe ScreenRecorder::Titles do
     let(:expected_title) { 'Google - Mozilla Firefox' }
     let(:browser) do
       Webdrivers.install_dir = 'webdrivers_bin'
-      Webdrivers.cache_time  = 86_400
       Watir::Browser.new browser_process
     end
 
@@ -55,7 +54,6 @@ RSpec.describe ScreenRecorder::Titles do
     let(:expected_titles) { ['Google - Google Chrome'] }
     let(:browser) do
       Webdrivers.install_dir = 'webdrivers_bin'
-      Webdrivers.cache_time  = 86_400
       Watir::Browser.new browser_process
     end
 

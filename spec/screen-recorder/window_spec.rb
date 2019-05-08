@@ -14,7 +14,6 @@ RSpec.describe ScreenRecorder::Window, if: OS.windows? do
 
     before do
       Webdrivers.install_dir = 'webdrivers_bin'
-      Webdrivers.cache_time  = 86_400
     end
 
     it 'can record a specific window with given title' do
@@ -38,7 +37,6 @@ RSpec.describe ScreenRecorder::Window, if: OS.windows? do
 
     before do
       Webdrivers.install_dir = 'webdrivers_bin'
-      Webdrivers.cache_time  = 86_400
     end
 
     it 'can record a specific window with given title' do
