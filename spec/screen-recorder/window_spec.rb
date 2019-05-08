@@ -16,11 +16,6 @@ RSpec.describe ScreenRecorder::Window, if: OS.windows? do
       Webdrivers.install_dir = 'webdrivers_bin'
     end
 
-    after do
-      delete_file recorder.options.output
-      delete_file recorder.options.log
-    end
-
     it 'can record a specific window with given title' do
       browser.window.resize_to 1280, 720
       recorder.start
@@ -42,11 +37,6 @@ RSpec.describe ScreenRecorder::Window, if: OS.windows? do
 
     before do
       Webdrivers.install_dir = 'webdrivers_bin'
-    end
-
-    after do
-      delete_file recorder.options.output
-      delete_file recorder.options.log
     end
 
     it 'can record a specific window with given title' do

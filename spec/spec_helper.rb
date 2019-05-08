@@ -34,6 +34,12 @@ RSpec.configure do |config|
         f.close
       end
     end
+
+    #
+    # Clean up
+    #
+    delete_file test_output
+    delete_file test_log_file
   end
 end
 

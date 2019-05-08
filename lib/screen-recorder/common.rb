@@ -2,6 +2,8 @@
 module ScreenRecorder
   # @since 1.0.0-beta11
   class Common
+    PROCESS_TIMEOUT = 5 # Seconds to wait for ffmpeg to quit
+
     attr_reader :options, :video
 
     def initialize(input:, output:, advanced: {})
@@ -27,9 +29,9 @@ module ScreenRecorder
     # Stops the recording
     #
     def stop
-      ScreenRecorder.logger.debug 'Stopping ffmpeg.exe...'
-      elapsed = stop_ffmpeg
-      ScreenRecorder.logger.debug "Stopped ffmpeg.exe in #{elapsed}s"
+      ScreenRecorder.logger.debug 'Stopping ffmpeg...'
+      stop_ffmpeg
+      ScreenRecorder.logger.debug 'Stopped ffmpeg.'
       ScreenRecorder.logger.info 'Recording complete.'
       @video = FFMPEG::Movie.new(options.output)
     end
@@ -55,8 +57,16 @@ module ScreenRecorder
       raise Errors::DependencyNotFound, 'ffmpeg binary not found.' unless ffmpeg_exists?
 
       ScreenRecorder.logger.debug "Command: #{command}"
-      process = IO.popen(command, 'r+')
+      process           = build_command
+      @log_file         = File.new(options.log, 'w+')
+      process.io.stdout = process.io.stderr = @log_file
+      @log_file.sync    = true
+      process.duplex    = true
+      process.start
       sleep(1.5) # Takes ~1.5s on average to initialize
+      # Stopped because of an error
+      raise FFMPEG::Error, "Failed to start ffmpeg. Reason: #{lines_from_log(:last, 2)}" if process.exited?
+
       process
     end
 
@@ -65,18 +75,15 @@ module ScreenRecorder
     # Forcefully terminates it if it takes more than 10s.
     #
     def stop_ffmpeg
-      @process.puts 'q' # Gracefully exit ffmpeg
-      elapsed = wait_for_io_eof(10)
-      @process.close_write # Close IO
-      elapsed
-    rescue Timeout::Error
+      @process.io.stdin.puts 'q' # Gracefully exit ffmpeg
+      @process.io.stdin.close
+      @log_file.close
+      @process.poll_for_exit(PROCESS_TIMEOUT)
+      @process.exit_code
+    rescue ChildProcess::TimeoutError
       ScreenRecorder.logger.error 'FFmpeg failed to stop. Force killing it...'
-      force_kill_ffmpeg
+      @process.stop # Tries increasingly harsher methods to kill the process.
       ScreenRecorder.logger.error "Check '#{@options.log}' for more information."
-    rescue Errno::EPIPE
-      # Gets last line from log file
-      err_line = get_lines_from_log(:last, 2)
-      raise FFMPEG::Error, err_line
     end
 
     #
@@ -120,7 +127,7 @@ module ScreenRecorder
     #
     # Returns lines from the log file
     #
-    def get_lines_from_log(position = :last, count = 2)
+    def lines_from_log(position = :last, count = 2)
       f     = File.open(options.log)
       lines = f.readlines
       lines = lines.last(count) if position == :last
@@ -131,17 +138,14 @@ module ScreenRecorder
     end
 
     #
-    # Force kills the ffmpeg process.
+    # Returns OS specific arguments for Childprocess.build
     #
-    def force_kill_ffmpeg
+    def build_command
       if OS.windows?
-        pid = `powershell (Get-Process -name 'ffmpeg').Id`.strip.to_i
-        `taskkill /f /pid #{pid}`
-        return
+        ChildProcess.build('cmd.exe', '/c', command)
+      else
+        ChildProcess.build('sh', '-c', command)
       end
-
-      `killall -9 ffmpeg` # Linux and macOS
-      nil
     end
   end
 end

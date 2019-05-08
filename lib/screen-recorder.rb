@@ -1,6 +1,7 @@
-require 'streamio-ffmpeg'
-require 'os'
+require 'childprocess'
 require 'logger'
+require 'os'
+require 'streamio-ffmpeg'
 
 # @since 1.0.0.beta11
 module ScreenRecorder
