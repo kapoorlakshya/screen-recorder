@@ -1,4 +1,6 @@
 # @since 1.0.0-beta11
+#
+# @api private
 module ScreenRecorder
   # @since 1.0.0-beta11
   class Common
@@ -72,7 +74,7 @@ module ScreenRecorder
 
     #
     # Sends 'q' to the ffmpeg binary to gracefully stop the process.
-    # Forcefully terminates it if it takes more than 10s.
+    # Forcefully terminates it if it takes more than 5s.
     #
     def stop_ffmpeg
       @process.io.stdin.puts 'q' # Gracefully exit ffmpeg

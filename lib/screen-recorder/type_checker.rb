@@ -1,5 +1,7 @@
 module ScreenRecorder
   # @since 1.0.0.beta10
+  #
+  # @api private
   module TypeChecker
     #
     # Compares the given object's type (class) to the desired object type.

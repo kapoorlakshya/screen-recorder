@@ -1,4 +1,6 @@
 # @since 1.0.0-beta11
+#
+# @api private
 module ScreenRecorder
   # @since 1.0.0-beta11
   class Options
