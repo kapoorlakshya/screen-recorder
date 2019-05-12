@@ -6,7 +6,7 @@ module ScreenRecorder
     # Window recording mode.
     #
     def initialize(title:, output:, advanced: {})
-      raise NotImplementedError, 'Window recording is only supported on Microsoft Windows.' unless OS.windows?
+      raise 'Window recording is only supported on Microsoft Windows.' unless OS.windows?
 
       super(input: %("title=#{title}"), output: output, advanced: advanced)
     end

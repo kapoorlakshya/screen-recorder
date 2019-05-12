@@ -54,7 +54,7 @@ def test_input
   elsif OS.windows?
     'desktop'
   else
-    raise NotImplementedError, 'Your OS is not supported.'
+    raise 'Your OS is not supported. Feel free to create an Issue on GitHub.'
   end
 end
 

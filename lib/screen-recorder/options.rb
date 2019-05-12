@@ -162,7 +162,7 @@ module ScreenRecorder
 
       return 'avfoundation' if OS.mac?
 
-      raise NotImplementedError, 'Your OS is not supported.'
+      raise 'Your OS is not supported. Feel free to create an Issue on GitHub.'
     end
   end
 end

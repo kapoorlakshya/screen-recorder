@@ -25,7 +25,7 @@ module ScreenRecorder
 
       return DEFAULT_INPUT_MAC if OS.mac?
 
-      raise NotImplementedError, 'Your OS is not supported. Feel free to create an Issue on GitHub.'
+      raise 'Your OS is not supported. Feel free to create an Issue on GitHub.'
     end
 
     #
