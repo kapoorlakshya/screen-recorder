@@ -3,6 +3,8 @@
 # @api private
 module ScreenRecorder
   # @since 1.0.0-beta11
+  #
+  # @api private
   class Common
     PROCESS_TIMEOUT = 5 # Seconds to wait for ffmpeg to quit
 
