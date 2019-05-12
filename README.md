@@ -70,11 +70,8 @@ require 'screen-recorder'
 @recorder.stop
 ```
 
-Linux and macOS users can optionally provide a display or input device number as 
-`input: ':99'`. Default is `:0` on Linux and `1` on macOS. 
-
-Run command `echo $DISPLAY` on Linux and `ffmpeg -f avfoundation -list_devices true -i ""` on macOS to get a list of available
-inputs.
+Linux and macOS users can optionally provide a display or input device number.
+Read more about it in the wiki [here](https://github.com/kapoorlakshya/screen-recorder/wiki/Input-Values).
 
 #### Record Application Window (Microsoft Windows only)
 
@@ -99,30 +96,20 @@ for the given process name.
 ```ruby
 ScreenRecorder::Titles.fetch('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
+
+ScreenRecorder::Titles.fetch('chrome')
+#=> ["New Tab - Google Chrome"]
 ```
 
-##### Limitations
-
-- Only available for Microsoft Windows (*gdigrab*). Linux (*x11grab*) and macOS 
-(*avfoundation*) capture devices do not provide this feature. However, there
-is a workaround documented in the [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki/Window-recording-in-Linux-and-Mac).
-- Always stop the recording before closing the application. Otherwise,
-ffmpeg will force exit as soon as the window disappears and may produce
-an invalid video file.
-- If you're launching multiple applications or testing an application
-at different window sizes, recording the `desktop` is a better option.
-- `#fetch` only returns the title from a currently active (visible) window
-for the given process.
-- `#fetch` may return `ArgumentError (invalid byte sequence in UTF-8)`
-for a window title with non `UTF-8` characters. See [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki/Invalid-byte-sequence-in-UTF-8)
-for workaround.
+This mode has limited capabilities. Read more about it in the wiki 
+[here](https://github.com/kapoorlakshya/screen-recorder/wiki/Window-Capture-Limitations).
 
 #### Output
 
 Once the recorder is stopped, you can view the video metadata or transcode
-it if desired. See [`streamio-ffmpeg`](https://github.com/streamio/streamio-ffmpeg) for more details.
+it if desired.
 
-```
+```ruby
 @recorder.video
 => #<FFMPEG::Movie:0x0000000004327900 
         @path="recording.mkv", 
@@ -132,7 +119,13 @@ it if desired. See [`streamio-ffmpeg`](https://github.com/streamio/streamio-ffmp
         @video_codec="h264", 
         @colorspace="yuv420p", 
         ... >
+
+@recorder.video.transcode("movie.mp4") { |progress| puts progress } # 0.2 ... 0.5 ... 1.0
 ```
+
+See [`streamio-ffmpeg`](https://github.com/streamio/streamio-ffmpeg) gem for more details.
+
+#### Discard Recoding
 
 If your test passes or you do not want the recording for any reason,
 simply call `@recorder.discard` or `@recorder.delete` to delete
@@ -144,21 +137,18 @@ You can provide additional parameters to FFmpeg using the `advanced`
 parameter. You can specify input/output specific parameters using the `input: {}`
 and `output: {}` within the `advanced` Hash.
 
-The keys in the Hash are prefixed with `-` and paired with the
-values in the final command.
-
 ```ruby
 advanced = {
-  input:  {
-    framerate:   30,
-    pix_fmt:     'yuv420p',
-    video_size:  '1280x720'
+  input:    {
+    framerate:  30,
+    pix_fmt:    'yuv420p',
+    video_size: '1280x720'
   },
-  output: {
-    r: 15,
-    pix_fmt:   'yuv420p'
+  output:   {
+    r:       15, # Framerate
+    pix_fmt: 'yuv420p'
   },
-  log:    'recorder.log',
+  log:      'recorder.log',
   loglevel: 'level+debug', # For FFmpeg
 }
 ScreenRecorder::Desktop.new(output: 'recording.mkv', advanced: advanced)
@@ -167,10 +157,10 @@ ScreenRecorder::Desktop.new(output: 'recording.mkv', advanced: advanced)
 This will be parsed as:
 
 ```bash
-ffmpeg -y -f gdigrab -framerate 30 -pix_fmt yuv420p -video_size 1280x720 -i desktop -r 15 pix_fmt yuv420p -loglevel level+debug recording.mkv 2> recorder.log
+ffmpeg -y -f gdigrab -framerate 30 -pix_fmt yuv420p -video_size 1280x720 -i desktop -r 15 pix_fmt yuv420p -loglevel level+debug recording.mkv
 ```
 
-#### Logging
+#### Logging & Debugging
 
 You can configure the logging level of the gem to troubleshoot problems:
 
@@ -192,7 +182,7 @@ Please see the [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki) for
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. 
-Then, run `bundle exec rake spec` to run the tests. You can also run 
+Then, run `bundle exec rake` to run the tests and rubocop. You can also run 
 `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. 
