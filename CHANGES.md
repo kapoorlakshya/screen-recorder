@@ -1,3 +1,14 @@
+### 1.2.0 (2019-05-12)
+* Separate input/output specific `ffmpeg` arguments through the `advanced` 
+Hash. See example [here](https://github.com/kapoorlakshya/screen-recorder#advanced-options).
+* Check for errors after starting the `ffmpeg` process to make sure the 
+recording does not stop silently because of an error. Prints the error 
+from the log if the process exists unexpectedly.
+* Now using [`childprocess`](https://github.com/enkessler/childprocess) gem
+to manage the `ffmpeg` process. This requires the  `ffi` gem to be 
+installed on Windows. See [childprocess#132](https://github.com/enkessler/childprocess/issues/150)
+for more information.
+
 ### 1.1.0 (2019-04-14)
 * <b>Add support for macOS</b> ([#55](https://github.com/kapoorlakshya/screen-recorder/issues/55)). Please [raise an Issue](https://github.com/kapoorlakshya/screen-recorder/issues/new) if you run into problems.
 * Force kill `ffmpeg` if it takes more than 10s to quit ([#60](https://github.com/kapoorlakshya/screen-recorder/issues/60)).
