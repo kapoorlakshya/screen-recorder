@@ -36,8 +36,15 @@ Alternatively, you can point to the binary file using
 Next, add this line to your application's Gemfile:
 
 ```ruby
+gem 'ffi' # Windows only
 gem 'screen-recorder'
 ```
+
+[`ffi`](https://github.com/ffi/ffi) gem is used by the 
+[`childprocess`](https://github.com/enkessler/childprocess) gem on 
+Windows, but it does not explicitly require it. More information 
+on this [here](https://github.com/enkessler/childprocess/issues/150).
+
 
 And then execute:
 
