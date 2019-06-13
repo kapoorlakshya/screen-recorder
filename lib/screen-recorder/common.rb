@@ -1,6 +1,4 @@
 # @since 1.0.0-beta11
-#
-# @api private
 module ScreenRecorder
   # @since 1.0.0-beta11
   #
@@ -97,19 +95,6 @@ module ScreenRecorder
     def command
       cmd = "#{ScreenRecorder.ffmpeg_binary} -y "
       cmd << @options.parsed
-    end
-
-    #
-    # Waits for IO#eof? to return true
-    # after 'q' is sent to the ffmpeg process.
-    #
-    def wait_for_io_eof(timeout)
-      start = Time.now
-      Timeout.timeout(timeout) do
-        sleep(0.1) until @process.eof?
-      end
-      ScreenRecorder.logger.debug "IO#eof? #{@process.eof?}"
-      Time.now - start
     end
 
     #
