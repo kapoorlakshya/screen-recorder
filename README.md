@@ -12,7 +12,8 @@ window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
 geared towards recording automated UI test executions for debugging
 and documentation.
 
-Demo - [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem).
+#### Demo
+[https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem).
 
 ## Compatibility
 
@@ -33,14 +34,14 @@ Alternatively, you can point to the binary file using
 
 ##### 2. Install gem
 
-Next, add this line to your application's Gemfile:
+Next, add these lines to your application's Gemfile:
 
 ```ruby
 gem 'ffi' # Windows only
 gem 'screen-recorder'
 ```
 
-[`ffi`](https://github.com/ffi/ffi) gem is used by the 
+The [`ffi`](https://github.com/ffi/ffi) gem is used by the 
 [`childprocess`](https://github.com/enkessler/childprocess) gem on 
 Windows, but it does not explicitly require it. More information 
 on this [here](https://github.com/enkessler/childprocess/issues/150).
@@ -55,6 +56,7 @@ $ bundle
 Or install it yourself as:
 
 ```bash
+$ gem install ffi # Windows only
 $ gem install screen-recorder
 ```
 
@@ -132,7 +134,7 @@ it if desired.
 
 See [`streamio-ffmpeg`](https://github.com/streamio/streamio-ffmpeg) gem for more details.
 
-#### Discard Recoding
+#### Discard Recording
 
 If your test passes or you do not want the recording for any reason,
 simply call `@recorder.discard` or `@recorder.delete` to delete
@@ -141,7 +143,7 @@ the video file.
 #### Advanced Options
 
 You can provide additional parameters to FFmpeg using the `advanced` 
-parameter. You can specify input/output specific parameters using the `input: {}`
+parameter. You can specify input/output specific parameters using `input: {}`
 and `output: {}` within the `advanced` Hash.
 
 ```ruby
