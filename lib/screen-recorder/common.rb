@@ -130,6 +130,7 @@ module ScreenRecorder
     # Returns OS specific arguments for Childprocess.build
     #
     def build_command
+      ChildProcess.posix_spawn = true # Support JRuby.
       if OS.windows?
         ChildProcess.build('cmd.exe', '/c', command)
       else

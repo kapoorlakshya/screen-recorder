@@ -17,7 +17,7 @@ and documentation.
 
 ## Compatibility
 
-Works on Windows, Linux, and macOS. Requires Ruby 2.0 or higher.
+Works on Windows, Linux, and macOS. Requires Ruby 2.0+ or Jruby 9.2+.
 
 ## Installation
 
@@ -26,8 +26,8 @@ Works on Windows, Linux, and macOS. Requires Ruby 2.0 or higher.
 Linux and macOS instructions are [here](https://www.ffmpeg.org/download.html). 
 
 For Microsoft Windows, download the *libx264* enabled binary from [here](https://ffmpeg.zeranoe.com/builds/).
-Once downloaded, add location of the `ffmpeg/bin` folder to `PATH` environment variable 
-([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
+Once downloaded, add location of the `ffmpeg/bin` folder to the `PATH` 
+environment variable ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
 
 Alternatively, you can point to the binary file using 
 `ScreenRecorder.ffmpeg_binary = '/path/to/ffmpeg'` in your project.

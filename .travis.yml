@@ -1,4 +1,3 @@
----
 language: ruby
 cache: bundler
 branches:
@@ -17,10 +16,11 @@ matrix:
       env: RAKE_TASK=rubocop
     - rvm: 2.6.3
       dist: xenial
-      env: RAKE_TASK=spec REPORT_COVERAGE=true
-    - rvm: 2.4.6
-      os: osx
       env: RAKE_TASK=spec
+    - rvm: jruby-9.2.7.0
+      dist: xenial
+      jdk: openjdk8
+      env: RAKE_TASK=spec JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
     - rvm: 2.6.3
       os: osx
       env: RAKE_TASK=spec
@@ -34,16 +34,8 @@ addons:
     packages:
       - ffmpeg
 before_script:
-  - if [[ "$RAKE_TASK" == "spec" ]]; then
-      nohup Xvfb :0 -screen 0 1024x768x24 &
-    fi
-  - if [[ "$REPORT_COVERAGE" == "true" ]] && [[ "$TRAVIS_BRANCH" == "master" ]]; then
-      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter;
-      chmod +x ./cc-test-reporter;
-      ./cc-test-reporter before-build;
-    fi
+  - bash support/start_xvfb.sh
+  - bash support/start_test_reporter.sh
 script: bundle exec rake $RAKE_TASK
 after_script:
-  - if [[ "$REPORT_COVERAGE" == "true" ]] && [[ "$TRAVIS_BRANCH" == "master" ]]; then
-      ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT;
-    fi
+  - bash support/stop_test_reporter.sh
