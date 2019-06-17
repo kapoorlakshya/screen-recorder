@@ -17,7 +17,7 @@ and documentation.
 
 ## Compatibility
 
-Works on Windows, Linux, and macOS. Requires Ruby 2.0+ or Jruby 9.2+.
+Works on Windows, Linux, and macOS. Requires Ruby 2.0+ or JRuby 9.2+.
 
 ## Installation
 
@@ -96,6 +96,8 @@ browser   = Watir::Browser.new :firefox
 @recorder.stop
 browser.quit 
 ```
+This mode has limited capabilities. Read more about it in the wiki 
+[here](https://github.com/kapoorlakshya/screen-recorder/wiki/Window-Capture-Limitations).
 
 ##### Fetch Title
 
@@ -109,9 +111,6 @@ ScreenRecorder::Titles.fetch('firefox') # Name of exe
 ScreenRecorder::Titles.fetch('chrome')
 #=> ["New Tab - Google Chrome"]
 ```
-
-This mode has limited capabilities. Read more about it in the wiki 
-[here](https://github.com/kapoorlakshya/screen-recorder/wiki/Window-Capture-Limitations).
 
 #### Output
 
@@ -129,7 +128,7 @@ it if desired.
         @colorspace="yuv420p", 
         ... >
 
-@recorder.video.transcode("movie.mp4") { |progress| puts progress } # 0.2 ... 0.5 ... 1.0
+@recorder.video.transcode("recording.mp4") { |progress| puts progress } # 0.2 ... 0.5 ... 1.0
 ```
 
 See [`streamio-ffmpeg`](https://github.com/streamio/streamio-ffmpeg) gem for more details.
