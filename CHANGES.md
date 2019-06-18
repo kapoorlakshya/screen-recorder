@@ -1,3 +1,12 @@
+# Changelog
+
+This project adheres to [Semantic Versioning](https://semver.org/).
+
+### 1.3.0 (TBD)
+* Support JRuby 9.2+ ([#58](https://github.com/kapoorlakshya/screen-recorder/issues/58))
+* Add `ScreenRecorder::Window.fetch_title` as an alias for `ScreenRecorder::Titles.fetch`.
+The `Titles` class will be removed in version 2.0.
+
 ### 1.2.0 (2019-05-12)
 * Separate input/output specific `ffmpeg` arguments through the `advanced` 
 Hash. See example [here](https://github.com/kapoorlakshya/screen-recorder#advanced-options).
