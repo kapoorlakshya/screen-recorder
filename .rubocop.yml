@@ -1,58 +1,75 @@
-require: rubocop-rspec
+require:
+  - rubocop-rspec
+  - rubocop-performance
+
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
   ExtraDetails: false
   TargetRubyVersion: 2.4
+
 Gemspec/RequiredRubyVersion:
   Enabled: false
-Metrics/LineLength:
-  Enabled: false
-Metrics/MethodLength:
-  Enabled: false
-Metrics/BlockLength:
-  Enabled: false
-Metrics/ClassLength:
-  Enabled: false
-Metrics/AbcSize:
-  Enabled: false
-Metrics/CyclomaticComplexity:
-  Enabled: false
-Style/Documentation:
-  Enabled: false
-RSpec/ExampleLength:
-  Enabled: false
-RSpec/MultipleExpectations:
-  Enabled: false
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
 Layout/MultilineMethodCallIndentation:
-  Enabled: false
   EnforcedStyle: indented_relative_to_receiver
+
 Layout/AlignArray:
   Enabled: true
+
 Layout/AlignHash:
   Enabled: true
   EnforcedHashRocketStyle: key
   EnforcedColonStyle: table
+
 Layout/AlignParameters:
   Enabled: true
   EnforcedStyle: with_first_parameter
-Layout/EndOfLine:
-  Enabled: false
+
 Layout/IndentFirstHashElement:
   Enabled: true
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/ClassLength:
+  Max: 120
+
+Metrics/AbcSize:
+  Max: 18
+
+Metrics/BlockLength:
+  Exclude:
+    - 'screen-recorder.gemspec'
+    - 'spec/**/*'
+
 Naming/FileName:
-  Enabled: false
+  Exclude:
+    - 'lib/screen-recorder.rb'
+
 RSpec/FilePath:
   Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
 Style/BlockDelimiters:
   EnforcedStyle: braces_for_chaining
+
 Style/CommentedKeyword:
   Enabled: false
-Style/DoubleNegation:
-  Enabled: false
-Style/MethodCallWithoutArgsParentheses:
-  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Enabled: false
+
 TrailingBlankLines:
   Enabled: false

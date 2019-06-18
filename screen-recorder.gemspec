@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email                 = ['kapoorlakshya@gmail.com']
   spec.homepage              = 'http://github.com/kapoorlakshya/screen-recorder'
   spec.summary               = 'Video record your computer screen using FFmpeg via Ruby.'
-  spec.description           = 'Video record your computer screen - desktop or specific window - using FFmpeg via Ruby on Windows, Linux, and macOS.'
+  spec.description           = 'Video record your computer screen - desktop or specific window - using FFmpeg via Ruby.'
   spec.license               = 'MIT'
   # noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
   spec.metadata              = {
