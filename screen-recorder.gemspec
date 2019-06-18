@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.license               = 'MIT'
   # noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
   spec.metadata              = {
-    'changelog_uri' => 'https://github.com/kapoorlakshya/screen-recorder/blob/master/CHANGES.md',
+    'changelog_uri' => 'https://github.com/kapoorlakshya/screen-recorder/blob/master/CHANGELOG.md',
     'source_code_uri' => 'https://github.com/kapoorlakshya/screen-recorder/',
     'bug_tracker_uri' => 'https://github.com/kapoorlakshya/screen-recorder/issues',
     'wiki_uri' => 'https://github.com/kapoorlakshya/screen-recorder/wiki'
