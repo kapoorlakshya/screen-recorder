@@ -18,11 +18,9 @@ module ScreenRecorder
     # Starts the recording
     #
     def start
+      ScreenRecorder.logger.debug 'Starting recorder...'
       @video     = nil # New file
-      start_time = Time.now
       @process   = start_ffmpeg
-      elapsed    = Time.now - start_time
-      ScreenRecorder.logger.debug "Process started in #{elapsed}s"
       ScreenRecorder.logger.info 'Recording...'
       @process
     end
