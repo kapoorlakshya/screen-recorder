@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email                 = ['kapoorlakshya@gmail.com']
   spec.homepage              = 'http://github.com/kapoorlakshya/screen-recorder'
   spec.summary               = 'Video record your computer screen using FFmpeg.'
-  spec.description           = 'Video record your computer screen - desktop or specific window - using FFmpeg.' \
+  spec.description           = 'Video record your computer screen - desktop or specific window - using FFmpeg. ' \
                                'Primarily geared towards recording automated UI test executions ' \
                                'for debugging and documentation. Works on Windows, Linux, and macOS.'
   spec.license               = 'MIT'
