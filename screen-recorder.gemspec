@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-rspec', '~> 1.32'
   spec.add_development_dependency 'simplecov', '~> 0.16'
   spec.add_development_dependency 'watir', '~> 6.0'
-  spec.add_development_dependency 'webdrivers', '~> 4.0.0'
+  spec.add_development_dependency 'webdrivers', '~> 4.1.0'
 
   spec.add_runtime_dependency 'childprocess', '~> 1.0'
   spec.add_runtime_dependency 'os', '~> 1.0.0'
