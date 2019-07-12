@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'watir', '~> 6.0'
   spec.add_development_dependency 'webdrivers', '~> 4.0.0'
 
-  spec.add_runtime_dependency 'childprocess', '~> 1.0'
+  spec.add_runtime_dependency 'childprocess', '>= 1', '< 3'
   spec.add_runtime_dependency 'os', '~> 1.0.0'
   spec.add_runtime_dependency 'streamio-ffmpeg', '~> 3.0'
 end
