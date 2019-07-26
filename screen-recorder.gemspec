@@ -10,9 +10,9 @@ Gem::Specification.new do |spec|
   spec.email                 = ['kapoorlakshya@gmail.com']
   spec.homepage              = 'http://github.com/kapoorlakshya/screen-recorder'
   spec.summary               = 'Video record your computer screen using FFmpeg.'
-  spec.description           = 'Video record your computer screen - desktop or specific window - using FFmpeg. ' \
-                               'Primarily geared towards recording automated UI test executions ' \
-                               'for debugging and documentation. Works on Windows, Linux, and macOS.'
+  spec.description           = 'Video record your computer screen - desktop or specific window - using FFmpeg ' \
+                               'on Windows, Linux, and macOS. Primarily geared towards recording automated UI ' \
+                               '(Selenium) test executions for debugging and documentation.'
   spec.license               = 'MIT'
   # noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
   spec.metadata              = {
@@ -31,12 +31,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'ffi' # For selenium_webdriver on Windows
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '~> 0.59'
+  spec.add_development_dependency 'rubocop', '~> 0.73'
   spec.add_development_dependency 'rubocop-performance', '~> 1.1.0'
   spec.add_development_dependency 'rubocop-rspec', '~> 1.32'
   spec.add_development_dependency 'simplecov', '~> 0.16'
   spec.add_development_dependency 'watir', '~> 6.0'
-  spec.add_development_dependency 'webdrivers', '~> 4.0.0'
+  spec.add_development_dependency 'webdrivers', '~> 4.0'
 
   spec.add_runtime_dependency 'childprocess', '~> 1.0'
   spec.add_runtime_dependency 'os', '~> 1.0.0'
