@@ -23,6 +23,7 @@ matrix:
       env: RAKE_TASK=spec JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
     - rvm: 2.6.3
       os: osx
+      osx_image: xcode11
       env: RAKE_TASK=spec
 addons:
   firefox: latest
