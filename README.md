@@ -9,8 +9,8 @@
 
 A Ruby gem to video record your computer screen - desktop or specific
 window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
-geared towards recording automated UI test executions for debugging
-and documentation.
+geared towards recording automated UI (Selenium) test executions for 
+debugging and documentation.
 
 #### Demo
 [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem).
@@ -105,10 +105,10 @@ A helper method is available to fetch the title of the active window
 for the given process name.
 
 ```ruby
-ScreenRecorder::Titles.fetch('firefox') # Name of exe
+ScreenRecorder::Window.fetch_title('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 
-ScreenRecorder::Titles.fetch('chrome')
+ScreenRecorder::Window.fetch_title('chrome')
 #=> ["New Tab - Google Chrome"]
 ```
 
@@ -215,7 +215,8 @@ macOS compatibility in v1.1.0.
 
 [![Streamio](http://d253c4ja9jigvu.cloudfront.net/assets/small-logo.png)](http://streamio.com)
 
-This gem is based on the [streamio-ffmpeg](https://github.com/streamio/streamio-ffmpeg) gem.
+This gem relies on the [streamio-ffmpeg](https://github.com/streamio/streamio-ffmpeg) 
+gem to extract metadata from the output file.
 <br />
 <br />
 
