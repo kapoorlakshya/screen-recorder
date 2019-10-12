@@ -19,8 +19,8 @@ module ScreenRecorder
     #
     def start
       ScreenRecorder.logger.debug 'Starting recorder...'
-      @video     = nil # New file
-      @process   = start_ffmpeg
+      @video   = nil # New file
+      @process = start_ffmpeg
       ScreenRecorder.logger.info 'Recording...'
       @process
     end
@@ -33,7 +33,7 @@ module ScreenRecorder
       stop_ffmpeg
       ScreenRecorder.logger.debug 'Stopped ffmpeg.'
       ScreenRecorder.logger.info 'Recording complete.'
-      @video = FFMPEG::Movie.new(options.output)
+      @video = prepare_video
     end
 
     #
@@ -84,6 +84,27 @@ module ScreenRecorder
       ScreenRecorder.logger.error 'FFmpeg failed to stop. Force killing it...'
       @process.stop # Tries increasingly harsher methods to kill the process.
       ScreenRecorder.logger.error "Check '#{@options.log}' for more information."
+    end
+
+    #
+    # Runs ffprobe on the output video file and returns
+    # a FFMPEG::Movie object.
+    #
+    def prepare_video
+      max_attempts  = 3
+      attempts_made = 0
+      delay         = 1.0
+
+      begin # Fixes #79
+        ScreenRecorder.logger.info 'Running ffprobe to prepare video (output) file.'
+        FFMPEG::Movie.new(options.output)
+      rescue Errno::EAGAIN, Errno::EACCES
+        attempts_made += 1
+        ScreenRecorder.logger.error "Failed to run ffprobe. Retrying... (#{attempts_made}/#{max_attempts})"
+        sleep(delay)
+        retry if attempts_made < max_attempts
+        raise
+      end
     end
 
     #
