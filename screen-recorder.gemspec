@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
                                'on Windows, Linux, and macOS. Primarily geared towards recording automated UI ' \
                                '(Selenium) test executions for debugging and documentation.'
   spec.license               = 'MIT'
-  # noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
+  # noinspection RubyStringKeysInHashInspection
   spec.metadata              = {
     'changelog_uri' => 'https://github.com/kapoorlakshya/screen-recorder/blob/master/CHANGELOG.md',
     'source_code_uri' => 'https://github.com/kapoorlakshya/screen-recorder/',
@@ -28,17 +28,17 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'ffi' # For selenium_webdriver on Windows
-  spec.add_development_dependency 'rake', '~> 12.0'
+  spec.add_development_dependency 'ffi' # For selenium-webdriver on Windows
+  spec.add_development_dependency 'rake', '>= 12.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '~> 0.73'
-  spec.add_development_dependency 'rubocop-performance', '~> 1.1.0'
-  spec.add_development_dependency 'rubocop-rspec', '~> 1.32'
+  spec.add_development_dependency 'rubocop', '~> 0.75'
+  spec.add_development_dependency 'rubocop-performance', '~> 1.0'
+  spec.add_development_dependency 'rubocop-rspec', '~> 1.0'
   spec.add_development_dependency 'simplecov', '~> 0.16'
   spec.add_development_dependency 'watir', '~> 6.0'
   spec.add_development_dependency 'webdrivers', '~> 4.0'
 
-  spec.add_runtime_dependency 'childprocess', '~> 1.0'
+  spec.add_runtime_dependency 'childprocess', '~> 3.0'
   spec.add_runtime_dependency 'os', '~> 1.0.0'
   spec.add_runtime_dependency 'streamio-ffmpeg', '~> 3.0'
 end
