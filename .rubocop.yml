@@ -32,6 +32,9 @@ Layout/AlignParameters:
 Layout/IndentFirstHashElement:
   Enabled: true
 
+Layout/TrailingBlankLines:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 120
 
@@ -69,7 +72,4 @@ Style/CommentedKeyword:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
-  Enabled: false
-
-TrailingBlankLines:
   Enabled: false
