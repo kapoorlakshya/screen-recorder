@@ -23,7 +23,7 @@ Works on Windows, Linux, and macOS. Requires Ruby 2.0+ or JRuby 9.2+.
 
 ##### 1. Setup FFmpeg
 
-Linux and macOS instructions are [here](https://www.ffmpeg.org/download.html). 
+Linux and macOS instructions are [here](https://trac.ffmpeg.org/wiki/CompilationGuide). 
 
 For Microsoft Windows, download the *libx264* enabled binary from [here](https://ffmpeg.zeranoe.com/builds/).
 Once downloaded, add location of the `ffmpeg/bin` folder to the `PATH` 
@@ -38,13 +38,13 @@ Next, add these lines to your application's Gemfile:
 
 ```ruby
 gem 'ffi' # Windows only
-gem 'screen-recorder'
+gem 'screen-recorder', '~> 1.0'
 ```
 
 The [`ffi`](https://github.com/ffi/ffi) gem is used by the 
 [`childprocess`](https://github.com/enkessler/childprocess) gem on 
 Windows, but it does not explicitly require it. More information 
-on this [here](https://github.com/enkessler/childprocess/issues/150).
+on this [here](https://github.com/enkessler/childprocess/issues/160).
 
 
 And then execute:
