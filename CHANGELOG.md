@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### 1.3.1 (2019-10-20)
+* Reattempt `ffprobe` execution up to times if the first try raises `Errno::EAGAIN`.
+Hopefully fixes [#79](https://github.com/kapoorlakshya/screen-recorder/issues/79).
+
 ### 1.3.0 (2019-07-26)
 * Support JRuby 9.2+ ([#58](https://github.com/kapoorlakshya/screen-recorder/issues/58))
 * Add `ScreenRecorder::Window.fetch_title` as an alias for `ScreenRecorder::Titles.fetch`.
