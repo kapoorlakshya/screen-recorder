@@ -17,22 +17,22 @@ Layout/EndOfLine:
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented_relative_to_receiver
 
-Layout/AlignArray:
+Layout/ArrayAlignment:
   Enabled: true
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: true
   EnforcedHashRocketStyle: key
   EnforcedColonStyle: table
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   Enabled: true
   EnforcedStyle: with_first_parameter
 
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   Enabled: true
 
-Layout/TrailingBlankLines:
+Layout/TrailingEmptyLines:
   Enabled: false
 
 Metrics/LineLength:
