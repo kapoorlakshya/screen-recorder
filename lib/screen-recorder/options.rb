@@ -75,8 +75,8 @@ module ScreenRecorder
       vals = "-f #{capture_device} "
       vals << parse_advanced(advanced_input)
       vals << "-i #{input} "
-      vals << parse_advanced(advanced_output)
       vals << parse_advanced(advanced)
+      vals << parse_advanced(advanced_output)
       vals << output
     end
 
