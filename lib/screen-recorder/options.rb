@@ -143,11 +143,11 @@ module ScreenRecorder
     # Returns input capture device based on user given value or the current OS.
     #
     def determine_capture_device
-      # User given capture device or format
+      # User given capture device or format from advanced configs Hash
       # @see https://www.ffmpeg.org/ffmpeg.html#Main-options
-      return advanced[:f] if advanced[:f]
+      return advanced_input[:f] if advanced_input[:f]
 
-      return advanced[:fmt] if advanced[:fmt]
+      return advanced_input[:fmt] if advanced_input[:fmt]
 
       os_specific_capture_device
     end
