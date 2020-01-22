@@ -112,6 +112,36 @@ ScreenRecorder::Window.fetch_title('chrome')
 #=> ["New Tab - Google Chrome"]
 ```
 
+#### Capture Audio
+
+As of version 1.4.0, you can capture system audio by providing the following `advanced` configurations:
+
+```ruby
+# Linux
+advanced = { f: 'alsa', ac: 2, i: 'hw:0'} # Using ALSA
+# Or using PulseAudio 
+advanced = { 'f': 'pulse', 'ac': 2, 'i': 'default' } # Records default sound output device 
+
+# macOS
+advanced = { input: { i: '1:1' } } # -i video:audio input device ID
+
+# Windows
+advanced = { f: 'dshow', i: 'audio="Microphone (High Definition Aud"' }
+```
+
+You can retrieve a list of audio devices for your OS by running these commands:
+
+```
+# Linux
+$ arecord -L # See https://trac.ffmpeg.org/wiki/Capture/ALSA
+
+# macOS
+$ ffmpeg -f avfoundation -list_devices true -i ""
+
+# Windows
+> ffmpeg -list_devices true -f dshow -i dummy
+```
+
 #### Output
 
 Once the recorder is stopped, you can view the video metadata or transcode
