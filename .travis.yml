@@ -14,10 +14,10 @@ matrix:
     - rvm: 2.4.6
       dist: xenial
       env: RAKE_TASK=rubocop
-    - rvm: 2.6.3
+    - rvm: 2.7.0
       dist: xenial
       env: RAKE_TASK=spec REPORT_COVERAGE=true
-    - rvm: jruby-9.2.7.0
+    - rvm: jruby-9.2.9.0
       dist: xenial
       jdk: openjdk8
       env: RAKE_TASK=spec JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"

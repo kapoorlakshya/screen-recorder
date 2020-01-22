@@ -15,7 +15,7 @@ environment:
       RUBY_BIN: ruby
       RAKE_TASK: spec
       SCRIPT_CONTEXT: bundle exec
-    - RUBY_VERSION: jruby-9.2.7.0
+    - RUBY_VERSION: jruby-9.2.9.0
       RUBY_BIN: jruby
       RAKE_TASK: spec
       SCRIPT_CONTEXT: jruby -G -S
@@ -27,13 +27,13 @@ install:
       }
   - choco install ffmpeg
   - set PATH=C:\%RUBY_VERSION%\bin;%PATH%
-  - '%RUBY_BIN% -S gem update --system'
-  - '%RUBY_BIN% -S gem install bundler'
-  - '%RUBY_BIN% -S bundle install'
+  - "%RUBY_BIN% -S gem update --system"
+  - "%RUBY_BIN% -S gem install bundler"
+  - "%RUBY_BIN% -S bundle install"
 before_test:
   - ffmpeg -version
-  - '%RUBY_BIN% -v'
-  - '%RUBY_BIN% -S gem -v'
-  - '%RUBY_BIN% -S bundle -v'
+  - "%RUBY_BIN% -v"
+  - "%RUBY_BIN% -S gem -v"
+  - "%RUBY_BIN% -S bundle -v"
 test_script:
-  - '%SCRIPT_CONTEXT% rake %RAKE_TASK%'
+  - "%SCRIPT_CONTEXT% rake %RAKE_TASK%"
