@@ -74,7 +74,7 @@ module ScreenRecorder
     def parsed
       vals = "-f #{capture_device} "
       vals << parse_advanced(advanced_input)
-      vals << "-i #{input} "
+      vals << "-i #{input} " unless advanced_input[:i] # Input provided by user
       vals << parse_advanced(advanced)
       vals << parse_advanced(advanced_output)
       vals << output
