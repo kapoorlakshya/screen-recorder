@@ -12,14 +12,19 @@ module ScreenRecorder
   #   ScreenRecorder.ffmpeg_binary = 'C:\ffmpeg.exe'
   #
   def self.ffmpeg_binary=(bin)
+    ScreenRecorder.logger.debug 'Setting ffmpeg path...'
     FFMPEG.ffmpeg_binary = bin
+    ScreenRecorder.logger.debug "ffmpeg path set: #{bin}"
+    ScreenRecorder.ffmpeg_binary
   end
 
   #
-  # Returns path to ffmpeg binary
+  # Returns path to ffmpeg binary or raises DependencyNotFound
   #
   def self.ffmpeg_binary
     FFMPEG.ffmpeg_binary
+  rescue Errno::ENOENT # Raised when binary is not set in project or found in ENV
+    raise Errors::DependencyNotFound
   end
 
   #

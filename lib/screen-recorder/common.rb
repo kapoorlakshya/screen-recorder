@@ -9,6 +9,8 @@ module ScreenRecorder
     attr_reader :options, :video
 
     def initialize(input:, output:, advanced: {})
+      raise Errors::DependencyNotFound unless ffmpeg_exists?
+
       @options = Options.new(input: input, output: output, advanced: advanced)
       @video   = nil
       @process = nil
@@ -54,8 +56,6 @@ module ScreenRecorder
     # the given options.
     #
     def start_ffmpeg
-      raise Errors::DependencyNotFound, 'ffmpeg binary not found.' unless ffmpeg_exists?
-
       ScreenRecorder.logger.debug "Command: #{command}"
       process           = build_command
       @log_file         = File.new(options.log, 'w+')
@@ -120,16 +120,11 @@ module ScreenRecorder
     # Returns true if ffmpeg binary is found.
     #
     def ffmpeg_exists?
-      return !`which ffmpeg`.empty? if OS.linux? # "" if not found
+      return true if FFMPEG.ffmpeg_binary
 
-      return !`where ffmpeg`.empty? if OS.windows?
-
-      # If the user does not use ScreenRecorder.ffmpeg_binary=() to set the binary path,
-      # ScreenRecorder.ffmpeg_binary returns 'ffmpeg' assuming it must be in ENV. However,
-      # if the above two checks fail, it is not in the ENV either.
-      return false if ScreenRecorder.ffmpeg_binary == 'ffmpeg'
-
-      true
+      false
+    rescue Errno::ENOENT # Raised when binary is not set in project or found in ENV
+      false
     end
 
     #
