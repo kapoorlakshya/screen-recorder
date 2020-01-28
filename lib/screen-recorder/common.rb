@@ -39,12 +39,26 @@ module ScreenRecorder
     end
 
     #
+    # Takes a screenshot in the current context (input) - desktop or current window
+    #
+    def screenshot(filename)
+      process   = execute_command(screenshot_cmd(filename))
+      exit_code = wait_for_process_exit(process) # 0 (success) or 1 (fail)
+      if exit_code.zero?
+        ScreenRecorder.logger.info "Screenshot: #{filename}"
+        return filename
+      end
+      ScreenRecorder.logger.error 'Failed to take a screenshot.'
+      nil
+    end
+
+    #
     # Discards the recorded file. Useful in automated testing
     # when a test passes and the recorded file is no longer
     # needed.
     #
     def discard
-      FileUtils.rm options.output
+      File.delete options.output
     end
 
     alias delete discard
@@ -56,15 +70,9 @@ module ScreenRecorder
     # the given options.
     #
     def start_ffmpeg
-      ScreenRecorder.logger.debug "Command: #{command}"
-      process           = build_command
-      @log_file         = File.new(options.log, 'w+')
-      process.io.stdout = process.io.stderr = @log_file
-      @log_file.sync    = true
-      process.duplex    = true
-      process.start
-      sleep(1.5) # Takes ~1.5s on average to initialize
-      # Stopped because of an error
+      process = execute_command(ffmpeg_command, options.log)
+      sleep(1.5) # Takes ~1.5s to initialize ffmpeg
+      # Check if it exited unexpectedly
       raise FFMPEG::Error, "Failed to start ffmpeg. Reason: #{lines_from_log(:last, 2)}" if process.exited?
 
       process
@@ -78,12 +86,7 @@ module ScreenRecorder
       @process.io.stdin.puts 'q' # Gracefully exit ffmpeg
       @process.io.stdin.close
       @log_file.close
-      @process.poll_for_exit(PROCESS_TIMEOUT)
-      @process.exit_code
-    rescue ChildProcess::TimeoutError
-      ScreenRecorder.logger.error 'FFmpeg failed to stop. Force killing it...'
-      @process.stop # Tries increasingly harsher methods to kill the process.
-      ScreenRecorder.logger.error "Check '#{@options.log}' for more information."
+      wait_for_process_exit(@process)
     end
 
     #
@@ -107,13 +110,24 @@ module ScreenRecorder
       end
     end
 
+    def ffmpeg_bin
+      "#{ScreenRecorder.ffmpeg_binary} -y"
+    end
+
     #
     # Generates the command line arguments based on the given
     # options.
     #
-    def command
-      cmd = "#{ScreenRecorder.ffmpeg_binary} -y "
-      cmd << @options.parsed
+    def ffmpeg_command
+      "#{ffmpeg_bin} #{@options.parsed}"
+    end
+
+    #
+    # Parameters to capture a single frame
+    #
+    def screenshot_cmd(filename)
+      # -f overwrites existing file
+      "#{ffmpeg_bin} -f #{options.capture_device} -i #{options.input} -framerate 1 -frames:v 1 #{filename}"
     end
 
     #
@@ -141,15 +155,47 @@ module ScreenRecorder
     end
 
     #
-    # Returns OS specific arguments for Childprocess.build
+    # Executes the given command and outputs to the
+    # optional logfile
     #
-    def build_command
-      ChildProcess.posix_spawn = true # Support JRuby.
-      if OS.windows?
-        ChildProcess.build('cmd.exe', '/c', command)
-      else
-        ChildProcess.build('sh', '-c', command)
+    def execute_command(cmd, logfile = nil)
+      ScreenRecorder.logger.debug "Executing command: #{cmd}"
+      process        = new_process(cmd)
+      process.duplex = true
+      if logfile
+        @log_file         = File.new(logfile, 'w+')
+        process.io.stdout = process.io.stderr = @log_file
+        @log_file.sync    = true
       end
+      process.start
+      process
+    end
+
+    #
+    # Calls Childprocess.new with OS specific arguments
+    # to start the given process.
+    #
+    def new_process(process)
+      ChildProcess.posix_spawn = true if RUBY_PLATFORM == 'java' # Support JRuby.
+      if OS.windows?
+        ChildProcess.new('cmd.exe', '/c', process)
+      else
+        ChildProcess.new('sh', '-c', process)
+      end
+    end
+
+    #
+    # Waits for given process to exit.
+    # Forcefully kills the process if it does not
+    # exit within 5 seconds.
+    #
+    def wait_for_process_exit(process)
+      process.poll_for_exit(PROCESS_TIMEOUT)
+      process.exit_code
+    rescue ChildProcess::TimeoutError
+      ScreenRecorder.logger.error 'ffmpeg failed to stop. Force killing it...'
+      process.stop # Tries increasingly harsher methods to kill the process.
+      ScreenRecorder.logger.error 'Forcefully killed ffmpeg.'
     end
   end
 end

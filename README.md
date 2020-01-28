@@ -7,13 +7,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/maintainability)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/test_coverage)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/test_coverage)
 
-A Ruby gem to video record your computer screen - desktop or specific
+A Ruby gem to video record or take screenshots of your computer screen - desktop or specific
 window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
 geared towards recording automated UI (Selenium) test executions for 
 debugging and documentation.
 
 #### Demo
-[https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem).
+[https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem)
 
 ## Compatibility
 
@@ -96,7 +96,7 @@ browser   = Watir::Browser.new :firefox
 @recorder.stop
 browser.quit 
 ```
-This mode has limited capabilities. Read more about it in the wiki 
+This mode has a few limitations which are listed in the wiki 
 [here](https://github.com/kapoorlakshya/screen-recorder/wiki/Window-Capture-Limitations).
 
 ##### Fetch Title
@@ -114,7 +114,7 @@ ScreenRecorder::Window.fetch_title('chrome')
 
 #### Capture Audio
 
-As of version 1.4.0, you can capture system audio by providing the following `advanced` configurations:
+Provide the following `advanced` configurations to capture audio:
 
 ```ruby
 # Linux
@@ -129,7 +129,7 @@ advanced = { input: { i: '1:1' } } # -i video:audio input device ID
 advanced = { f: 'dshow', i: 'audio="Microphone (High Definition Aud"' }
 ```
 
-You can retrieve a list of audio devices for your OS by running these commands:
+You can retrieve a list of audio devices by running these commands:
 
 ```
 # Linux
@@ -142,7 +142,32 @@ $ ffmpeg -f avfoundation -list_devices true -i ""
 > ffmpeg -list_devices true -f dshow -i dummy
 ```
 
-#### Output
+#### Screenshots
+
+Screenshots can be captured at any point after initializing the recorder:
+
+```ruby
+# Desktop
+@recorder = ScreenRecorder::Desktop.new(output: 'recording.mkv')
+@recorder.screenshot('before-recording.png')
+@recorder.start
+@recorder.screenshot('during-recording.png')
+@recorder.stop
+@recorder.screenshot('after-recording.png')
+
+# Window (Microsoft Windows only)
+browser   = Watir::Browser.new :chrome, options: { args: ['--disable-gpu'] } # Hardware acceleration must be disabled
+browser.goto('watir.com')
+window_title = ScreenRecorder::Titles.fetch('chrome').first
+@recorder = ScreenRecorder::Window.new(title: window_title, output: 'recording.mkv')
+@recorder.screenshot('before-recording.png')
+@recorder.start
+@recorder.screenshot('during-recording.png')
+@recorder.stop
+@recorder.screenshot('after-recording.png')
+browser.quit 
+```
+#### Video Output
 
 Once the recorder is stopped, you can view the video metadata or transcode
 it if desired.

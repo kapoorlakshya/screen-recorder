@@ -21,7 +21,7 @@ module ScreenRecorder
       #   ScreenRecorder::Window.fetch_title('chrome')
       #   #=> ["New Tab - Google Chrome"]
       def fetch_title(process_name)
-        ScreenRecorder.logger.debug "Retrieving window title for: #{process_name}"
+        ScreenRecorder.logger.debug "Retrieving window title from '#{process_name}'"
         window_title_for process_name
       end
 
@@ -43,6 +43,8 @@ module ScreenRecorder
         raise Errors::ApplicationNotFound, "No open windows found for: #{process_name}.exe" if titles.empty?
 
         warn_on_mismatch(titles, process_name)
+        ScreenRecorder.logger.debug "Retrieved titles: #{titles}"
+
         titles
       end
 

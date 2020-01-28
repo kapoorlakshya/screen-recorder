@@ -21,6 +21,9 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  # Set Selenium webdrivers install folder
+  config.before(:all) { Webdrivers.install_dir = 'webdrivers_bin' }
+
   #
   # Print error from ffmpeg log on test failure
   #
@@ -38,8 +41,8 @@ RSpec.configure do |config|
     #
     # Clean up
     #
-    delete_file test_output
-    delete_file test_log_file
+    # delete_file test_output
+    # delete_file test_log_file
   end
 end
 
@@ -114,5 +117,5 @@ end
 # Deletes given file as part of cleanup.
 #
 def delete_file(file)
-  FileUtils.rm file if File.exist? file
+  File.delete file if File.exist? file
 end

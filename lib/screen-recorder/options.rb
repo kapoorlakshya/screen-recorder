@@ -149,13 +149,13 @@ module ScreenRecorder
 
       return advanced_input[:fmt] if advanced_input[:fmt]
 
-      os_specific_capture_device
+      default_capture_device
     end
 
     #
     # Returns input capture device for current OS.
     #
-    def os_specific_capture_device
+    def default_capture_device
       return 'gdigrab' if OS.windows?
 
       return 'x11grab' if OS.linux?
