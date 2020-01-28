@@ -2,6 +2,14 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### 1.4.0 (2019-10-27)
+* Users can now select a ffmpeg [capture device](https://ffmpeg.org/ffmpeg-devices.html) from advanced -> input.
+* Fix a bug where some advanced parameters were not parsed correctly.
+* Add support for audio stream capture ([#15](https://github.com/kapoorlakshya/screen-recorder/issues/15))
+* Fix [#84](https://github.com/kapoorlakshya/screen-recorder/issues/84) where the user given ffmpeg binary path was never used.
+* Relax childprocess gem version requirement to roughly match requirements in `selenium-webdriver` gem ([#85](https://github.com/kapoorlakshya/screen-recorder/issues/85))
+* Add support for capturing screenshots in both desktop and window modes ([#44](https://github.com/kapoorlakshya/screen-recorder/issues/44)).
+
 ### 1.3.1 (2019-10-20)
 * Reattempt `ffprobe` execution up to times if the first try raises `Errno::EAGAIN`.
 Hopefully fixes [#79](https://github.com/kapoorlakshya/screen-recorder/issues/79).
