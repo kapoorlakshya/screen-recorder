@@ -17,7 +17,8 @@ Gem::Specification.new do |spec|
   # noinspection RubyStringKeysInHashInspection
   spec.metadata              = {
     'changelog_uri' => 'https://github.com/kapoorlakshya/screen-recorder/blob/master/CHANGELOG.md',
-    'source_code_uri' => 'https://github.com/kapoorlakshya/screen-recorder/',
+    'source_code_uri' => "https://github.com/kapoorlakshya/screen-recorder/tree/v#{ScreenRecorder::VERSION}",
+    'documentation_uri' => "https://www.rubydoc.info/gems/screen-recorder/#{ScreenRecorder::VERSION}",
     'bug_tracker_uri' => 'https://github.com/kapoorlakshya/screen-recorder/issues',
     'wiki_uri' => 'https://github.com/kapoorlakshya/screen-recorder/wiki'
   }
