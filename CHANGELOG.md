@@ -2,7 +2,7 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-### 1.4.0 (2019-10-27)
+### 1.4.0 (2020-01-27)
 * Users can now select a ffmpeg [capture device](https://ffmpeg.org/ffmpeg-devices.html) from advanced -> input.
 * Fix a bug where some advanced parameters were not parsed correctly.
 * Add support for audio stream capture ([#15](https://github.com/kapoorlakshya/screen-recorder/issues/15))
