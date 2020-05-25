@@ -38,6 +38,24 @@ Layout/TrailingEmptyLines:
 Layout/LineLength:
   Max: 120
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Layout/SpaceAroundOperators:
+  Enabled: true
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
 Metrics/MethodLength:
   Max: 20
 
@@ -72,4 +90,19 @@ Style/CommentedKeyword:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/ExponentialNotation:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: false
+
+Style/HashTransformValues:
+  Enabled: false
+
+Style/SlicingWithRange:
   Enabled: false
