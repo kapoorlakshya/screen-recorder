@@ -9,10 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors               = ['Lakshya Kapoor']
   spec.email                 = ['kapoorlakshya@gmail.com']
   spec.homepage              = 'http://github.com/kapoorlakshya/screen-recorder'
-  spec.summary               = 'Video record your computer screen using FFmpeg.'
-  spec.description           = 'Video record your computer screen - desktop or specific window - using FFmpeg ' \
-                               'on Windows, Linux, and macOS. Primarily geared towards recording automated UI ' \
-                               '(Selenium) test executions for debugging and documentation.'
+  spec.summary               = 'Video record and take screenshots your computer screen using FFmpeg.'
+  spec.description           = 'A Ruby gem to video record and take screenshots of your desktop or ' \
+                                  ' specific application window. Works on Windows, Linux, and macOS.'
   spec.license               = 'MIT'
   # noinspection RubyStringKeysInHashInspection
   spec.metadata              = {
