@@ -1,21 +1,27 @@
 build: off
 cache:
   - vendor/bundle
+image:
+  - Visual Studio 2019
 environment:
   matrix:
-    - RUBY_VERSION: Ruby24
+    - RUBY_VERSION: Ruby24-x64
       RUBY_BIN: ruby
       RAKE_TASK: spec
       SCRIPT_CONTEXT: bundle exec
-    - RUBY_VERSION: Ruby24
+    - RUBY_VERSION: Ruby24-x64
       RUBY_BIN: ruby
       RAKE_TASK: rubocop
       SCRIPT_CONTEXT: bundle exec
-    - RUBY_VERSION: Ruby26
+    - RUBY_VERSION: Ruby25-x64
       RUBY_BIN: ruby
       RAKE_TASK: spec
       SCRIPT_CONTEXT: bundle exec
-    - RUBY_VERSION: jruby-9.2.9.0
+    - RUBY_VERSION: Ruby26-x64
+      RUBY_BIN: ruby
+      RAKE_TASK: spec
+      SCRIPT_CONTEXT: bundle exec
+    - RUBY_VERSION: jruby-9.2.11.1
       RUBY_BIN: jruby
       RAKE_TASK: spec
       SCRIPT_CONTEXT: jruby -G -S
@@ -27,8 +33,8 @@ install:
       }
   - choco install ffmpeg
   - set PATH=C:\%RUBY_VERSION%\bin;%PATH%
-  - "%RUBY_BIN% -S gem update --system"
-  - "%RUBY_BIN% -S gem install bundler"
+  - "%RUBY_BIN% -S gem update --system -N"
+  - "%RUBY_BIN% -S gem install bundler -N"
   - "%RUBY_BIN% -S bundle install"
 before_test:
   - ffmpeg -version

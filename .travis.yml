@@ -8,23 +8,26 @@ env:
     - DISPLAY=":0"
 matrix:
   include:
-    - rvm: 2.4.6
-      dist: xenial
+    - rvm: 2.4
+      dist: bionic
       env: RAKE_TASK=spec
-    - rvm: 2.4.6
-      dist: xenial
-      env: RAKE_TASK=rubocop
-    - rvm: 2.7.0
-      dist: xenial
+    - rvm: 2.5
+      dist: bionic
+      env: RAKE_TASK=spec
+    - rvm: 2.6
+      dist: bionic
       env: RAKE_TASK=spec REPORT_COVERAGE=true
-    - rvm: jruby-9.2.9.0
-      dist: xenial
-      jdk: openjdk8
-      env: RAKE_TASK=spec JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
-    - rvm: 2.6.3
+    - rvm: 2.7
+      dist: bionic
+      env: RAKE_TASK=rubocop
+    - rvm: 2.7
       os: osx
       osx_image: xcode11
       env: RAKE_TASK=spec
+    - rvm: jruby-9.2.11.1
+      dist: bionic
+      jdk: openjdk8
+      env: RAKE_TASK=spec JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom"
 addons:
   firefox: latest
   chrome: stable
@@ -34,6 +37,9 @@ addons:
   homebrew:
     packages:
       - ffmpeg
+before_install:
+  - gem update --system -N
+  - gem install bundler -N
 before_script:
   - bash support/start_xvfb.sh
   - bash support/start_test_reporter.sh
