@@ -27,9 +27,8 @@ Linux and macOS instructions are [here](https://trac.ffmpeg.org/wiki/Compilation
 > macOS: Follow [these steps](https://github.com/kapoorlakshya/screen-recorder/issues/88#issuecomment-629139032) to avoid
 > issues related to Privacy settings.
 
-For Microsoft Windows, download the *libx264* enabled binary from [here](https://ffmpeg.zeranoe.com/builds/).
-Once downloaded, add location of the `ffmpeg/bin` folder to the `PATH` 
-environment variable ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
+For Microsoft Windows, download the binary from [here](https://www.videohelp.com/software/ffmpeg). Once downloaded, 
+add location of the `ffmpeg/bin` folder to the `PATH`  environment variable ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
 
 Alternatively, you can point to the binary file using 
 `ScreenRecorder.ffmpeg_binary = '/path/to/ffmpeg'` in your project.
