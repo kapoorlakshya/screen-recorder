@@ -9,6 +9,11 @@ RSpec.describe ScreenRecorder::Common do
       expect(`#{ScreenRecorder.ffmpeg_binary} -version`).to include('ffmpeg version')
     end
 
+    it 'can find the ffprobe binary' do
+      # noinspection RubyResolve
+      expect(`#{ScreenRecorder.ffprobe_binary} -version`).to include('ffprobe version')
+    end
+
     it 'can defaults the logging level to :ERROR' do
       ScreenRecorder.logger.level = :ERROR
       expect(ScreenRecorder.logger.level).to eq(3)
