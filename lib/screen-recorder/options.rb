@@ -6,17 +6,17 @@ module ScreenRecorder
   class Options
     attr_reader :all
 
-    DEFAULT_LOG_FILE          = 'ffmpeg.log'.freeze
-    DEFAULT_FPS               = 15.0
+    DEFAULT_LOG_FILE = 'ffmpeg.log'.freeze
+    DEFAULT_FPS = 15.0
     DEFAULT_MAC_INPUT_PIX_FMT = 'uyvy422'.freeze # For avfoundation
-    DEFAULT_PIX_FMT           = 'yuv420p'.freeze
-    YUV420P_SCALING           = '"scale=trunc(iw/2)*2:trunc(ih/2)*2"'.freeze
+    DEFAULT_PIX_FMT = 'yuv420p'.freeze
+    YUV420P_SCALING = '"scale=trunc(iw/2)*2:trunc(ih/2)*2"'.freeze
 
     def initialize(options)
       # @todo Consider using OpenStruct
-      @all                 = verify_options options
-      advanced[:input]     = default_advanced_input.merge(advanced_input)
-      advanced[:output]    = default_advanced_output.merge(advanced_output)
+      @all = verify_options options
+      advanced[:input] = default_advanced_input.merge(advanced_input)
+      advanced[:output] = default_advanced_output.merge(advanced_output)
       advanced[:log] ||= DEFAULT_LOG_FILE
 
       # Fix for using yuv420p pixel format for output
@@ -91,7 +91,7 @@ module ScreenRecorder
       TypeChecker.check options, Hash
       TypeChecker.check options[:advanced], Hash if options[:advanced]
       missing_options = required_options.select { |req| options[req].nil? }
-      err             = "Required options are missing: #{missing_options}"
+      err = "Required options are missing: #{missing_options}"
       raise(ArgumentError, err) unless missing_options.empty?
 
       options
@@ -131,12 +131,13 @@ module ScreenRecorder
     def parse_advanced(opts)
       # @todo Replace arr with opts.each_with_object([])
       arr = []
+      rejects = %i[input output log]
       # Do not parse input/output and log as they're placed separately in #parsed
-      opts.reject { |k, _| %i[input output log].include? k }
+      opts.reject { |k, _| rejects.include? k }
         .each do |k, v|
         arr.push "-#{k} #{v}" unless v.nil? # Ignore blank params
       end
-      arr.join(' ') + ' '
+      "#{arr.join(' ')} "
     end
 
     #

@@ -2,14 +2,14 @@
 module ScreenRecorder
   # @since 1.0.0-beta11
   class Desktop < Common
-    DEFAULT_INPUT_WIN   = 'desktop'.freeze
+    DEFAULT_INPUT_WIN = 'desktop'.freeze
     DEFAULT_INPUT_LINUX = ':0'.freeze
-    DEFAULT_INPUT_MAC   = '1'.freeze
+    DEFAULT_INPUT_MAC = '1'.freeze
 
     #
     # Desktop recording mode.
     #
-    def initialize(input: input_by_os, output:, advanced: {})
+    def initialize(output:, input: input_by_os, advanced: {})
       super(input: determine_input(input), output: output, advanced: advanced)
     end
 

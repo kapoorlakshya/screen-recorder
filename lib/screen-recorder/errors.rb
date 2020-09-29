@@ -11,7 +11,7 @@ module ScreenRecorder
     # @since 1.0.0-beta5
     class DependencyNotFound < StandardError
       def message
-        'ffmpeg binary path not set or not found in ENV.'
+        'ffmpeg/ffprobe binary path not set or not found in ENV.'
       end
     end
   end

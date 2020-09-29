@@ -62,9 +62,9 @@ module ScreenRecorder
   def self.logger
     return @logger if @logger
 
-    logger           = Logger.new(STDOUT)
-    logger.level     = Logger::ERROR
-    logger.progname  = 'ScreenRecorder'
+    logger = Logger.new($stdout)
+    logger.level = Logger::ERROR
+    logger.progname = 'ScreenRecorder'
     logger.formatter = proc do |severity, time, progname, msg|
       "#{time.strftime('%F %T')} #{progname} - #{severity} - #{msg}\n"
     end
