@@ -28,6 +28,28 @@ module ScreenRecorder
   end
 
   #
+  # Uses user given ffprobe binary
+  #
+  # @example
+  #   ScreenRecorder.ffprobe_binary= = 'C:\ffprobe.exe'
+  #
+  def self.ffprobe_binary=(bin)
+    ScreenRecorder.logger.debug 'Setting ffprobe path...'
+    FFMPEG.ffprobe_binary = bin
+    ScreenRecorder.logger.debug "ffprobe path set: #{bin}"
+    ScreenRecorder.ffmpeg_binary
+  end
+
+  #
+  # Returns path to ffprobe binary or raises DependencyNotFound
+  #
+  def self.ffprobe_binary
+    FFMPEG.ffprobe_binary
+  rescue Errno::ENOENT # Raised when binary is not set in project or found in ENV
+    raise Errors::DependencyNotFound
+  end
+
+  #
   # Set external logger if you want.
   #
   def self.logger=(log)
