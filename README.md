@@ -127,7 +127,7 @@ advanced = { 'f': 'pulse', 'ac': 2, 'i': 'default' } # Records default sound out
 advanced = { input: { i: '1:1' } } # -i video:audio input device ID
 
 # Windows
-advanced = { f: 'dshow', i: 'audio="Microphone (High Definition Aud"' }
+advanced = { f: 'dshow', i: 'audio="Microphone (Realtek High Definition Audio)"' }
 ```
 
 You can retrieve a list of audio devices by running these commands:
