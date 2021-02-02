@@ -81,7 +81,7 @@ require 'screen-recorder'
 ```
 
 Linux and macOS users can optionally provide a display or input device number.
-Read more about it in the wiki [here](https://github.com/kapoorlakshya/screen-recorder/wiki/Input-Values).
+Read more about it in the wiki [here](https://github.com/kapoorlakshya/screen-recorder/wiki/Display-or-Input-Device-Selection).
 
 #### Record Application Window (Microsoft Windows only)
 
