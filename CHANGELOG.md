@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### 1.5.0 (2021-03-23)
+* Relax "os" gem version to minor level ([#97](https://github.com/kapoorlakshya/screen-recorder/pull/97)). Thanks, [hlascelles](https://github.com/hlascelles)!
+
 ### 1.4.0 (2020-01-27)
 * Users can now select a ffmpeg [capture device](https://ffmpeg.org/ffmpeg-devices.html) from advanced -> input.
 * Fix a bug where some advanced parameters were not parsed correctly.
@@ -16,7 +19,7 @@ Hopefully fixes [#79](https://github.com/kapoorlakshya/screen-recorder/issues/79
 
 ### 1.3.0 (2019-07-26)
 * Support JRuby 9.2+ ([#58](https://github.com/kapoorlakshya/screen-recorder/issues/58))
-* Add `ScreenRecorder::Window.fetch_title` as an alias for `ScreenRecorder::Titles.fetch`.
+* Add `ScreenRecorder::` as an alias for `ScreenRecorder::Window.fetch_title`.
 The `Titles` class will be removed in version 2.0.
 
 ### 1.2.0 (2019-05-12)
