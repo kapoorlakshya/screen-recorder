@@ -32,10 +32,12 @@ module ScreenRecorder
     #
     def stop
       ScreenRecorder.logger.debug 'Stopping ffmpeg...'
-      stop_ffmpeg
+      exit_code = stop_ffmpeg
+      return if exit_code == 1 # recording failed
+
       ScreenRecorder.logger.debug 'Stopped ffmpeg.'
       ScreenRecorder.logger.info 'Recording complete.'
-      @video = prepare_video
+      @video = prepare_video unless exit_code == 1
     end
 
     #
@@ -44,7 +46,7 @@ module ScreenRecorder
     def screenshot(filename)
       process   = execute_command(screenshot_cmd(filename))
       exit_code = wait_for_process_exit(process) # 0 (success) or 1 (fail)
-      if exit_code.zero?
+      if exit_code&.zero?
         ScreenRecorder.logger.info "Screenshot: #{filename}"
         return filename
       end
@@ -186,16 +188,17 @@ module ScreenRecorder
 
     #
     # Waits for given process to exit.
-    # Forcefully kills the process if it does not
-    # exit within 5 seconds.
+    # Forcefully kills the process if it does not exit within 5 seconds.
+    # Returns exit code.
     #
     def wait_for_process_exit(process)
       process.poll_for_exit(PROCESS_TIMEOUT)
-      process.exit_code
+      process.exit_code # 0
     rescue ChildProcess::TimeoutError
       ScreenRecorder.logger.error 'ffmpeg failed to stop. Force killing it...'
       process.stop # Tries increasingly harsher methods to kill the process.
-      ScreenRecorder.logger.error 'Forcefully killed ffmpeg.'
+      ScreenRecorder.logger.error 'Forcefully killed ffmpeg. Recording failed!'
+      1
     end
   end
 end

@@ -6,7 +6,7 @@ AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
   ExtraDetails: false
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
   NewCops: enable
 
 Gemspec/RequiredRubyVersion:

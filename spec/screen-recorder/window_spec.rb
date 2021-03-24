@@ -7,48 +7,39 @@ RSpec.describe ScreenRecorder::Window, if: OS.windows? do
     expect { described_class.new(output: test_output) }.to raise_error(ArgumentError)
   end
 
-  context 'when using Firefox' do
-    let!(:browser) { Watir::Browser.new :firefox }
-    let(:page_title) { ScreenRecorder::Titles.fetch('firefox').first }
-    let(:recorder) { described_class.new(title: page_title, output: test_output) }
-
-    after { browser.quit }
-
-    it 'can record a specific window with given title' do
-      browser.goto 'watir.com'
-      recorder.start
-      sleep(1.0)
-      recorder.stop
-
-      expect(recorder.options.all[:input]).to include('Watir Project')
-      expect(File).to exist(recorder.options.output)
-      expect(recorder.video.valid?).to be(true)
-    end
-  end
-
   context 'when using Chrome' do
     let!(:browser) { Watir::Browser.new :chrome, options: { args: ['--disable-gpu'] } }
-    let(:page_title) { ScreenRecorder::Titles.fetch('chrome').first }
-    let(:recorder) { described_class.new(title: page_title, output: test_output) }
+    let(:recorder) do
+      page_title = described_class.fetch_title('chrome').first
+      described_class.new(title: page_title, output: test_output)
+    end
 
-    after { browser.quit }
+    before do
+      browser.goto 'watir.com'
+      browser.wait
+    end
+
+    after { browser.close }
 
     it 'can record a specific window with given title' do
-      browser.goto 'watir.com'
       recorder.start
       sleep(1.0)
       recorder.stop
 
-      expect(recorder.options.all[:input]).to include('Watir Project')
-      expect(File).to exist(recorder.options.output)
-      expect(recorder.video.valid?).to be(true)
+      aggregate_failures do
+        expect(recorder.options.all[:input]).to include('Watir Project')
+        expect(File).to exist(recorder.options.output)
+        expect(recorder.video.valid?).to be(true)
+      end
     end
   end
 
   describe '#screenshot' do
     let!(:browser) { Watir::Browser.new :chrome, options: { args: ['--disable-gpu'] } }
-    let(:page_title) { ScreenRecorder::Titles.fetch('chrome').first }
-    let(:recorder) { described_class.new(title: page_title, output: test_output) }
+    let(:recorder) do
+      page_title = described_class.fetch_title('chrome').first
+      described_class.new(title: page_title, output: test_output)
+    end
     let(:image_file) { 'screenshot.png' }
 
     before do
@@ -56,7 +47,7 @@ RSpec.describe ScreenRecorder::Window, if: OS.windows? do
     end
 
     after do
-      browser.quit
+      browser.close
       delete_file(image_file)
     end
 
@@ -72,4 +63,4 @@ RSpec.describe ScreenRecorder::Window, if: OS.windows? do
       expect(File).to exist(image_file)
     end
   end
-end # describe
+end

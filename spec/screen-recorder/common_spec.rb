@@ -1,5 +1,7 @@
 RSpec.describe ScreenRecorder::Common do
   context 'when the gem is loaded' do
+    after { ScreenRecorder.logger.level = :ERROR }
+
     it 'has a version number' do
       expect(ScreenRecorder::VERSION).not_to be nil
     end

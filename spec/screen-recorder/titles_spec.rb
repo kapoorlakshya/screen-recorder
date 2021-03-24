@@ -11,20 +11,19 @@ RSpec.describe ScreenRecorder::Titles do
   context 'when the given application is Firefox', if: OS.windows? do
     let(:browser_process) { :firefox }
     let(:url) { 'https://google.com' }
-    let(:expected_title) { 'Google - Mozilla Firefox' }
+    let(:expected_title) { /Google [-—] Mozilla Firefox/ }
     let(:browser) do
       Webdrivers.install_dir = 'webdrivers_bin'
       Watir::Browser.new browser_process
     end
 
     before do
-      # Note: browser is lazily loaded with let
       browser.goto url
       browser.wait
     end
 
     after do
-      browser.quit
+      browser.close
     end
 
     it 'returns a list of available windows from firefox' do
@@ -38,7 +37,7 @@ RSpec.describe ScreenRecorder::Titles do
     end
 
     it 'returns window title from Mozilla Firefox' do
-      expect(described_class.fetch(browser_process).first).to eql(expected_title)
+      expect(described_class.fetch(browser_process).first).to match(expected_title)
     end
   end
 
@@ -58,17 +57,16 @@ RSpec.describe ScreenRecorder::Titles do
     end
 
     before do
-      # Note: browser is lazily loaded with let
       browser.goto url
       browser.wait
     end
 
     after do
-      browser.quit
+      browser.close
     end
 
     it 'excludes titles from extensions' do
       expect(described_class.fetch(browser_process)).to eql(expected_titles)
     end
   end
-end # RSpec.describe
+end

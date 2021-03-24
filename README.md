@@ -2,9 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/screen-recorder.svg)](https://badge.fury.io/rb/screen-recorder)
 [![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/screen-recorder/)
-[![Build Status](https://travis-ci.org/kapoorlakshya/screen-recorder.svg?branch=master)](https://travis-ci.org/kapoorlakshya/screen-recorder)
-[![AppVeyor status](https://ci.appveyor.com/api/projects/status/u1qashueuw82r235/branch/master?svg=true)](https://ci.appveyor.com/project/kapoorlakshya/screen-recorder/branch/master)
-[![Maintainability](https://api.codeclimate.com/v1/badges/b6049dfee7375aed9bc8/maintainability)](https://codeclimate.com/github/kapoorlakshya/screen-recorder/maintainability)
+[![Tests](https://github.com/kapoorlakshya/screen-recorder/actions/workflows/tests.yml/badge.svg)](https://github.com/kapoorlakshya/screen-recorder/actions/workflows/tests.yml)
 
 A Ruby gem to video record or take screenshots of your computer screen - desktop or specific
 window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
@@ -106,10 +104,10 @@ A helper method is available to fetch the title of the active window
 for the given process name.
 
 ```ruby
-ScreenRecorder::Window.fetch_title('firefox') # Name of exe
+ScreenRecorder::('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 
-ScreenRecorder::Window.fetch_title('chrome')
+ScreenRecorder::('chrome')
 #=> ["New Tab - Google Chrome"]
 ```
 
@@ -159,7 +157,7 @@ Screenshots can be captured at any point after initializing the recorder:
 # Window (Microsoft Windows only)
 browser   = Watir::Browser.new :chrome, options: { args: ['--disable-gpu'] } # Hardware acceleration must be disabled
 browser.goto('watir.com')
-window_title = ScreenRecorder::Window.fetch_title('chrome').first
+window_title = ScreenRecorder::('chrome').first
 @recorder = ScreenRecorder::Window.new(title: window_title, output: 'recording.mkv')
 @recorder.screenshot('before-recording.png')
 @recorder.start
