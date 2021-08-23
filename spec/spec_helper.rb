@@ -41,8 +41,8 @@ RSpec.configure do |config|
     #
     # Clean up
     #
-    # delete_file test_output
-    # delete_file test_log_file
+    delete_file test_output
+    delete_file test_log_file
   end
 end
 
@@ -118,4 +118,12 @@ end
 #
 def delete_file(file)
   File.delete file if File.exist? file
+end
+
+#
+# Returns resolution of the given video/image file.
+#
+def get_resolution(filename)
+  metadata = FFMPEG::Movie.new(filename)
+  metadata.resolution
 end

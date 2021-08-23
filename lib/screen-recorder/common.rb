@@ -41,20 +41,6 @@ module ScreenRecorder
     end
 
     #
-    # Takes a screenshot in the current context (input) - desktop or current window
-    #
-    def screenshot(filename)
-      process   = execute_command(screenshot_cmd(filename))
-      exit_code = wait_for_process_exit(process) # 0 (success) or 1 (fail)
-      if exit_code&.zero?
-        ScreenRecorder.logger.info "Screenshot: #{filename}"
-        return filename
-      end
-      ScreenRecorder.logger.error 'Failed to take a screenshot.'
-      nil
-    end
-
-    #
     # Discards the recorded file. Useful in automated testing
     # when a test passes and the recorded file is no longer
     # needed.
@@ -122,14 +108,6 @@ module ScreenRecorder
     #
     def ffmpeg_command
       "#{ffmpeg_bin} #{@options.parsed}"
-    end
-
-    #
-    # Parameters to capture a single frame
-    #
-    def screenshot_cmd(filename)
-      # -f overwrites existing file
-      "#{ffmpeg_bin} -f #{options.capture_device} -i #{options.input} -framerate 1 -frames:v 1 #{filename}"
     end
 
     #

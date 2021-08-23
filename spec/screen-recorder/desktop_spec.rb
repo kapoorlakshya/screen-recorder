@@ -118,25 +118,4 @@ RSpec.describe ScreenRecorder::Desktop do
       expect(recorder.method(:discard)).to eql(recorder.method(:delete))
     end
   end
-
-  describe '#screenshot' do
-    let(:recorder) { described_class.new(input: test_input, output: test_output) }
-    let(:image_file) { 'screenshot.png' }
-
-    after do
-      delete_file(image_file)
-    end
-
-    it 'can take a screenshot when a video is not being recorded' do
-      recorder.screenshot(image_file)
-      expect(File).to exist(image_file)
-    end
-
-    it 'can take a screenshot when a video is being recorded' do
-      recorder.start
-      recorder.screenshot(image_file)
-      recorder.stop
-      expect(File).to exist(image_file)
-    end
-  end
 end # RSpec.describe

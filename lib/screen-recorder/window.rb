@@ -2,6 +2,8 @@
 module ScreenRecorder
   # @since 1.0.0-beta11
   class Window < Common
+    include Screenshot
+
     #
     # Window recording mode.
     #

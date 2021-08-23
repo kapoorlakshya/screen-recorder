@@ -33,34 +33,4 @@ RSpec.describe ScreenRecorder::Window, if: OS.windows? do
       end
     end
   end
-
-  describe '#screenshot' do
-    let!(:browser) { Watir::Browser.new :chrome, options: { args: ['--disable-gpu'] } }
-    let(:recorder) do
-      page_title = described_class.fetch_title('chrome').first
-      described_class.new(title: page_title, output: test_output)
-    end
-    let(:image_file) { 'screenshot.png' }
-
-    before do
-      browser.goto 'watir.com'
-    end
-
-    after do
-      browser.close
-      delete_file(image_file)
-    end
-
-    it 'can take a screenshot when a video is not being recorded' do
-      recorder.screenshot(image_file)
-      expect(File).to exist(image_file)
-    end
-
-    it 'can take a screenshot when a video is being recorded' do
-      recorder.start
-      recorder.screenshot(image_file)
-      recorder.stop
-      expect(File).to exist(image_file)
-    end
-  end
 end

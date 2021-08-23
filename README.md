@@ -166,6 +166,13 @@ window_title = ScreenRecorder::('chrome').first
 @recorder.screenshot('after-recording.png')
 browser.quit 
 ```
+
+You can even specify a custom capture resolution:
+
+```rb
+@recorder.screenshot('screenshot.png', '1024x768')
+```
+
 #### Video Output
 
 Once the recorder is stopped, you can view the video metadata or transcode
