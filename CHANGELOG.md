@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### 1.6.0 (2021-08-22)
+* Match "childprocess" gem version to `selenium-webdriver`. Closes [#99](https://github.com/kapoorlakshya/screen-recorder/issues/99).
+* Add support for screenshot resolution. Closes [#98](https://github.com/kapoorlakshya/screen-recorder/issues/98).
+
 ### 1.5.0 (2021-03-23)
 * Relax "os" gem version to minor level ([#97](https://github.com/kapoorlakshya/screen-recorder/pull/97)). Thanks, [hlascelles](https://github.com/hlascelles)!
 
