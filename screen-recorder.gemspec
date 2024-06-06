@@ -31,14 +31,14 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'ffi' # For selenium-webdriver on Windows
   spec.add_development_dependency 'rake', '>= 12.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '~> 0.75'
+  spec.add_development_dependency 'rubocop', '~> 1.64'
   spec.add_development_dependency 'rubocop-performance', '~> 1.0'
-  spec.add_development_dependency 'rubocop-rspec', '~> 1.0'
-  spec.add_development_dependency 'simplecov', '~> 0.16'
+  spec.add_development_dependency 'rubocop-rspec', '~> 2.0'
+  spec.add_development_dependency 'simplecov', '~> 0.22'
   spec.add_development_dependency 'watir', '~> 6.0'
   spec.add_development_dependency 'webdrivers', '~> 4.0'
 
-  spec.add_runtime_dependency 'childprocess', '>= 1.0', '< 5.0' # Roughly match Selenium
+  spec.add_runtime_dependency 'childprocess', '>= 5.0'
   spec.add_runtime_dependency 'os', '~> 1.0'
   spec.add_runtime_dependency 'streamio-ffmpeg', '~> 3.0'
 end
