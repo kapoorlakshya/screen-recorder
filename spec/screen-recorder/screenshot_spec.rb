@@ -22,7 +22,7 @@ RSpec.describe 'ScreenRecorder::Screenshot' do
     end
 
     context 'when resolution is given' do
-      let(:given_resolution) { '1024x768' }
+      let(:given_resolution) { '640x480' }
 
       it 'saves screenshot at given resolution' do
         recorder.screenshot(image_file, given_resolution)
