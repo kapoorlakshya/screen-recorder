@@ -117,7 +117,7 @@ end
 # Deletes given file as part of cleanup.
 #
 def delete_file(file)
-  File.delete file if File.exist? file
+  FileUtils.rm_f file
 end
 
 #

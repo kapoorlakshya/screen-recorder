@@ -28,7 +28,7 @@ RSpec.describe ScreenRecorder::Titles do
 
     it 'returns a list of available windows from firefox' do
       browser.wait
-      expect(described_class.fetch('firefox')).to be_a_kind_of(Array)
+      expect(described_class.fetch('firefox')).to be_a(Array)
     end
 
     it 'does not return an empty list' do
