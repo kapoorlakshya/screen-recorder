@@ -29,14 +29,16 @@ jobs:
       DISPLAY: ":0"
     steps:
     - name: Cancel any previous run(s) on new commit push
-      uses: styfle/cancel-workflow-action@0.8.0
+      uses: styfle/cancel-workflow-action@0.9.1
       with:
         access_token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up ffmpeg
-      uses: FedericoCarboni/setup-ffmpeg@v1
+      uses: FedericoCarboni/setup-ffmpeg@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        ffmpeg-version: release
+        architecture: 'arm64'
       id: setup-ffmpeg
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -55,10 +57,10 @@ jobs:
         ruby-version: [2.5, jruby]
     steps:
       - name: Cancel any previous run(s) on new commit push
-        uses: styfle/cancel-workflow-action@0.8.0
+        uses: styfle/cancel-workflow-action@0.9.1
         with:
           access_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up ffmpeg
         uses: FedericoCarboni/setup-ffmpeg@v1
         with:
@@ -79,15 +81,17 @@ jobs:
         ruby-version: [2.5, 2.7]
     steps:
       - name: Cancel any previous run(s) on new commit push
-        uses: styfle/cancel-workflow-action@0.8.0
+        uses: styfle/cancel-workflow-action@0.9.1
         with:
           access_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up ffmpeg
-        uses: FedericoCarboni/setup-ffmpeg@v1
+        uses: FedericoCarboni/setup-ffmpeg@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-        id: setup-ffmpeg
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          ffmpeg-version: release
+          architecture: 'arm64'
+          id: setup-ffmpeg
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
