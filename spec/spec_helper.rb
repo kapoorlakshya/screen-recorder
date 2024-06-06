@@ -51,7 +51,7 @@ end
 #
 def test_input
   if OS.linux?
-    `echo $DISPLAY`.strip || ':0' # If $DISPLAY is not set, use default of :0.0
+    ':0'
   elsif OS.mac?
     ENV['CI'] ? '0' : '1'
   elsif OS.windows?
