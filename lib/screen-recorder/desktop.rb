@@ -5,8 +5,8 @@ module ScreenRecorder
     include Screenshot
 
     DEFAULT_INPUT_WIN = 'desktop'.freeze
-    DEFAULT_INPUT_LINUX = ':0'.freeze
-    DEFAULT_INPUT_MAC = '1'.freeze
+    DEFAULT_INPUT_LINUX = ENV.fetch('DISPLAY', ':0').freeze
+    DEFAULT_INPUT_MAC = ENV.fetch('DISPLAY', '1').freeze
 
     #
     # Desktop recording mode.

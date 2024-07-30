@@ -3,99 +3,90 @@ name: Tests
 
 on: [push, pull_request]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-      - name: Cancel any previous run(s) on new commit push
-        uses: styfle/cancel-workflow-action@0.8.0
-        with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.5
+          ruby-version: 3.3
           bundler-cache: true
       - name: Run rubocop
         run: bundle exec rake rubocop
 
   test-ubuntu:
     runs-on: ubuntu-latest
+    needs: lint
     strategy:
       matrix:
-        ruby-version: [2.7, jruby]
+        ruby-version: [3.0, jruby]
     env:
       DISPLAY: ":0"
     steps:
-    - name: Cancel any previous run(s) on new commit push
-      uses: styfle/cancel-workflow-action@0.9.1
-      with:
-        access_token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up ffmpeg
       uses: FedericoCarboni/setup-ffmpeg@v3
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        ffmpeg-version: release
-        architecture: 'arm64'
       id: setup-ffmpeg
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
-    - name: Start xvfb
-      run: Xvfb -ac $DISPLAY -screen 0 1024x768x24 > /dev/null 2>&1 &
+    - run: bundle list
     - name: Run tests
-      run: bundle exec rake spec
+      uses: coactions/setup-xvfb@v1
+      with:
+        run: bundle exec rake spec
+        options: :99 -ac -screen 0 640x480x24
 
   test-windows:
     runs-on: windows-latest
+    needs: lint
     strategy:
       matrix:
-        ruby-version: [2.5, jruby]
+        ruby-version: [3.0]
     steps:
-      - name: Cancel any previous run(s) on new commit push
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up ffmpeg
-        uses: FedericoCarboni/setup-ffmpeg@v1
+        uses: FedericoCarboni/setup-ffmpeg@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         id: setup-ffmpeg
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
+      - run: bundle list
       - name: Run tests
         run: bundle exec rake spec
 
   test-macos:
-    runs-on: macos-latest
+    runs-on: macos-13
+    needs: lint
     strategy:
       matrix:
-        ruby-version: [2.5, 2.7]
+        ruby-version: [3.0]
     steps:
-      - name: Cancel any previous run(s) on new commit push
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up ffmpeg
         uses: FedericoCarboni/setup-ffmpeg@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          ffmpeg-version: release
-          architecture: 'arm64'
-          id: setup-ffmpeg
+        id: setup-ffmpeg
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
+      - run: bundle list
       - name: Run tests
         run: bundle exec rake spec

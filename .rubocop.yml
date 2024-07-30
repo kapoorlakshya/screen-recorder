@@ -1,6 +1,7 @@
 require:
   - rubocop-rspec
   - rubocop-performance
+  - rubocop-rake
 
 AllCops:
   DisplayCopNames: true
@@ -83,6 +84,9 @@ RSpec/ExampleLength:
 
 RSpec/MultipleExpectations:
   Enabled: false
+
+RSpec/SpecFilePathFormat:
+  Enabled: False
 
 Style/BlockDelimiters:
   EnforcedStyle: braces_for_chaining

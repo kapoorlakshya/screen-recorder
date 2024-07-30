@@ -1,5 +1,6 @@
 require 'bundler/setup'
 require 'simplecov'
+require_relative '../lib/screen-recorder/os'
 
 SimpleCov.start do
   add_filter %r{/spec/}
@@ -8,7 +9,7 @@ end
 require 'rspec'
 require 'screen-recorder'
 require 'watir'
-require 'webdrivers'
+require 'pry-byebug' unless RUBY_PLATFORM == 'java'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -21,40 +22,51 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  # Set Selenium webdrivers install folder
-  config.before(:all) { Webdrivers.install_dir = 'webdrivers_bin' }
+  config.before(:suite) do
+    # Establish clean state
+    delete_file '*.mkv'
+    delete_file '*.png'
+    delete_file '*.log'
 
-  #
-  # Print error from ffmpeg log on test failure
-  #
-  config.after do |example|
-    if example.exception
-      # Print error from ffmpeg.log
-      log_file = `ls | grep *.log`.strip
-      if log_file
-        f = File.open(log_file).readlines.last(10).join('\n')
-        puts "FFMPEG error: #{f}"
-        f.close
+    # Start xvfb if not running on Linux
+    if ScreenRecorder::OS.linux?
+      running = `pgrep Xvfb`.strip
+      `Xvfb -ac ":0" -screen 0 1024x768x24 > /dev/null 2>&1 &` unless running
+    end
+  end
+
+  config.after(:suite) do
+    if ScreenRecorder::OS.linux? || ScreenRecorder::OS.mac?
+      # check for any unexpectedly abandoned ffmpeg processes
+      sleep(2) # wait any straglers to terminate
+      running = `pgrep -f ffmpeg`.strip
+      unless running.empty?
+        `pkill -9 -f ffmpeg`
+        raise 'Abandoned ffmpeg processes found! Killed, but please investigate.'
       end
     end
+  end
 
-    #
-    # Clean up
-    #
-    delete_file test_output
-    delete_file test_log_file
+  # Print error from ffmpeg log on test failure
+  config.after do |example|
+    if example.exception
+      # Print error from ffmpeg log
+      next unless File.exist?(test_log_file)
+
+      File.open(test_log_file).readlines.last(10).join('\n') { puts "FFMPEG error: #{f}" }
+    end
   end
 end
 
 #
-# Returns input value for tests to use based on current OS.
+# Returns input value for tests to use based on current ScreenRecorder::OS.
 #
 def test_input
-  if OS.linux?
-    ':0'
-  elsif OS.mac?
+  if ScreenRecorder::OS.linux?
+    ENV.fetch('DISPLAY', ':0').strip
+  elsif ScreenRecorder::OS.mac?
     ENV['CI'] ? '0' : '1'
-  elsif OS.windows?
+  elsif ScreenRecorder::OS.windows?
     'desktop'
   else
     raise 'Your OS is not supported. Feel free to create an Issue on GitHub.'
@@ -65,14 +77,22 @@ end
 # Returns test output filename.
 #
 def test_output
-  'recording.mkv'
+  file = "recording-#{Time.now.to_i}.mkv"
+  path = File.join(Dir.pwd, file)
+  return path.tr('/', '\\') if ScreenRecorder::OS.windows?
+
+  path
 end
 
 #
 # Returns test log filename.
 #
 def test_log_file
-  'screen-recorder.log'
+  file = 'ffmpeg.log'
+  path = File.join(Dir.pwd, file)
+  return path.tr('/', '\\') if ScreenRecorder::OS.windows?
+
+  path
 end
 
 #
@@ -103,21 +123,21 @@ def test_options
 end
 
 #
-# Returns capture device based on the current OS.
+# Returns capture device based on the current ScreenRecorder::OS.
 #
 def test_capture_device
-  return 'gdigrab' if OS.windows?
+  return 'gdigrab' if ScreenRecorder::OS.windows?
 
-  return 'x11grab' if OS.linux?
+  return 'x11grab' if ScreenRecorder::OS.linux?
 
-  'avfoundation' if OS.mac?
+  'avfoundation' if ScreenRecorder::OS.mac?
 end
 
 #
-# Deletes given file as part of cleanup.
+# Deletes files with given naming pattern.
 #
-def delete_file(file)
-  File.delete file if File.exist? file
+def delete_file(pattern)
+  Dir.glob("#{Dir.pwd}/#{pattern}").each { |f| File.delete(f) }
 end
 
 #

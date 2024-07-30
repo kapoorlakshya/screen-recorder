@@ -10,7 +10,6 @@ module ScreenRecorder
     DEFAULT_FPS = 15.0
     DEFAULT_MAC_INPUT_PIX_FMT = 'uyvy422'.freeze # For avfoundation
     DEFAULT_PIX_FMT = 'yuv420p'.freeze
-    YUV420P_SCALING = '"scale=trunc(iw/2)*2:trunc(ih/2)*2"'.freeze
 
     def initialize(options)
       # @todo Consider using OpenStruct
@@ -18,10 +17,6 @@ module ScreenRecorder
       advanced[:input] = default_advanced_input.merge(advanced_input)
       advanced[:output] = default_advanced_output.merge(advanced_output)
       advanced[:log] ||= DEFAULT_LOG_FILE
-
-      # Fix for using yuv420p pixel format for output
-      # @see https://www.reck.dk/ffmpeg-libx264-height-not-divisible-by-2/
-      advanced_output[:vf] = YUV420P_SCALING if advanced_output[:pix_fmt] == 'yuv420p'
     end
 
     #

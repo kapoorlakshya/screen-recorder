@@ -4,15 +4,17 @@ module ScreenRecorder
     #
     # Takes a screenshot in the current context (input) - desktop or current window
     #
-    def screenshot(filename, resolution = nil)
+    def screenshot(filename, resolution = nil, log = 'ffmpeg.log')
       ScreenRecorder.logger.debug "Screenshot filename: #{filename}, resolution: #{resolution}"
       cmd = screenshot_cmd(filename: filename, resolution: resolution)
-      process = execute_command(cmd)
-      exit_code = wait_for_process_exit(process) # 0 (success) or 1 (fail)
-      if exit_code&.zero?
+      process = execute_command(cmd, log) # exits when done
+      process.poll_for_exit(5)
+
+      if process.exited?
         ScreenRecorder.logger.info "Screenshot: #{filename}"
         return filename
       end
+
       ScreenRecorder.logger.error 'Failed to take a screenshot.'
       nil
     end
@@ -32,8 +34,7 @@ module ScreenRecorder
     # Returns OS specific video resolution arg for ffmpeg
     #
     def resolution_arg(size)
-      # macOS likes -s, windows and linux like -video_size
-      OS.mac? ? "-s #{size} " : "-video_size #{size} "
+      "-s #{size} "
     end
   end
 end
