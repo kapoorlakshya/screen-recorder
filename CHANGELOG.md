@@ -2,14 +2,21 @@
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### 1.7.0 (2024-07-30)
+
+* Remove dependency on `childprocess` and `os` gems.
+
 ### 1.6.0 (2021-08-22)
+
 * Match "childprocess" gem version to `selenium-webdriver`. Closes [#99](https://github.com/kapoorlakshya/screen-recorder/issues/99).
 * Add support for screenshot resolution. Closes [#98](https://github.com/kapoorlakshya/screen-recorder/issues/98).
 
 ### 1.5.0 (2021-03-23)
+
 * Relax "os" gem version to minor level ([#97](https://github.com/kapoorlakshya/screen-recorder/pull/97)). Thanks, [hlascelles](https://github.com/hlascelles)!
 
 ### 1.4.0 (2020-01-27)
+
 * Users can now select a ffmpeg [capture device](https://ffmpeg.org/ffmpeg-devices.html) from advanced -> input.
 * Fix a bug where some advanced parameters were not parsed correctly.
 * Add support for audio stream capture ([#15](https://github.com/kapoorlakshya/screen-recorder/issues/15))
@@ -18,59 +25,68 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 * Add support for capturing screenshots in both desktop and window modes ([#44](https://github.com/kapoorlakshya/screen-recorder/issues/44)).
 
 ### 1.3.1 (2019-10-20)
+
 * Reattempt `ffprobe` execution up to times if the first try raises `Errno::EAGAIN`.
 Hopefully fixes [#79](https://github.com/kapoorlakshya/screen-recorder/issues/79).
 
 ### 1.3.0 (2019-07-26)
+
 * Support JRuby 9.2+ ([#58](https://github.com/kapoorlakshya/screen-recorder/issues/58))
 * Add `ScreenRecorder::` as an alias for `ScreenRecorder::Window.fetch_title`.
 The `Titles` class will be removed in version 2.0.
 
 ### 1.2.0 (2019-05-12)
-* Separate input/output specific `ffmpeg` arguments through the `advanced` 
+
+* Separate input/output specific `ffmpeg` arguments through the `advanced`
 Hash. See example [here](https://github.com/kapoorlakshya/screen-recorder#advanced-options).
-* Check for errors after starting the `ffmpeg` process to make sure the 
-recording does not stop silently because of an error. Prints the error 
+* Check for errors after starting the `ffmpeg` process to make sure the
+recording does not stop silently because of an error. Prints the error
 from the log if the process exists unexpectedly.
 * Now using [`childprocess`](https://github.com/enkessler/childprocess) gem
-to manage the `ffmpeg` process. This requires the  `ffi` gem to be 
+to manage the `ffmpeg` process. This requires the  `ffi` gem to be
 installed on Windows. See [childprocess#132](https://github.com/enkessler/childprocess/issues/150)
 for more information.
 
 ### 1.1.0 (2019-04-14)
-* <b>Add support for macOS</b> ([#55](https://github.com/kapoorlakshya/screen-recorder/issues/55)). 
+
+* <b>Add support for macOS</b> ([#55](https://github.com/kapoorlakshya/screen-recorder/issues/55)).
 Thanks to [Denys Bazarnyi](https://github.com/bazarnyi) for testing this and providing feedback.
 * Force kill `ffmpeg` if it takes more than 10s to quit ([#60](https://github.com/kapoorlakshya/screen-recorder/issues/60)).
 * Fix a bug where `ScreenRecorder.ffmpeg_binary=()` was not properly defined.
-* `ScreenRecorder::Titles#fetch` will now raise `NotImplementedError` when used in a 
+* `ScreenRecorder::Titles#fetch` will now raise `NotImplementedError` when used in a
 Linux or a macOS environment. Only works on Windows.
 * Default `input` value on Linux is now `:0`.
 
 ### 1.0.0 (2019-03-15)
+
 * Released first major version.
-* Now uses `ScreenRecorder` as top level module. `FFMPEG` is not directly 
+* Now uses `ScreenRecorder` as top level module. `FFMPEG` is not directly
 exposed anymore.
-* The recording modes are now available through `ScreenRecorder::Desktop` 
+* The recording modes are now available through `ScreenRecorder::Desktop`
 and `ScreenRecorder::Window` classes to make the usage (parameters) simpler.
 * Method parameters are now keywords instead of an `opts` Hash. This means
 at least Ruby 2.0.0 is required.
-* `framerate:` is now to be passed through the `advanced` Hash. 
+* `framerate:` is now to be passed through the `advanced` Hash.
 
 ### 1.0.0.beta13 (2019-03-15)
-* Gem will now be renamed to `screen-recorder`. Please refer to Issue 
+
+* Gem will now be renamed to `screen-recorder`. Please refer to Issue
 [#45](https://github.com/kapoorlakshya/screen-recorder/issues/45)
 for more information.
 
 ### 1.0.0.beta12 (2019-03-12)
+
 * Reverted post install message as `screen_recorder` is already taken.
 
 ### 1.0.0.beta11 (2019-03-12)
+
 * Recording FPS (`framerate`) is defaulted to 15.0.
-* Gem will soon be renamed to `screen_recorder`. Please refer to Issue 
+* Gem will soon be renamed to `screen_recorder`. Please refer to Issue
 [#45](https://github.com/kapoorlakshya/screen-recorder/issues/45)
 for more information.
 
 ### 1.0.0.beta10 (2019-02-05)
+
 * Fixed an edge case in Microsoft Windows specific implementation of
 `WindowTitles#fetch` where processes with mismatching names and window
 titles, such as process `"Calculator.exe"` with window title `"CicMarshalWnd"`,
