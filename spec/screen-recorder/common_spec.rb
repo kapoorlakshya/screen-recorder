@@ -3,7 +3,7 @@ RSpec.describe ScreenRecorder::Common do
     after { ScreenRecorder.logger.level = :ERROR }
 
     it 'has a version number' do
-      expect(ScreenRecorder::VERSION).not_to be nil
+      expect(ScreenRecorder::VERSION).not_to be_nil
     end
 
     it 'can find the FFmpeg binary' do

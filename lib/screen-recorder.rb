@@ -1,6 +1,4 @@
-require 'childprocess'
 require 'logger'
-require 'os'
 require 'streamio-ffmpeg'
 
 # @since 1.0.0.beta11
@@ -81,3 +79,5 @@ require 'screen-recorder/common'
 require 'screen-recorder/screenshot'
 require 'screen-recorder/desktop'
 require 'screen-recorder/window'
+require 'screen-recorder/childprocess'
+require 'screen-recorder/os'

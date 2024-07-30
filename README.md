@@ -6,10 +6,11 @@
 
 A Ruby gem to video record or take screenshots of your computer screen - desktop or specific
 window - using [FFmpeg](https://www.ffmpeg.org/). Primarily
-geared towards recording automated UI (Selenium) test executions for 
+geared towards recording automated UI (Selenium) test executions for
 debugging and documentation.
 
 #### Demo
+
 [https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem](https://kapoorlakshya.github.io/introducing-screen-recorder-ruby-gem)
 
 ## Compatibility
@@ -20,43 +21,25 @@ Works on Windows, Linux, and macOS. Requires Ruby 2.0+ or JRuby 9.2+.
 
 ##### 1. Setup FFmpeg
 
-Linux and macOS instructions are [here](https://trac.ffmpeg.org/wiki/CompilationGuide).
+Download from [here](https://ffmpeg.org/download.html) and add to `PATH` or use `brew` / `winget` / `apt` to install.
 
 > macOS: Follow [these steps](https://github.com/kapoorlakshya/screen-recorder/issues/88#issuecomment-629139032) to avoid
 > issues related to Privacy settings.
 
-For Microsoft Windows, download the binary from [here](https://www.videohelp.com/software/ffmpeg). Once downloaded, 
-add location of the `ffmpeg/bin` folder to the `PATH`  environment variable ([instructions](https://windowsloop.com/install-ffmpeg-windows-10/)).
-
-Alternatively, you can point to the binary file using 
-`ScreenRecorder.ffmpeg_binary = '/path/to/ffmpeg'` in your project.
+Alternatively, you can point to the binary file using `ScreenRecorder.ffmpeg_binary = '/path/to/ffmpeg'` in your project.
 
 ##### 2. Install gem
 
 Next, add these lines to your application's Gemfile:
 
 ```ruby
-gem 'ffi' # Windows only
 gem 'screen-recorder', '~> 1.0'
 ```
-
-The [`ffi`](https://github.com/ffi/ffi) gem is used by the 
-[`childprocess`](https://github.com/enkessler/childprocess) gem on 
-Windows, but it does not explicitly require it. More information 
-on this [here](https://github.com/enkessler/childprocess/issues/160).
-
 
 And then execute:
 
 ```bash
-$ bundle
-```
-
-Or install it yourself as:
-
-```bash
-$ gem install ffi # Windows only
-$ gem install screen-recorder
+bundle install
 ```
 
 ##### 3. Require gem
@@ -95,7 +78,8 @@ browser   = Watir::Browser.new :firefox
 @recorder.stop
 browser.quit 
 ```
-This mode has a few limitations which are listed in the wiki 
+
+This mode has a few limitations which are listed in the wiki
 [here](https://github.com/kapoorlakshya/screen-recorder/wiki/Window-Capture-Limitations).
 
 ##### Fetch Title
@@ -104,10 +88,10 @@ A helper method is available to fetch the title of the active window
 for the given process name.
 
 ```ruby
-ScreenRecorder::('firefox') # Name of exe
+ScreenRecorder::Window.fetch_title('firefox') # Name of exe
 #=> ["Mozilla Firefox"]
 
-ScreenRecorder::('chrome')
+ScreenRecorder::Window.fetch_title('chrome')
 #=> ["New Tab - Google Chrome"]
 ```
 
@@ -198,11 +182,11 @@ See [`streamio-ffmpeg`](https://github.com/streamio/streamio-ffmpeg) gem for mor
 
 If your test passes or you do not want the recording for any reason,
 simply call `@recorder.discard` or `@recorder.delete` to delete
-the video file. 
+the video file.
 
 #### Advanced Options
 
-You can provide additional parameters to FFmpeg using the `advanced` 
+You can provide additional parameters to FFmpeg using the `advanced`
 parameter. You can specify input/output specific parameters using `input: {}`
 and `output: {}` within the `advanced` Hash.
 
@@ -241,7 +225,7 @@ Also refer to the `ffmpeg.log` file for details.
 
 #### Use with Cucumber
 
-A Cucumber + Watir based example is available 
+A Cucumber + Watir based example is available
 [here](https://github.com/kapoorlakshya/cucumber-watir-test-recorder-example).
 
 ## Wiki
@@ -250,15 +234,15 @@ Please see the [wiki](https://github.com/kapoorlakshya/screen-recorder/wiki) for
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. 
-Then, run `bundle exec rake` to run the tests and rubocop. You can also run 
+After checking out the repo, run `bin/setup` to install dependencies.
+Then, run `bundle exec rake` to run the tests and rubocop. You can also run
 `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. 
+To install this gem onto your local machine, run `bundle exec rake install`.
 
 ### Contributing
 
-Bug reports and pull requests are welcome. 
+Bug reports and pull requests are welcome.
 
 - Please update the specs for your code changes and run them locally with `bundle exec rake spec`.
 - Follow the Ruby style guide and format your code - <https://github.com/rubocop-hq/ruby-style-guide>
@@ -269,20 +253,14 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Credits
 
-Thanks to [Denys Bazarnyi](https://github.com/bazarnyi) for testing 
+Thanks to [Denys Bazarnyi](https://github.com/bazarnyi) for testing
 macOS compatibility in v1.1.0.
 <br />
 <br />
 
 [![Streamio](http://d253c4ja9jigvu.cloudfront.net/assets/small-logo.png)](http://streamio.com)
 
-This gem relies on the [streamio-ffmpeg](https://github.com/streamio/streamio-ffmpeg) 
+This gem relies on the [streamio-ffmpeg](https://github.com/streamio/streamio-ffmpeg)
 gem to extract metadata from the output file.
 <br />
 <br />
-
-![SauceLabs Logo](https://saucelabs.com/content/images/logo.png)
-
-Thanks to [SauceLabs](https://saucelabs.com) for providing me with a 
-free account. If you manage an open source project, you can apply for 
-a free account [here](https://saucelabs.com/open-source).

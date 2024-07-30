@@ -10,7 +10,7 @@ module ScreenRecorder
     def initialize(title:, output:, advanced: {})
       raise 'Window recording is only supported on Microsoft Windows.' unless OS.windows?
 
-      super(input: %("title=#{title}"), output: output, advanced: advanced)
+      super(input: %(title="#{title}"), output: output, advanced: advanced)
     end
 
     class << self
@@ -38,7 +38,9 @@ module ScreenRecorder
       def window_title_for(process_name)
         raise NotImplementedError, 'Only Microsoft Windows (gdigrab) supports window capture.' unless OS.windows?
 
-        titles = `tasklist /v /fi "imagename eq #{process_name}.exe" /fo list | findstr  Window`
+        output = `tasklist /v /fi "imagename eq #{process_name}.exe" /fo list | findstr Window`
+        # output = output.encode('iso-8859-1').force_encoding('utf-8') unless output.valid_encoding?
+        titles = output
                    .split("\n")
                    .map { |i| i.gsub(FILTERED_TITLES, '') }
                    .reject(&:empty?)

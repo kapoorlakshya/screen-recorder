@@ -7,7 +7,7 @@ RSpec.describe ScreenRecorder::Desktop do
     end
 
     # @todo Figure out how to test this on Travis since default is 1 and Travis uses 0.
-    unless OS.mac?
+    unless ScreenRecorder::OS.mac?
       it 'defaults to OS specific input if none is given' do
         expect(described_class.new(output: test_output).options.input).to eq(test_input)
       end
@@ -96,6 +96,7 @@ RSpec.describe ScreenRecorder::Desktop do
     end
 
     it 'returns a valid video file' do
+      expect(recorder.video).not_to be_nil
       expect(recorder.video.valid?).to be(true)
     end
   end

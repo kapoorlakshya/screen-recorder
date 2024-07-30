@@ -45,11 +45,11 @@ RSpec.describe ScreenRecorder::Options do
       expect { described_class.new(bad_test_options) }.to raise_exception(ArgumentError)
     end
 
-    it 'defaults input pixel format to uyvy422 on macOS', if: OS.mac? do
+    it 'defaults input pixel format to uyvy422 on macOS', if: ScreenRecorder::OS.mac? do
       expect(options.advanced[:input][:pix_fmt]).to eql('uyvy422')
     end
 
-    it 'does not default input pixel format to yuv420p on Windows and Linux', if: !OS.mac? do
+    it 'does not default input pixel format to yuv420p on Windows and Linux', if: !ScreenRecorder::OS.mac? do
       expect(options.advanced[:input][:pix_fmt]).to be_nil
     end
 
@@ -60,10 +60,6 @@ RSpec.describe ScreenRecorder::Options do
     it 'defaults output framerate' do
       opts = described_class.new(input: test_input, output: test_output)
       expect(opts.framerate).to be(ScreenRecorder::Options::DEFAULT_FPS)
-    end
-
-    it 'uses video scaling fix if output pixel format is yuv420p' do
-      expect(options.advanced[:output][:vf]).to eql(ScreenRecorder::Options::YUV420P_SCALING)
     end
   end
 

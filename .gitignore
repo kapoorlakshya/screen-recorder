@@ -20,6 +20,7 @@ Gemfile.lock # Part of best practice
 *.mp4
 *.avi
 *.gif
+*.png
 
 Gemfile.lock
 

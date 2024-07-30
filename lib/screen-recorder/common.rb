@@ -21,8 +21,10 @@ module ScreenRecorder
     #
     def start
       ScreenRecorder.logger.debug 'Starting recorder...'
-      @video   = nil # New file
+      @video = nil # New file
       @process = start_ffmpeg
+      raise 'FFmpeg process failed to start.' unless @process.alive?
+
       ScreenRecorder.logger.info 'Recording...'
       @process
     end
@@ -32,12 +34,19 @@ module ScreenRecorder
     #
     def stop
       ScreenRecorder.logger.debug 'Stopping ffmpeg...'
-      exit_code = stop_ffmpeg
-      return if exit_code == 1 # recording failed
+
+      @process.stop
+
+      @process.poll_for_exit(PROCESS_TIMEOUT)
+      if @process.alive?
+        ScreenRecorder.logger.error "Failed to stop ffmpeg (pid: #{@process.pid}). Please kill it manually."
+        return
+      end
 
       ScreenRecorder.logger.debug 'Stopped ffmpeg.'
-      ScreenRecorder.logger.info 'Recording complete.'
-      @video = prepare_video unless exit_code == 1
+      ScreenRecorder.logger.info 'Preparing video...'
+      @video = prepare_video
+      ScreenRecorder.logger.info 'Recording ready.'
     end
 
     #
@@ -58,23 +67,15 @@ module ScreenRecorder
     # the given options.
     #
     def start_ffmpeg
-      process = execute_command(ffmpeg_command, options.log)
+      process = execute_command(ffmpeg_command)
       sleep(1.5) # Takes ~1.5s to initialize ffmpeg
       # Check if it exited unexpectedly
-      raise FFMPEG::Error, "Failed to start ffmpeg. Reason: #{lines_from_log(:last, 2)}" if process.exited?
+      if process.exited?
+        raise FFMPEG::Error,
+              "Failed to start command: #{ffmpeg_command}\n\nReason: #{lines_from_log(:last, 10)}"
+      end
 
       process
-    end
-
-    #
-    # Sends 'q' to the ffmpeg binary to gracefully stop the process.
-    # Forcefully terminates it if it takes more than 5s.
-    #
-    def stop_ffmpeg
-      @process.io.stdin.puts 'q' # Gracefully exit ffmpeg
-      @process.io.stdin.close
-      @log_file.close
-      wait_for_process_exit(@process)
     end
 
     #
@@ -107,7 +108,11 @@ module ScreenRecorder
     # options.
     #
     def ffmpeg_command
-      "#{ffmpeg_bin} #{@options.parsed}"
+      cmd = "#{ffmpeg_bin} #{@options.parsed}"
+
+      return "</dev/null #{cmd}" unless OS.windows?
+
+      cmd
     end
 
     #
@@ -136,47 +141,28 @@ module ScreenRecorder
 
     #
     # Executes the given command and outputs to the
-    # optional logfile
     #
-    def execute_command(cmd, logfile = nil)
+    def execute_command(cmd, log = options.log)
+      ScreenRecorder.logger.debug "Log: #{log}"
       ScreenRecorder.logger.debug "Executing command: #{cmd}"
-      process        = new_process(cmd)
-      process.duplex = true
-      if logfile
-        @log_file         = File.new(logfile, 'w+')
-        process.io.stdout = process.io.stderr = @log_file
-        @log_file.sync    = true
-      end
+      process = new_process(cmd)
+      process.detach = true
+      FileUtils.touch(log)
+      process.io = log
       process.start
       process
     end
 
     #
-    # Calls Childprocess.new with OS specific arguments
+    # Calls ChildProcess.new with OS specific arguments
     # to start the given process.
     #
     def new_process(process)
-      ChildProcess.posix_spawn = true if RUBY_PLATFORM == 'java' # Support JRuby.
       if OS.windows?
-        ChildProcess.new('cmd.exe', '/c', process)
+        ChildProcess.new('powershell.exe', '/c', process)
       else
-        ChildProcess.new('sh', '-c', process)
+        ChildProcess.new(process)
       end
-    end
-
-    #
-    # Waits for given process to exit.
-    # Forcefully kills the process if it does not exit within 5 seconds.
-    # Returns exit code.
-    #
-    def wait_for_process_exit(process)
-      process.poll_for_exit(PROCESS_TIMEOUT)
-      process.exit_code # 0
-    rescue ChildProcess::TimeoutError
-      ScreenRecorder.logger.error 'ffmpeg failed to stop. Force killing it...'
-      process.stop # Tries increasingly harsher methods to kill the process.
-      ScreenRecorder.logger.error 'Forcefully killed ffmpeg. Recording failed!'
-      1
     end
   end
 end
